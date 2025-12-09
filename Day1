@@ -1,0 +1,73 @@
+Data center:
+
+Availability zones:
+Cluster of Data center
+
+Region:
+Cluster of Availability zones
+
+Factors to consider:
+
+
+Local Zones:
+Low latency. Local data processing. Consistent AWS experience.
+
+Edge locations:
+Cache content in the Edge locations near the customers. Faster content delivery. Better user experience.
+Does not allow to deploy apps. 
+Key service is CloudFront.
+
+
+AWS architect responsibilities:
+Plan:
+Research:
+Build:
+
+
+AWS well-architected tool:
+Define workload
+Conduct architectural review
+Apply best practices
+
+AWS well-architected Framework pillars:
+Security
+Cost optimization
+Reliability
+Performance efficiency
+Operational excellence
+Sustainability
+
+----------
+
+###Accounts and Security:
+
+Principals and identities:
+	root user - can access any service in any region, unrestricted access.
+	For login - email and password is needed
+	12 digit AccountID will be created which will be used for IAM users login.
+
+	IAM - Identity and Access Management:
+		Authentication and Authorization.
+		Used to create and manage users, groups and roles.
+		Manage access to AWS services and resources.
+		Analyze access controls.
+		
+	Principals:
+		IAM user.
+		Federated user or Identity provider(IdP).
+		AWS service - Ex: EC2 to access S3 bucket.
+		IAM Role - Temporary access. Can be provided for both user and service.
+		- Policies are assigned to Users and Groups.
+		- Policies are assumed by Users and Services.
+	
+		IAM users:
+			
+			IAM users and AWS API calls:
+				Console access - AWS management console.
+				Programmatic access - Access Key ID and Secret Access Key is needed.
+					- AWS CLI
+					- AWS SDKs
+				For login - AccountId, userName and password is needed.
+			
+	
+Security policies:
