@@ -1,0 +1,43 @@
+Classless Inter-Domain Routing(CIDR):
+CIDR TotalIPs
+/28  16
+...  ...
+/24  256
+...  ...
+/20  4096
+...  ...
+/16  65536
+
+Amazon VPC:
+  Max 5 VPCs are allowed per account per Region.
+  Decide the CIDR block or IP address range.
+
+Subnets:
+  Are a subset of the VPC CIDR block.
+  Each subnet resides within one AZ.
+  An AZ can contain multiple subnets.
+  5 addresses are reserved.
+  Route table config will help in connecting to Internet gateway for public subnets.
+
+Internet Gateways:
+  Connecting private subnets with outside internet.
+
+Network Access Translation Gateway(NAT):
+ Connecting resources in a private subnet to the Internet Gateway.
+
+Elastic network interface:
+  Logical networking component in a VPC.
+
+Network Access Control Lists(NACL):
+  Acts as a firewall at the subnet boundary.
+  Stateless and requires explicit rules for all traffic.
+
+Security Groups:
+  A virtual firewall that controls inbound and outbound traffic based on defined rules 
+  Blocks all inbound traffic, unless we create a rule.
+  All outbound traffics are allowed.
+
+Security group chaining:
+  Stateful.
+  Inbound and outbound rules allow traffic flow from the top tier to bottom tier.
+  Acts as a firewalls to prevent a subnet-wide security breach.
