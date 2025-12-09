@@ -29,7 +29,7 @@ Define workload
 Conduct architectural review
 Apply best practices
 
-AWS well-architected Framework pillars:
+AWS well-architected Framework pillars:(CORPSS)
 Security
 Cost optimization
 Reliability
@@ -71,3 +71,17 @@ Principals and identities:
 			
 	
 Security policies:
+	Granting permissions:
+		Policy types:
+			Grant permissions:
+				- IAM identity-based policies:
+					IAM policy document structure must have Effect, Action and Resource(EAR). Version and Condition are optional.
+					- AWS managed 
+						- Service access
+						- Job function
+					- Customer managed
+				- IAM resource-based policies:
+					IAM policy document structure must have Principal(AccountID), Effect, Action and Resource(PEAR). Version and Condition are optional.
+	Explicity Deny has precedence for Explicit Allow.
+	IAM Permission Boundaries - Helpful in providing full access to a group and need to restrict few users to some access.
+	Service Control Policies(SCP) - OU level restriction to services. AWS organizations.
