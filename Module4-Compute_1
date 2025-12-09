@@ -1,0 +1,23 @@
+EC2-Elastic Compute Cloud:
+  Launch considerations:
+    - Name and Tags
+    - Application & OS image
+    - Instance type & size
+    - Key pair
+    - Netowrk & Security - VPC, subnet and SG.
+    - Storage
+    - Placement & Tenancy (Optional)
+    - Scripts & Metadata (Optional)
+  AMI-Amazon Machine Image:
+  Instance families:
+    - General purpose
+    - Memory optimized
+    - Storage optimized
+    - Compute optimized
+    - Accelerated compute
+    - HPC optimized
+    
+
+EBS-Elastic Block Storage:
+
+Lambda:
