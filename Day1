@@ -1,3 +1,4 @@
+Module-1:
 Data center:
 
 Availability zones:
@@ -39,7 +40,7 @@ Sustainability
 
 ----------
 
-###Accounts and Security:
+### Module-2 - Accounts and Security:
 
 Principals and identities:
 	root user - can access any service in any region, unrestricted access.
