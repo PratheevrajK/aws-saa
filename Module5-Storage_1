@@ -1,0 +1,28 @@
+S3 buckets and objects:
+  Amazon S3 stores data as objects within buckets.
+  An object includes a file and any metadata that describes the file.
+  You can control access to the bucket and its objects.
+  Bucket policies:
+    Resource-based policy for an S3 bucket.
+    Effect, Action and Resource are mandatory.
+  Access Points:
+    unique DNS and ARN name
+    disinct permissions and network controls
+  Encryption:
+    - SSE-S3 managed
+    - SSE-KMS managed
+    - Dual-layer SSE
+    - Customized encryption
+S3 storage classes:
+  Express One Zone
+  Standard
+  Standard-IA
+  Glacier Instant retrieval
+  Glacier Flexible retrieval
+  Glacier Deep archive
+  Intelligient-tiering - Automatic tiering of objects to storage class based on access pattern.
+Lifecycle policies:
+  Transition objects to another storage class in an automated way.
+  Object expiry or deletion can also be handled.
+  Ex: Move objects older than 30days to S3 Standarad-IA
+      Move objects older thna 365 days to Glacier Deep Archive.
