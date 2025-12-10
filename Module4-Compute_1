@@ -16,8 +16,40 @@ EC2-Elastic Compute Cloud:
     - Compute optimized
     - Accelerated compute
     - HPC optimized
-    
+  Tenancy:
+    - Shared
+    - Dedicated instances
+    - Dedicated hosts
+  Placements groups:
+    We can chose how close or far the instances are from each other.
+  User Data:
+    Runs scripts as root after the instance launches.
+  Instance metadata:
+    Information about launched EC2 instance.
+  Purchase options:
+    - On-Demand
+    - Savings plan
+    - Spot instances
 
 EBS-Elastic Block Storage:
+  Create block-level storage with automatic volume replication in your AZ.
+  Attach one or more EBS volumes to a single EC2 instance.
+  Move EBS volumes between EC2 instances as needed.
+  Volumes types:
+    Solid state drive(SSD):
+      - high performance
+      - general purpose
+    Hard disk drive(HDD):
+      - Throughput Optimized HDD
+      - Cold HDD
+
+Instance store volumes:
+  Local to instance
+  Non-persistent
+  Doesn't support snapshots
+  Available in HDD, SDD, and non-volatile memory express SDD(NVMe SSD) varities.
 
 Lambda:
+  Servless compute
+  Runs for upto 15mins
+  Supports upto 10GB memory
