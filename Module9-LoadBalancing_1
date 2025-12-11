@@ -1,0 +1,18 @@
+Elastic Load balancing(ELB):
+  Automatically distributes traffic across multiple targets.
+  provides high availability
+  incorportates security features
+  performs health checks.
+  - Application LB:
+      HTTP and HTTPS
+      Operates at Application layer - Layer 7
+  - Network LB:
+      TCP and UDP
+      Operates at transport layer - Layer 4
+  - Gateway LB:
+      Operates at Network layer - Layer 3
+  Components:
+    Listerner:
+    Target Groups:
+      Performs health check on all registered targets.
+
