@@ -1,0 +1,11 @@
+Alarm states:
+  - Threshold not exceeded
+  - Threshold exceeded
+  - Not enough infromation
+
+EventBridge:
+  For any AWS source events, it triggers corresponding AWS target events based on defined rule.
+  Event-driven architecture  
+  Automate workflows, events.
+
+ 
