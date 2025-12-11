@@ -21,6 +21,8 @@ Table of Contents:
 Resources:
   - AWS Cloud Practitioner Essentials
     - Link: https://skillbuilder.aws/learn/94T2BEN85A/aws-cloud-practitioner-essentials/8D79F3AVR7
+    - https://skillbuilder.aws/learn/R3KVD4BBJY/official-practice-exam-aws-certified-solutions-architect--associate-saac03--english/W7GU3R1HCT
+    - Practice: https://skillbuilder.aws/learn/6NV91XYP1P/official-practice-question-set-aws-certified-solutions-architect--associate-saac03--english/N1HSPV1K17
     - Notes: Good for foundational cloud concepts if you need to reinforce basics.
   - AWS Technical Essentials
     - Link: https://skillbuilder.aws/learn/K8C2FNZM6X/aws-technical-essentials/N7Q3SXQCDY
@@ -49,6 +51,19 @@ Resources:
       - https://aws.amazon.com/s3/pricing/
       - https://docs.aws.amazon.com/cli/latest/reference/s3/
       - https://docs.aws.amazon.com/cli/latest/reference/s3api/list-object-versions.html
+    - Event message structure:
+      - https://docs.aws.amazon.com/AmazonS3/latest/userguide/notification-content-structure.html
+    - DynamoDB:
+      - Global tables: https://aws.amazon.com/dynamodb/global-tables/
+      - Pricing: https://aws.amazon.com/dynamodb/pricing/
+      - Quotas: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+      - Indexes: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+    - Database Migration Service: https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html
+    - AWS Glue: https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html
+    - X-ray:
+      - Console: https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html
+      - API: https://docs.aws.amazon.com/xray/latest/devguide/xray-api.html
+      - Service maps: https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-using-xray-maps.html#apigateway-using-xray-maps-active
 
 Notes and Recommendations:
   - Review the Cloud Practitioner material if you are new to AWS.
