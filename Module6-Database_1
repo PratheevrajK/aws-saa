@@ -1,0 +1,13 @@
+DynamoDB:
+  NoSQL and Key-Value based.
+  Read Capacity Units(RCU) and Write Capacity Units(WCU).
+  Managing capacity:
+    - On-demand
+    - Provisioned
+  Consistency options:
+    - Eventually consistent read
+    - Strongly consistent read
+DB caching:
+  Lazy loading:
+  Write through:
+  
