@@ -36,6 +36,19 @@ Resources:
       - Link: https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/?p=ngi&loc=4
     - AWS Latency information:
       - Link: https://aws-latency-test.com/
+    - AWS networking essentials:
+      - https://builder.aws.com/content/2fn1hOR6IEFVtI9UlhFrjlclTej/aws-networking-essentials
+    - VPC and NAT:
+      - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
+      - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html
+    - EC2:
+      - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-instance.html
+      - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+      - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+    - S3:
+      - https://aws.amazon.com/s3/pricing/
+      - https://docs.aws.amazon.com/cli/latest/reference/s3/
+      - https://docs.aws.amazon.com/cli/latest/reference/s3api/list-object-versions.html
 
 Notes and Recommendations:
   - Review the Cloud Practitioner material if you are new to AWS.
