@@ -1,0 +1,17 @@
+Reasons for monitoring:
+  Operational health
+  Application performance
+  Resource utilization
+  Security auditing
+CloudWatch:
+  - Collect - 5mins interval
+  - Monitor
+  - Respond
+  - Analyze
+  Log groups
+CouldTrail:
+  Track user activity and API usage
+VPC Flow logs:
+  Capture information about IP traffic to and from VPC netwrok interfaces.
+Custom logs:
+
