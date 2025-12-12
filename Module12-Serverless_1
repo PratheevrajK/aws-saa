@@ -1,0 +1,9 @@
+Serverless:
+  No infrastructure to provision or manage
+  Auto-scaling by unit of consumption
+  Consumption based pricing
+API Gateway:
+  Create a unified API frontend for multiple microservices.
+  Authenticates and Authorizes requests at backend.
+AWS Simple Queue Service(SQS):
+  
