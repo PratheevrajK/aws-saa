@@ -1,0 +1,25 @@
+VPC endpoints:
+  Securely connect outside of a VPC using private connection.
+  Elastic network interface with a private IP address
+  Powered by AWS PrivateLink
+  Supports 200+ AWS services.
+VPC Peering:
+  Privately route traffic between multiple VPCs
+  Inter-region and Intra-region support
+  Cross-account support.
+  IP spaces cannot overlap for the peering VPCs.
+  Full mesh VPC Peering:
+    For 5 VPC's to connect to each other, 10 VPC Peering is needed. Formula: n(n-1)/2, n=No. of VPCs.
+Hybrid Networking:
+  AWS site-to-site VPN:
+    On-Prem DC -> VPN connection(Public internet) -> VPC elsewhere in AWS.
+    1.25 GB/s per Tunnel.
+  AWS Direct connect:
+    Create a fiber link from your DataCenter to your AWS resources.
+    On-Prem DC -> Direct Connect location -> AWS Cloud.
+    High bandwidth - 400 GB/s
+Transit Gateway:
+  Connect multiple routers or networks together.
+  Connection to a Transit Gateway is called Attachement.
+
+
