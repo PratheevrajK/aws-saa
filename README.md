@@ -1,6 +1,7 @@
 # AWS-SAA
 
 AWS Certified Solutions Architect – Associate training (Dec 2025)
+Lab: https://us-east-1.student.classrooms.aws.training/class/tD9xj1Fe3EgBLfMUzgZCbz
 
 Trainer:
   - Mandar Bhalekar
