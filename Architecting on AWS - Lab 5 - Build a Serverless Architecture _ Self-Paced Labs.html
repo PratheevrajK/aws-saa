@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<!-- saved from url=(0243)https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa -->
+<html lang="en" style="scroll-padding-top: 128px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="app-sha" content="170c3476e4e909392c0de8bdda8038e565ddf17c">
+    <meta name="app-version" content="1.0.1">
+    <script type="module" crossorigin="" src="./Architecting on AWS - Lab 5 - Build a Serverless Architecture _ Self-Paced Labs_files/index-C3PRsVU-.js.download"></script>
+    <link rel="modulepreload" crossorigin="" href="https://classrooms.labs.aws.training/assets/vendor-Bl7-qj-i.js">
+    <link rel="stylesheet" crossorigin="" href="./Architecting on AWS - Lab 5 - Build a Serverless Architecture _ Self-Paced Labs_files/vendor-Z7uiIVY7.css">
+    <link rel="stylesheet" crossorigin="" href="./Architecting on AWS - Lab 5 - Build a Serverless Architecture _ Self-Paced Labs_files/index-COhcHt_4.css">
+  <style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c{display:inline-block;vertical-align:middle;line-height:1em;padding-left:.3em}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg{stroke-width:2px;pointer-events:none;fill:none;padding-bottom:1px;height:10px;width:10px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg .awsccc-stroke-linecap-square{stroke-linecap:square}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg .awsccc-stroke-linejoin-round{stroke-linejoin:round}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg path{stroke:currentColor}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn{flex:0 1 100%;padding:4px 20px;box-sizing:border-box;border:0;background-color:#fff;border:1px solid #545b64;color:#545b64;font-weight:700;border-radius:2px;cursor:pointer;user-select:none;display:inline-block;text-align:center;font-size:14px;position:relative}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn:hover{background-color:#fafafa}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn:focus{outline:none;text-decoration:none}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn:focus::before{content:" ";display:block;position:absolute;left:-2px;top:-2px;width:calc(100% + 4px);height:calc(100% + 4px);border-radius:2px;box-shadow:0 0 0 2px #00a1c9}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn span{line-height:22px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-primary{background-color:#c95100;border-color:#c95100}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-primary span{color:#fff}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-primary:hover{background-color:#c84400;border-color:#c84400}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-link{background-color:rgba(0,0,0,0);border-color:rgba(0,0,0,0);color:#545b64}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-link:hover{color:#000;background-color:#fafafa}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-primary{background-color:#f90;border-color:#f90}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-primary span{color:#16191f}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-primary:hover{background-color:#ec7211;border-color:#ec7211}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-secondary{color:#d5dbdb;background-color:#2a2e30;border-color:#879596}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-secondary:hover{background-color:#21252c}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-link{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-link:hover{color:#eaeded;background-color:#21252c}</style><style>#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c{position:fixed;bottom:0;left:0;width:100%;z-index:10000}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-content{position:relative;background:linear-gradient(180deg, rgba(21, 28, 39, 0.98) 0%, rgba(38, 51, 77, 0.98) 100%);box-shadow:0px -2px 5px 0px rgba(0,0,0,.5);padding:30px 30px 15px;border-top:solid 1px #306da3;display:flex;flex-direction:column}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text-section{display:flex;flex-direction:column;flex-shrink:1;padding:0px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-title{font-weight:700;padding:0 0 5px;margin:0;color:#fff}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons{display:flex;justify-content:center;flex-wrap:wrap}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{margin-bottom:15px;padding-left:20px;padding-right:20px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text{flex:1 1 100%;margin:0 0 15px;color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text span{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.awsc-bot-above-f-imp{z-index:1005}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled #awsccc-cb-content{background:none;background-color:#2a2e33}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-secondary{background-color:#2a2e33}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-secondary span{color:#d5dbdb}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-secondary:hover{background-color:#21252c}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-primary span{color:#16191f}@media screen and (min-width: 810px){#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-content{padding-bottom:30px;padding-left:20px;padding-right:20px;display:flex;justify-content:space-between}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{flex:1 0 25%;margin:10px 5px 0;min-width:240px}}@media screen and (min-width: 1020px){#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-content{flex-direction:row;padding-left:40px;padding-right:40px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-actions{display:flex;justify-content:center;align-items:center}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text{flex:1;padding-right:40px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{flex:0 1 auto;margin:10px 5px 0}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons{flex-wrap:nowrap;display:flex;flex-direction:column;gap:10px;width:max-content}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{margin-top:0}}@media screen and (min-width: 1020px){#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl #awsccc-cb-text{padding-left:40px;padding-right:0}}div[data-id=awsccc-cb]{display:none}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl{display:flex;flex-direction:column}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl-c{padding:10px;border-block-end:1px solid #eaeded}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl-c:first-of-type{padding-top:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl-c:last-of-type{padding-bottom:0;border-block-end:none}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-cl-c{border-color:#414750}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-container{display:flex;align-items:center;justify-content:center;bottom:0;left:0;right:0;top:0;position:fixed;outline:0;overflow:hidden;z-index:10002}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-backdrop{background-color:rgba(242,243,243,.9019607843);position:fixed;z-index:10001;right:0;top:0;bottom:0;left:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal{box-sizing:border-box;outline:none;margin:10px;background-color:#fff;border-radius:0;box-sizing:border-box;z-index:10002;position:relative;box-shadow:0 1px 1px 0 rgba(0,28,36,.3),1px 1px 1px 0 rgba(0,28,36,.15),-1px 1px 1px 0 rgba(0,28,36,.15)}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal[dir=rtl] *{direction:rtl;text-align:right}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal.awsccc-u-modal-large{max-width:820px;width:calc(100vw - 20px)}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-header{background-color:#fafafa;border-bottom:1px solid #eaeded;color:#16191f;padding:19px 20px;word-break:break-word;flex:auto}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-header h2{font-size:18px;font-weight:700;margin:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-content{overflow-y:auto;max-height:calc(100vh - 200px);padding:19px 20px}@media screen and (max-width: 480px){#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-content{max-height:calc(100vh - 275px)}}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer{border-top:1px solid #eaeded;text-decoration:none;padding:10px 20px;text-align:right;display:flex;justify-content:flex-end;flex-wrap:wrap}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer button{white-space:nowrap}@media screen and (max-width: 699px){#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer button{white-space:initial}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer>div{width:100%}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer .awsccc-u-sb{display:flex;flex-direction:column}}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-backdrop{background-color:rgba(22,25,31,.8)}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal{background-color:#2a2e33}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-header{background-color:#21252c;border-bottom-color:#414750;color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-content{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-footer{border-top-color:#414750}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb{display:flex;flex-direction:row}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-v{flex-direction:column}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-xxs{gap:4px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-xs{gap:8px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-s{gap:12px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-m{gap:16px}</style><style>#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-info-container span,#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-info-container a{font-size:15px}</style><style>#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container span,#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container a{font-size:12px;line-height:15px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container span:focus,#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container a:focus{outline-style:solid;outline-color:#00a1c9;outline-width:2px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container p>span{color:#687078}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container span{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container span a{display:inline-block}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container span a span{color:#44b9d6}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container path{color:#44b9d6}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-s-cb-hidden{text-indent:-9999px;position:absolute}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-label{position:relative;display:inline-block;line-height:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-text{line-height:16px;vertical-align:top}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox,#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-input{height:14px;width:14px;z-index:1;pointer-events:none;fill:none}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-s-cb-outer{margin-right:8px;height:14px;width:14px;display:inline-block}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-input{padding:0;margin:0;position:absolute;z-index:0;opacity:0}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox-rect{background-color:#fff;fill:#fff;stroke:#687078;stroke-width:1}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox-poly-line{opacity:1;stroke:#fff;stroke-width:2;fill:none}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-checkbox-active .awscc-u-cb-checkbox-rect{fill:#0073bb;stroke:#0073bb}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox-container{position:relative;line-height:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-focused:before{content:" ";display:block;position:absolute;left:-2px;top:-2px;width:calc(100% + 4px);height:calc(100% + 4px);border-radius:2px;box-shadow:0 0 0 2px #00a1c9}#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl .awsccc-cs-s-cb-outer{margin-left:8px;margin-right:0}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container{position:relative}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-title{font-size:18px;line-height:20px;flex:0 0 100%;margin:0 0 5px;z-index:10;display:inline-block;line-height:normal;font-weight:400}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-text{flex:0 0 80%;padding-top:5px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-action{display:flex;justify-content:flex-end;flex:1;position:relative;margin-top:8px;margin-bottom:8px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-paragraph{margin-top:0;font-size:14px;line-height:20px;padding:0;margin-bottom:15px}@media screen and (min-width: 700px){#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container{display:flex;flex-wrap:wrap}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-title{padding-bottom:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-text{border-top:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-action{justify-content:center;position:relative;top:auto;right:auto;padding-top:20px}}</style><style>#awsccc-sb-ux-c #awsccc-sb-a{font-family:"Amazon Ember","HelveticaNeue","Helvetica Neue","Amazon Ember",Roboto,"Roboto-Regular","Amazon Ember",Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#16191f;text-align:left}#awsccc-sb-ux-c #awsccc-sb-a *{background:none;border:0}#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl *{direction:rtl;text-align:right}@media screen and (min-width: 1020px){#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl #awsccc-cb-c #awsccc-cb-title{padding-right:40px}}#awsccc-sb-ux-c #awsccc-sb-a a,#awsccc-sb-ux-c #awsccc-sb-a a>span,#awsccc-sb-ux-c #awsccc-sb-a a svg path{color:#0073bb;text-decoration:none;font-weight:700}#awsccc-sb-ux-c #awsccc-sb-a a:hover,#awsccc-sb-ux-c #awsccc-sb-a a>span:hover,#awsccc-sb-ux-c #awsccc-sb-a a svg path:hover{color:#0073bb;text-decoration:underline}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled{color-scheme:dark}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a>span,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a svg path{color:#44b9d6;font-weight:700}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a:hover,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a>span:hover,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a svg path:hover{color:#44b9d6}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-tab-helper{outline:0;text-decoration:none}body.awsccc-modal-open{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box}</style><title>Architecting on AWS - Lab 5 - Build a Serverless Architecture | Self-Paced Labs</title><meta name="description" content="Self-Paced Labs gives you the opportunity to learn how to use AWS in a safe sandbox environment." data-react-helmet="true"><meta property="og:description" content="Self-Paced Labs gives you the opportunity to learn how to use AWS in a safe sandbox environment." data-react-helmet="true"><meta property="og:type" content="website" data-react-helmet="true"><meta name="twitter:card" content="summary" data-react-helmet="true"><meta name="twitter:creator" content="AWS Training and Certification" data-react-helmet="true"><meta name="twitter:description" content="Self-Paced Labs gives you the opportunity to learn how to use AWS in a safe sandbox environment." data-react-helmet="true"><meta property="og:title" content="Architecting on AWS - Lab 5 - Build a Serverless Architecture" data-react-helmet="true"><meta name="twitter:title" content="Architecting on AWS - Lab 5 - Build a Serverless Architecture" data-react-helmet="true"><style data-styled="active" data-styled-version="5.3.11"></style></head>
+  <body class="awsui awsui-motion awsui-visual-refresh awsui-polaris-light-mode"><div id="awsccc-sb-ux-c"><div id="awsccc-sb-a" class=""><div data-id="awsccc-cb" style="display: none;"><div id="awsccc-cb-c" data-id="awsccc-cb-tabstart" class="awsccc-tab-helper" tabindex="-1" role="dialog" aria-labelledby="awsccc-cb-title"><div id="awsccc-cb-content"><div id="awsccc-cb-text-section"><h2 id="awsccc-cb-title">Select your cookie preferences</h2><p id="awsccc-cb-text"><span>We use essential cookies and similar tools that are necessary to provide our site and services. We use performance cookies to collect anonymous statistics, so we can understand how customers use our site and make improvements. Essential cookies cannot be deactivated, but you can choose “Customize” or “Decline” to decline performance cookies. <br><br> If you agree, AWS and approved third parties will also use cookies to provide useful site features, remember your preferences, and display relevant content, including relevant advertising. To accept or decline all non-essential cookies, choose “Accept” or “Decline.” To make more detailed choices, choose “Customize.”</span></p></div><div id="awsccc-cb-actions"><div id="awsccc-cb-buttons"><button tabindex="0" type="submit" data-id="awsccc-cb-btn-accept" aria-label="Accept all cookies" class="awsccc-u-btn awsccc-u-btn-primary"><span>Accept</span></button><button tabindex="0" type="submit" data-id="awsccc-cb-btn-decline" aria-label="Decline - Continue without accepting" class="awsccc-u-btn awsccc-u-btn-secondary"><span>Decline</span></button><button tabindex="0" type="submit" data-id="awsccc-cb-btn-customize" aria-label="Customize cookie preferences" class="awsccc-u-btn awsccc-u-btn-secondary"><span>Customize</span></button></div></div></div></div></div><div id="awsccc-cs" data-id="awsccc-cs" tabindex="0" class="" style="display: none;"><div class="awsccc-u-modal-container "><div class="awsccc-u-modal awsccc-u-modal-large" role="dialog" aria-modal="true" aria-labelledby="awsccc-u-modal-header-awsccc-cs" dir="ltr" data-awsccc-modal-toggle="true" data-id="awsccc-cs-tabtrap" tabindex="-1"><div class="awsccc-u-modal-header"><h2 id="awsccc-u-modal-header-awsccc-cs"><span id="awsccc-cs-title">Customize cookie preferences</span></h2></div><div class="awsccc-u-modal-content"><div class="awsccc-u-cl "><div class="awsccc-u-cl-c"><div id="awsccc-cs-info-container"><span>We use cookies and similar tools (collectively, "cookies") for the following purposes.</span></div></div><div class="awsccc-u-cl-c"><div data-category="essential" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Essential</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Essential cookies are necessary to provide our site and services and cannot be deactivated. They are usually set in response to your actions on the site, such as setting your privacy preferences, signing in, or filling in forms. </p></div><div class="awsccc-cs-s-action"></div></div></div><div class="awsccc-u-cl-c"><div data-category="performance" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Performance</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Performance cookies provide anonymous statistics about how customers navigate our site so we can improve site experience and performance. Approved third parties may perform analytics on our behalf, but they cannot use the data for their own purposes.</p></div><div class="awsccc-cs-s-action"><div><div class="awsccc-cs-s-cb-outer"><div class="awscc-u-cb-checkbox-container" data-id="awsccc-u-cb-performance-container"><label data-id="awsccc-u-cb-performance-label" class="awsccc-u-cb-label awsccc-u-cb-checkbox-active"><input id="awsccc-u-cb-performance" class="awsccc-u-cb-input" type="checkbox" aria-label="Allow performance category Allowed" checked="true" aria-description="Allow performance category"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false" class="awscc-u-cb-checkbox"><rect class="awscc-u-cb-checkbox-rect" x="0.5" y="0.5" rx="1.5" ry="1.5" width="13" height="13"></rect><polyline class="awscc-u-cb-checkbox-poly-line " points="2.5,7 6,10 11,3"></polyline></svg></label></div></div><span class="awsccc-u-cb-text">Allowed</span></div></div></div></div><div class="awsccc-u-cl-c"><div data-category="functional" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Functional</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Functional cookies help us provide useful site features, remember your preferences, and display relevant content. Approved third parties may set these cookies to provide certain site features. If you do not allow these cookies, then some or all of these services may not function properly.</p></div><div class="awsccc-cs-s-action"><div><div class="awsccc-cs-s-cb-outer"><div class="awscc-u-cb-checkbox-container" data-id="awsccc-u-cb-functional-container"><label data-id="awsccc-u-cb-functional-label" class="awsccc-u-cb-label awsccc-u-cb-checkbox-active"><input id="awsccc-u-cb-functional" class="awsccc-u-cb-input" type="checkbox" aria-label="Allow functional category Allowed" checked="true" aria-description="Allow functional category"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false" class="awscc-u-cb-checkbox"><rect class="awscc-u-cb-checkbox-rect" x="0.5" y="0.5" rx="1.5" ry="1.5" width="13" height="13"></rect><polyline class="awscc-u-cb-checkbox-poly-line " points="2.5,7 6,10 11,3"></polyline></svg></label></div></div><span class="awsccc-u-cb-text">Allowed</span></div></div></div></div><div class="awsccc-u-cl-c"><div data-category="advertising" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Advertising</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Advertising cookies may be set through our site by us or our advertising partners and help us deliver relevant marketing content. If you do not allow these cookies, you will experience less relevant advertising.</p></div><div class="awsccc-cs-s-action"><div><div class="awsccc-cs-s-cb-outer"><div class="awscc-u-cb-checkbox-container" data-id="awsccc-u-cb-advertising-container"><label data-id="awsccc-u-cb-advertising-label" class="awsccc-u-cb-label awsccc-u-cb-checkbox-active"><input id="awsccc-u-cb-advertising" class="awsccc-u-cb-input" type="checkbox" aria-label="Allow advertising category Allowed" checked="true" aria-description="Allow advertising category"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false" class="awscc-u-cb-checkbox"><rect class="awscc-u-cb-checkbox-rect" x="0.5" y="0.5" rx="1.5" ry="1.5" width="13" height="13"></rect><polyline class="awscc-u-cb-checkbox-poly-line " points="2.5,7 6,10 11,3"></polyline></svg></label></div></div><span class="awsccc-u-cb-text">Allowed</span></div></div></div></div><div class="awsccc-u-cl-c"><div id="awsccc-cs-l-container"><p><span>Blocking some types of cookies may impact your experience of our sites. You may review and change your choices at any time by selecting Cookie preferences in the footer of this site. We and selected third-parties use cookies or similar technologies as specified in the&nbsp;<a data-id="awsccc-cs-f-notice" href="https://aws.amazon.com/legal/cookies/" target="_blank" rel="noopener noreferrer"><span>AWS Cookie Notice<span aria-label="Opens in a new tab" role="img" class="awsccc-u-i-open-c"><svg class="awsccc-u-i-open" viewBox="0 0 16 16" focusable="false" aria-hidden="true"><path class="awsccc-stroke-linecap-square" d="M10 2h4v4"></path><path d="M6 10l8-8"></path><path class="awsccc-stroke-linejoin-round" d="M14 9.048V14H2V2h5"></path></svg></span></span></a>.</span></p></div></div></div></div><div class="awsccc-u-modal-footer"><div class="awsccc-u-sb awsccc-u-sb-xs awsccc-u-sb-h "><button tabindex="0" type="submit" data-id="awsccc-cs-btn-cancel" aria-label="Cancel customizing cookie preferences" class="awsccc-u-btn awsccc-u-btn-secondary"><span>Cancel</span></button><button tabindex="0" type="submit" data-id="awsccc-cs-btn-save" aria-label="Save preferences for customized cookies" class="awsccc-u-btn awsccc-u-btn-primary"><span>Save preferences</span></button></div></div></div><div class="awsccc-u-modal-backdrop"></div></div></div><div id="awsccc-em-modal" data-id="awsccc-em-modal" tabindex="0" class="" style="display: none;"><div class="awsccc-u-modal-container "><div class="awsccc-u-modal awsccc-u-modal-large" role="dialog" aria-modal="true" aria-labelledby="awsccc-u-modal-header-awsccc-em-modal" dir="ltr" data-awsccc-modal-toggle="true" data-id="awsccc-cs-tabtrap" tabindex="-1"><div class="awsccc-u-modal-header"><h2 id="awsccc-u-modal-header-awsccc-em-modal"><span id="awsccc-em-title">Unable to save cookie preferences</span></h2></div><div class="awsccc-u-modal-content"><div id="awsccc-em-modalBody"><p id="awsccc-emm-paragraph"><span>We will only store essential cookies at this time, because we were unable to save your cookie preferences.<br><br>If you want to change your cookie preferences, try again later using the link in the AWS console footer, or contact support if the problem persists.</span></p></div></div><div class="awsccc-u-modal-footer"><div id="awsccc-em-f-c" class="awsccc-u-sb awsccc-u-sb-xs awsccc-u-sb-h "><button tabindex="0" type="submit" data-id="awsccc-em-btn-dismiss" aria-label="Dismiss error message modal" class="awsccc-u-btn awsccc-u-btn-primary"><span>Dismiss</span></button></div></div></div><div class="awsccc-u-modal-backdrop"></div></div></div></div></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"><div class="HeaderWrapper" style="height: 128px;"><div><header class="Header" data-testid="header-HeaderStandalone"><nav><a class="SkipNavigation" href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#js-main-content"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Skip to main content</span></a><div class="Header__branding"><img alt="Classrooms" src="./Architecting on AWS - Lab 5 - Build a Serverless Architecture _ Self-Paced Labs_files/logo.png"></div><div class="Header__actions"><span class="ButtonDropdownOverride--transparent ButtonDropdownOverride--activeDisabled"><div data-testid="header-localeMenu" data-tourid="localeMenu" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":r8ud:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:r8ub:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:r8ue:" type="button" aria-haspopup="true" data-analytics-performance-mark="1549-1767799220144-3889"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5"><i aria-hidden="true" class="fas fa-globe"></i> <span class="awsui-util-hide">Select your preferred language. Current selection:</span>English</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:r8ub:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span><span class="ButtonDropdownOverride--transparent ButtonDropdownOverride--activeDisabled"><div data-jsid="header-userMenu" data-testid="header-userMenu" data-tourid="userMenu" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":r8uj:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:r8uh:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:r8uk:" type="button" aria-haspopup="true" data-analytics-performance-mark="1550-1767799220145-8828"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5"><span role="img" aria-label="User profile"><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M8 7c1.66 0 3-1.34 3-3S9.66 1 8 1 5 2.34 5 4s1.34 3 3 3Z"></path><path d="M2 16v-3c0-1.66 1.34-3 3-3h6c1.66 0 3 1.34 3 3v3" class="stroke-linejoin-round"></path></svg></span></span> Pratheevraj K</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:r8uh:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span></div></nav></header><div data-tourid="labHeader" class="awsui_root_2qdw9_1ox20_185 LabHeader awsui_root-variant-h2_2qdw9_1ox20_224 awsui_refresh_2qdw9_1ox20_221"><div class="awsui_main_2qdw9_1ox20_243 awsui_refresh_2qdw9_1ox20_221"><div class="awsui_title_2qdw9_1ox20_299 awsui_title-variant-h2_2qdw9_1ox20_311 awsui_refresh_2qdw9_1ox20_221"><h2 class="awsui_heading_2qdw9_1ox20_377 awsui_heading-variant-h2_2qdw9_1ox20_407"><span class="awsui_heading-text_2qdw9_1ox20_418 awsui_heading-text_105ke_268sp_5 awsui_heading-text-variant-h2_2qdw9_1ox20_429" id="heading:re:"><span lang="en">Architecting on AWS - Lab 5 - Build a Serverless Architecture</span></span></h2></div><div class="awsui_actions_2qdw9_1ox20_267 awsui_actions-variant-h2_2qdw9_1ox20_279 awsui_refresh_2qdw9_1ox20_221 awsui_actions-centered_2qdw9_1ox20_272"><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-s_18wu0_3h5y5_773 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><button data-testid="lab-endBtn" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" data-analytics-funnel-value="button:r6t:" type="submit" data-analytics-performance-mark="39-1767781108131-8483"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">End Lab</span></button></div><button data-testid="lab-openConsoleBtn" class="awsui_button_vjswe_1mhv4_157 awsui_variant-primary_vjswe_1mhv4_235" data-analytics-funnel-value="button:rul:" type="submit" data-analytics-performance-mark="186-1767781258746-2970"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Open Console</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-external_h11ix_11cyn_355"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M13 9.012v-6H7M13.02 3 7 9.01M3 5.012v8h8.01" class="stroke-linejoin-round"></path></svg></span></button></div></div></div></div></div><div><main class="awsui_layout_hyvsj_ou6ur_391 awsui_content-first-child-main_hyvsj_ou6ur_546 awsui_split-panel-position-side_hyvsj_ou6ur_641 awsui_disable-body-scroll_hyvsj_ou6ur_208 awsui_disable-body-scroll-root_1fj9k_q6akd_17 awsui_has-content-gap-left_hyvsj_ou6ur_515 awsui_has-content-gap-right_hyvsj_ou6ur_518 awsui_is-overlap-disabled_hyvsj_ou6ur_498 awsui_root_1fj9k_q6akd_5" style="--awsui-header-height-rhu47t: 128px; --awsui-footer-height-rhu47t: 54px; --awsui-layout-width-rhu47t: 1272px; --awsui-main-offset-left-rhu47t: 340px; --awsui-min-content-width-rhu47t: 280px; --awsui-notifications-height-rhu47t: 0px;"><div class="awsui_navigation-container_hyvsj_ou6ur_692 awsui_disable-body-scroll_hyvsj_ou6ur_208" style="--awsui-navigation-width-rhu47t: 300px;"><nav aria-hidden="true" aria-label="Navigation drawer" class="awsui_show-navigation_hyvsj_ou6ur_730 awsui_is-navigation-open_hyvsj_ou6ur_638"><div class="awsui_trigger-wrapper_hyvsj_ou6ur_1265 awsui_remove-high-contrast-header_hyvsj_ou6ur_671"><button aria-haspopup="true" aria-label="Open navigation drawer" aria-disabled="false" class="awsui_trigger_hyvsj_ou6ur_1173 awsui_trigger-button-styles_hyvsj_ou6ur_1173 awsui_navigation-toggle_1fj9k_q6akd_7" type="button"><span class=""><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 3H1M15 8H1M15 13H1" class="stroke-linejoin-round"></path></svg></span></span></button></div></nav><nav aria-label="Navigation drawer" class="awsui_navigation_hyvsj_ou6ur_692 awsui_navigation_1fj9k_q6akd_6 awsui_is-navigation-open_hyvsj_ou6ur_638" aria-hidden="false"><div class="awsui_content-container_hyvsj_ou6ur_820 awsui_animated-content_hyvsj_ou6ur_817"><div class="awsui_hide-navigation_hyvsj_ou6ur_829"><button class="awsui_navigation-close_1fj9k_q6akd_8 awsui_button_vjswe_1mhv4_157 awsui_variant-icon_vjswe_1mhv4_293 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Close navigation drawer" title="Close navigation drawer" data-analytics-funnel-value="button:rh:" type="button" data-analytics-performance-mark="2-1767781106774-510"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-angle-left_h11ix_11cyn_344"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M11 2 5 8l6 6" class="stroke-linejoin-round"></path></svg></span></button></div><div class="awsui_help-panel_1d237_10sww_181"><div class="awsui_header_1d237_10sww_353"><h2>Lab Information</h2><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><div data-testid="expirationTime-message" class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-xxs_18wu0_3h5y5_723 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span role="img" aria-label="In Progress"><span data-testid="ExpiryTime-available-icon" class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><circle cx="8" cy="8" r="7"></circle><path d="M9 7H7v2h2V7ZM6 7H4v2h2V7ZM12 7h-2v2h2V7Z" class="filled no-stroke"></path></svg></span></span></span>Expires Jan 08 at 3:48 AM</div></div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-xxs_18wu0_3h5y5_723 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span role="img" aria-label="Duration:"><span data-testid="DurationItem-icon" class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><circle cx="8" cy="8" r="7"></circle><path d="M8 4v5H4" class="stroke-linejoin-round"></path></svg></span></span></span>1 hour 30 minutes</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><button class="awsui_trigger_xjuzf_1sawi_590 awsui_trigger-type-text_xjuzf_1sawi_590" type="button" aria-haspopup="dialog" id=":r2t:"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-xxs_18wu0_3h5y5_723 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span role="img" aria-label="Info"><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><circle cx="8" cy="8" r="7"></circle><path d="M8 12V7M8 6V4"></path></svg></span></span></span>Available languages</button></span></div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="ButtonDropdownOverride--sidebar"><div data-testid="feedback-open-sidebar" data-tourid="false" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":r8up:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:r8un:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:r8uq:" type="button" aria-haspopup="true" data-analytics-performance-mark="1551-1767799220146-9619"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5"><span role="img" aria-label="Feedback" class="feedbackMenu-icon"><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M14 12c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1H2c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h4v3l4-3h4Z" class="stroke-linejoin-round"></path></svg></span></span>Feedback</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:r8un:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span></div></div><div class="awsui_content_1d237_10sww_390"><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-l_18wu0_3h5y5_828 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><h3 data-testid="lab-resources" class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_h3-variant_18wu0_3h5y5_176 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Resources</h3><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">CreateMobileImageZIPLocation</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rt2:"><button aria-label="Copy CreateMobileImageZIPLocation" title="Copy CreateMobileImageZIPLocation" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:rt3:" type="submit" data-analytics-performance-mark="176-1767781257149-6307"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="f8bd7b9d-9ec8-414a-821d-e0cbebd66c73" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="CreateMobileImageZIPLocation" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="s3://eu-west-2-tcprod/courses/ILT-TF-200-ARCHIT/v7.10.2.prod-574156df/lab-5-Serverless/scripts/CreateMobileImage.zip"></div></div></div></div><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">CreateThumbnailZIPLocation</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rt5:"><button aria-label="Copy CreateThumbnailZIPLocation" title="Copy CreateThumbnailZIPLocation" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:rt6:" type="submit" data-analytics-performance-mark="177-1767781257153-5018"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="c3501d14-4638-4245-8ae1-529c27d53004" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="CreateThumbnailZIPLocation" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="s3://eu-west-2-tcprod/courses/ILT-TF-200-ARCHIT/v7.10.2.prod-574156df/lab-5-Serverless/scripts/CreateThumbnail.zip"></div></div></div></div><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Region</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rt8:"><button aria-label="Copy Region" title="Copy Region" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:rt9:" type="submit" data-analytics-performance-mark="178-1767781257154-263"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="a358863c-973a-4d20-8983-4e51c2cec397" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="Region" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="eu-west-2"></div></div></div></div></div><hr><div data-testid="lab-toc"><h3 class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_h3-variant_18wu0_3h5y5_176 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Lab Content</h3><span class="SideNavigationOverride--labToc" lang="en"><div class="awsui_root_l0dv0_1227o_145 LabNavigation__content"><div class="awsui_list-container_l0dv0_1227o_224"><ul class="awsui_list_l0dv0_1227o_224 awsui_list-variant-root_l0dv0_1227o_245 awsui_list-variant-root--first_l0dv0_1227o_252"><li data-itemid="item-1" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#lab-overview" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Lab overview</span></a></li><li data-itemid="item-2" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#start-lab" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Start lab</span></a></li><li data-itemid="item-3" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#task-1-create-a-standard-amazon-sns-topic" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 1: Create a standard Amazon SNS topic</span></a></li><li data-itemid="item-4" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#task-2-create-two-amazon-sqs-queues" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 2: Create two Amazon SQS queues</span></a></li><li data-itemid="item-5" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#task-3-create-an-amazon-s3-event-notification" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 3: Create an Amazon S3 event notification</span></a></li><li data-itemid="item-6" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#task-4-create-and-configure-two-aws-lambda-functions" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 4: Create and configure two AWS Lambda functions</span></a></li><li data-itemid="item-7" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#task-5-upload-an-object-to-an-amazon-s3-bucket" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 5: Upload an object to an Amazon S3 bucket</span></a></li><li data-itemid="item-8" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#task-6-validate-the-processed-file" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 6: Validate the processed file</span></a></li><li data-itemid="item-9" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#optional-tasks" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Optional Tasks</span></a></li><li data-itemid="item-10" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#conclusion" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Conclusion</span></a></li><li data-itemid="item-11" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#end-lab" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">End lab</span></a></li><li data-itemid="item-12" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#appendix" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Appendix</span></a></li></ul></div></div></span></div></div></div></div></nav></div><div role="region" aria-label="Notifications" class="awsui_notifications_hyvsj_ou6ur_839 awsui_sticky-notifications_hyvsj_ou6ur_848 awsui_notifications_1fj9k_q6akd_10"><div><div role="status"></div><div role="alert"></div><div aria-live="polite"><div class="awsui_flashbar_1q84n_1qhb5_719"><ul class="awsui_flash-list_1q84n_1qhb5_371"></ul></div></div></div></div><div class="awsui_container_hyvsj_ou6ur_612 awsui_split-panel-position-side_hyvsj_ou6ur_641 awsui_is-navigation-open_hyvsj_ou6ur_638 awsui_content_1fj9k_q6akd_9" style="--awsui-split-panel-height-rhu47t: 0px; --awsui-sticky-vertical-top-offset: calc(0px + 0px); --awsui-sticky-vertical-bottom-offset: 0px;"><div id="js-main-content" tabindex="-1" class="LabPage__wrapper" style="outline: none;"><div class="awsui_root_18582_whr0e_145 awsui_vertical_18582_whr0e_192 awsui_vertical-l_18582_whr0e_210"><div class="awsui_child_18582_whr0e_149"></div><div class="awsui_child_18582_whr0e_149"></div><div class="awsui_child_18582_whr0e_149"><div class="awsui_root_14iqq_1wfhd_189 awsui_variant-default_14iqq_1wfhd_230 awsui_refresh_14iqq_1wfhd_238"><div id=":r9t:" class="awsui_content-wrapper_14iqq_1wfhd_309"><div class="awsui_content_14iqq_1wfhd_309"><div class="awsui_content-inner_14iqq_1wfhd_500 awsui_content-inner_1mwlm_oyjaq_5"><div class="js-markdown-content-wrapper LabMarkdown" lang="en"><div class="MarkdownContent" style="overflow-x: auto;"><div class="sc-aXZVg lhIXva"><h1 id="lab-5-build-a-serverless-architecture">Lab 5: Build a Serverless Architecture</h1>
+<p>© 2025 Amazon Web Services, Inc. or its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.</p>
+<p>Note: Do not include any personal, identifying, or confidential information into the lab environment. Information entered may be visible to others.</p>
+<p>Corrections, feedback, or other questions? Contact us at <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank" rel="noopener noreferrer"><em>AWS Training and Certification</em></a>.</p>
+<h2 id="lab-overview">Lab overview</h2>
+<p>AWS solutions architects increasingly adopt event-driven architectures to decouple distributed applications. Often, these events must be propagated in a strictly ordered way to all subscribed applications. Using Amazon Simple Notification Service (Amazon SNS) topics and Amazon Simple Queue Service (Amazon SQS) queues, you can address use cases that require end-to-end message ordering, deduplication, filtering, and encryption. In this lab, you configure an Amazon Simple Storage Service (Amazon S3) bucket to invoke an Amazon SNS notification whenever an object is added to an S3 bucket. You learn how to create and interact with SQS queues, and learn how to invoke an AWS Lambda function using Amazon SQS. This scenario will help you understand how you can architect your application to respond to Amazon S3 bucket events using serverless services such as Amazon SNS, AWS Lambda, and Amazon SQS.</p>
+<h3 id="objectives">Objectives</h3>
+<p>By the end of this lab, you should be able to do the following:</p>
+<ul>
+<li>Understand the value of decoupling resources.</li>
+<li>Understand the potential value of replacing Amazon Elastic Compute Cloud (Amazon EC2) instances with Lambda functions.</li>
+<li>Create an Amazon SNS topic.</li>
+<li>Create Amazon SQS queues.</li>
+<li>Create event notifications in Amazon S3.</li>
+<li>Create AWS Lambda functions using preexisting code.</li>
+<li>Invoke an AWS Lambda function from SQS queues.</li>
+<li>Monitor AWS Lambda S3 functions through Amazon CloudWatch Logs.</li>
+</ul>
+<h3 id="lab-environment">Lab environment</h3>
+<p>You are tasked with evaluating and improving an event-driven architecture. Currently, Customer Care professionals take snapshots of products and upload them into a specific S3 bucket to store the images. The development team runs Python scripts to resize the images after they are uploaded to the ingest S3 bucket. Uploading a file to the ingest bucket invokes an event notification to an Amazon SNS topic. Amazon SNS then distributes the notifications to three separate SQS queues. The initial design was to run EC2 instances in Auto Scaling groups for each resizing operation. After reviewing the initial design, you recommend replacing the EC2 instances with Lambda functions. The Lambda functions process the stored images into different formats and stores the output in a separate S3 bucket. This proposed design is more cost effective.</p>
+<p>The following diagram shows the workflow:</p>
+<p><img src="./Architecting on AWS - Lab 5 - Build a Serverless Architecture _ Self-Paced Labs_files/Overview.jpg" alt="Overview diagram."></p>
+<p><em>Image description: The preceding diagram depicts serverless architecture in which data is sent to Amazon Simple Storage Service (Amazon S3) which is a serverless object storage. The moment data is uploaded to S3 using S3 Event Notifications the presence of new data is sent to an Amazon SNS topic which broadcasts this information to 2 different Amazon SQS Queues which each calls AWS Lambda to transform the data and the modified information is stored in Amazon S3. All the logs and metrics of all the services included in this architecture is visible using Amazon CloudWatch Metrics and Amazon CloudWatch Logs.</em></p>
+<p>The scenario workflow is as follows:</p>
+<ul>
+<li>
+<p>You upload an image file to an Amazon S3 bucket.</p>
+</li>
+<li>
+<p>Uploading a file to the ingest folder in the bucket invokes an event notification to an Amazon SNS topic.</p>
+</li>
+<li>
+<p>Amazon SNS then distributes the notifications to separate SQS queues.</p>
+</li>
+<li>
+<p>The Lambda functions process the images into formats and stores the output in S3 bucket folder.</p>
+</li>
+<li>
+<p>You validate the processed images in the S3 bucket folders and the logs in Amazon CloudWatch.</p>
+</li>
+</ul>
+<h3 id="icon-key">Icon key</h3>
+<p>Various icons are used throughout this lab to call attention to different types of instructions and notes. The following list explains the purpose for each icon:</p>
+<ul>
+<li><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> A hint, tip, or important guidance</li>
+<li><i class="fas fa-info-circle" style="color:#008296"></i> <strong>Learn more:</strong> Where to find more information</li>
+<li><i class="fas fa-exclamation-triangle" style="color:#d13212"></i> <strong>WARNING:</strong> An action that is irreversible and can potentially impact the failure of a command or process (including warnings about configurations that cannot be changed after they are made)</li>
+</ul>
+<hr>
+<h2 id="start-lab">Start lab</h2>
+<ol class="top-level">
+<li value="1">
+<p>To launch the lab, at the top of the page, choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;white-space:nowrap">Start Lab</span>.</p>
+<p><i aria-hidden="true" class="fas fa-exclamation-circle" style="color:#7C5AED"></i> <strong>Caution:</strong> You must wait for the provisioned AWS services to be ready before you can continue.</p>
+</li>
+<li value="2">
+<p>To open the lab, choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;white-space:nowrap">Open Console <span id="amazonaws-labs-rc-a1e64458-7121-40d8-bc74-fed61d562566"><span class="bork-icon awsui_icon_h11ix_11cyn_189 awsui_icon-flex-height_h11ix_11cyn_197 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-external_h11ix_11cyn_355" style="height: 20px;"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M13 9.012v-6H7M13.02 3 7 9.01M3 5.012v8h8.01" class="stroke-linejoin-round"></path></svg></span></span></span>.</p>
+<p>You are automatically signed in to the AWS Management Console in a new web browser tab.</p>
+<p><i aria-hidden="true" class="fas fa-exclamation-triangle" style="color:#d13212"></i> <strong>Warning:</strong> Do not change the <strong>Region</strong> unless instructed.</p>
+</li>
+</ol>
+<h3 id="common-sign-in-errors">Common sign-in errors</h3>
+<h4 id="error-you-must-first-sign-out">Error: You must first sign out</h4>
+<p><img src="./Architecting on AWS - Lab 5 - Build a Serverless Architecture _ Self-Paced Labs_files/logouterror.png" alt="Log out error"></p>
+<p>If you see the message, <strong>You must first log out before logging into a different AWS account:</strong></p>
+<ul>
+<li>Choose the <strong>click here</strong> link.</li>
+<li>Close your <strong>Amazon Web Services Sign In</strong> web browser tab and return to your initial lab page.</li>
+<li>Choose <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Open Console</span> again.</li>
+</ul>
+<h4 id="error-choosing-start-lab-has-no-effect">Error: Choosing Start Lab has no effect</h4>
+<p>In some cases, certain pop-up or script blocker web browser extensions might prevent the <strong>Start Lab</strong> button from working as intended. If you experience an issue starting the lab:</p>
+<ul>
+<li>Add the lab domain name to your pop-up or script blocker’s allow list or turn it off.</li>
+<li>Refresh the page and try again.</li>
+</ul>
+<hr>
+<h2 id="task-1-create-a-standard-amazon-sns-topic">Task 1: Create a standard Amazon SNS topic</h2>
+<p>In this task, you create an Amazon SNS topic, and then subscribe to an Amazon SNS topic.</p>
+<ol start="3" class="top-level">
+<li value="3">At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-9bbbcc8a-c673-454a-bbc8-3eee469e2dde"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rbe:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rbf:" type="submit" data-analytics-performance-mark="63-1767781110359-3934"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Simple Notification Service</span></div></span>.</li>
+<li value="4">Expand the navigation menu by choosing the menu icon <i class="fas fa-bars"></i> in the upper-left corner.</li>
+<li value="5">From the left navigation menu, choose <strong>Topics</strong>.</li>
+<li value="6">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap"><strong>Create topic</strong></span>.</li>
+</ol>
+<p>The <strong>Create topic</strong> page is displayed.</p>
+<ol start="7" class="top-level">
+<li value="7">On the <strong>Create topic</strong> page, in the <strong>Details</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li><strong>Type:</strong> Choose <strong>Standard</strong>.</li>
+<li><strong>Name:</strong> Enter a unique SNS topic name, such as <span id="amazonaws-labs-rc-99478a8f-dbd8-46c1-9599-ec50dabc516f"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rbh:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rbi:" type="submit" data-analytics-performance-mark="64-1767781110364-88"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">resize-image-topic-</span></div></span>, followed by four random numbers.</li>
+</ul>
+<ol start="8" class="top-level">
+<li value="8">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create topic</span>.</li>
+</ol>
+<p>The topic is created and the <strong>resize-image-topic-XXXX</strong> page is displayed. The topic’s Name, Amazon Resource Name (ARN), (optional) Display name, and topic owner’s AWS account ID are displayed in the Details section.</p>
+<ol start="9" class="top-level">
+<li value="9">Copy the topic <strong>ARN</strong> and <strong>Topic owner</strong> values to a notepad. You need these values later in the lab.</li>
+</ol>
+<p><i class="fas fa-clipboard-check" style="color:#18ab4b" aria-hidden="true"></i> <strong>Example:</strong></p>
+<p><em>ARN example: arn:aws:sns:us-east-2:123456789012:resize-image-topic</em>
+<em>Topic owner: 123456789123 (12 digit AWS Account ID)</em></p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have created an Amazon SNS topic.</p>
+<hr>
+<h2 id="task-2-create-two-amazon-sqs-queues">Task 2: Create two Amazon SQS queues</h2>
+<p>In this task, you create two Amazon SQS queues each for a specific purpose and then subscribe the queues to the previously created Amazon SNS topic.</p>
+<h3 id="task-21-create-an-amazon-sqs-queue-for-the-thumbnail-image">Task 2.1: Create an Amazon SQS queue for the thumbnail image</h3>
+<ol start="10" class="top-level">
+<li value="10">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-f12e8a1d-5a91-4bfc-aeec-190a6b9b5227"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rbk:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rbl:" type="submit" data-analytics-performance-mark="65-1767781110369-282"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Simple Queue Service</span></div></span>.</p>
+</li>
+<li value="11">
+<p>On the SQS home page, choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create queue</span>.</p>
+</li>
+</ol>
+<p>The <strong>Create queue</strong> page is displayed.</p>
+<ol start="12" class="top-level">
+<li value="12">On the <strong>Create queue</strong> page, in the <strong>Details</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li><strong>Type:</strong> Choose <strong>Standard</strong> (the Standard queue type is set by default).</li>
+<li><strong>Name:</strong> Enter <span id="amazonaws-labs-rc-ffbdc8c2-29aa-4a04-9a69-cf80d97bbc45"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rbn:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rbo:" type="submit" data-analytics-performance-mark="66-1767781110372-7546"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">thumbnail-queue</span></div></span>.</li>
+</ul>
+<ol start="13" class="top-level">
+<li value="13">
+<p>The console sets default values for the queue Configuration parameters. Leave the default values.</p>
+</li>
+<li value="14">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create queue</span>.</p>
+</li>
+</ol>
+<p>Amazon SQS creates the queue and displays a page with details about the queue.</p>
+<ol start="15" class="top-level">
+<li value="15">
+<p>On the queue’s detail page, choose the <strong>SNS subscriptions</strong> tab.</p>
+</li>
+<li value="16">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Subscribe to Amazon SNS topic</span>.</p>
+</li>
+</ol>
+<p>A new <strong>Subscribe to Amazon SNS topic</strong> page opens.</p>
+<ol start="17" class="top-level">
+<li value="17">From the <strong>Specify an Amazon SNS topic available for this queue</strong> section, choose the <strong>resize-image-topic</strong> SNS topic you created previously under <strong>Use existing resource</strong>.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> If the SNS topic is not listed in the menu, choose <strong>Enter Amazon SNS topic ARN</strong> and then enter the topic’s ARN that was copied earlier.</p>
+<ol start="18" class="top-level">
+<li value="18">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span>.</li>
+</ol>
+<p>Your SQS queue is now subscribed to the SNS topic named <em>resize-image-topic-XXXX</em>.</p>
+<h3 id="task-22-create-an-amazon-sqs-queue-for-the-mobile-image">Task 2.2: Create an Amazon SQS queue for the mobile image</h3>
+<ol start="19" class="top-level">
+<li value="19">On the SQS console, expand the navigation menu on the left, and choose <strong>Queues</strong>.</li>
+<li value="20">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create queue</span>.</li>
+</ol>
+<p>The <strong>Create queue</strong> page is displayed.</p>
+<ol start="21" class="top-level">
+<li value="21">On the <strong>Create queue</strong> page, in the <strong>Details</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li><strong>Type:</strong> Choose <strong>Standard</strong> (the Standard queue type is set by default).</li>
+<li><strong>Name:</strong> Enter <span id="amazonaws-labs-rc-ff4c4be0-d314-4864-858a-4eeae609e48a"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rbq:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rbr:" type="submit" data-analytics-performance-mark="67-1767781110375-7288"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">mobile-queue</span></div></span>.</li>
+</ul>
+<ol start="22" class="top-level">
+<li value="22">
+<p>The console sets default values for the queue Configuration parameters. Leave the default values.</p>
+</li>
+<li value="23">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create queue</span>.</p>
+</li>
+</ol>
+<p>Amazon SQS creates the queue and displays a page with details about the queue.</p>
+<ol start="24" class="top-level">
+<li value="24">
+<p>On the queue’s detail page, choose the <strong>SNS subscriptions</strong> tab.</p>
+</li>
+<li value="25">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Subscribe to Amazon SNS topic</span>.</p>
+</li>
+</ol>
+<p>A new <strong>Subscribe to Amazon SNS topic</strong> page opens.</p>
+<ol start="26" class="top-level">
+<li value="26">From the <strong>Specify an Amazon SNS topic available for this queue</strong> section, choose the <strong>resize-image-topic</strong> SNS topic you created previously under <strong>Use existing resource</strong>.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> If the SNS topic is not listed in the menu, choose <strong>Enter Amazon SNS topic ARN</strong> and then enter the topic’s ARN that was copied earlier.</p>
+<ol start="27" class="top-level">
+<li value="27">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span>.</li>
+</ol>
+<p>Your SQS queue is now subscribed to the SNS topic named <em>resize-image-topic-XXXX</em>.</p>
+<h3 id="task-23-verifying-the-aws-sns-subscriptions">Task 2.3: Verifying the AWS SNS subscriptions</h3>
+<p>To verify the result of the subscriptions, publish to the topic and then view the message that the topic sends to the queue.</p>
+<ol start="28" class="top-level">
+<li value="28">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-89ab66a0-eb5e-4300-9357-630aa0cf51f7"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rbt:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rbu:" type="submit" data-analytics-performance-mark="68-1767781110378-1988"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Simple Notification Service</span></div></span>.</p>
+</li>
+<li value="29">
+<p>In the left navigation pane, choose <strong>Topics</strong>.</p>
+</li>
+<li value="30">
+<p>On the <strong>Topics</strong> page, choose <strong>resize-image-topic-XXXX</strong>.</p>
+</li>
+<li value="31">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Publish message</span>.</p>
+</li>
+</ol>
+<p>The console opens the <strong>Publish message to topic</strong> page.</p>
+<ol start="32" class="top-level">
+<li value="32">In the <strong>Message details</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li><strong>Subject - optional:</strong>: Enter <span id="amazonaws-labs-rc-2e18d1d8-674e-4ee4-8ebc-15e4fe7421f6"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rc0:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rc1:" type="submit" data-analytics-performance-mark="69-1767781110383-1583"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Hello world</span></div></span>.</li>
+</ul>
+<ol start="33" class="top-level">
+<li value="33">In the <strong>Message body</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li>For <strong>Message structure</strong>, select <strong>Identical payload for all delivery protocols</strong>.</li>
+<li>For <strong>Message body to send to the endpoint</strong>, enter <span id="amazonaws-labs-rc-0edf6be4-ecaf-4b52-8a78-d2e6f6a28161"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rc3:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rc4:" type="submit" data-analytics-performance-mark="70-1767781110385-6258"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Testing Hello world</span></div></span> or any message of your choice.</li>
+</ul>
+<ol start="34" class="top-level">
+<li value="34">In the <strong>Message attributes</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li>For <strong>Type</strong>, choose <strong>String</strong>.</li>
+<li>For <strong>Name</strong>, enter <span id="amazonaws-labs-rc-7e37d697-6df1-4674-b342-b47bb1cab179"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rc6:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rc7:" type="submit" data-analytics-performance-mark="71-1767781110387-4274"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Message</span></div></span>.</li>
+<li>For <strong>Value</strong>, enter <span id="amazonaws-labs-rc-61f4d272-81a3-4f95-aa20-4b95a6f4fa1d"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rc9:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rca:" type="submit" data-analytics-performance-mark="72-1767781110388-9926"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Hello World</span></div></span>.</li>
+</ul>
+<ol start="35" class="top-level">
+<li value="35">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Publish message</span> .</li>
+</ol>
+<p>The message is published to the topic, and the console opens the topic’s detail page. To investigate the published message, navigate to Amazon SQS.</p>
+<ol start="36" class="top-level">
+<li value="36">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-0c9c016a-61e7-4683-aa45-60a13df1bd51"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rcc:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rcd:" type="submit" data-analytics-performance-mark="73-1767781110390-246"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Simple Queue Service</span></div></span>.</p>
+</li>
+<li value="37">
+<p>Choose any queue from the list.</p>
+</li>
+<li value="38">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Send and receive messages</span> .</p>
+</li>
+<li value="39">
+<p>On <strong>Send and receive messages</strong> page, in the <strong>Receive messages</strong> section, choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Poll for messages</span> .</p>
+</li>
+<li value="40">
+<p>Locate the Message section.Choose any ID link in the list to review the Details, Body, and Attributes of the message.</p>
+</li>
+</ol>
+<p>The Message Details box contains a JSON document that contains the subject and message that you published to the topic.</p>
+<ol start="41" class="top-level">
+<li value="41">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Done</span> .</li>
+</ol>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have successfully created two Amazon SQS queues and published to a topic that sends notification messages to a queue.</p>
+<hr>
+<h2 id="task-3-create-an-amazon-s3-event-notification">Task 3: Create an Amazon S3 event notification</h2>
+<p>In this task, you create an Amazon S3 Event Notification and receive S3 event notifications using the event notification destination as Amazon SNS when certain event happen in the S3 bucket.</p>
+<h3 id="task-31-configure-the-amazon-sns-access-policy-to-allow-the-amazon-s3-bucket-to-publish-to-a-topic">Task 3.1: Configure the Amazon SNS access policy to allow the Amazon S3 bucket to publish to a topic</h3>
+<ol start="42" class="top-level">
+<li value="42">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-5f2ae5c6-b915-4031-a8d6-3abc39fbdc4e"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rcf:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rcg:" type="submit" data-analytics-performance-mark="74-1767781110391-6492"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Simple Notification Service</span></div></span>.</p>
+</li>
+<li value="43">
+<p>From the left navigation menu, choose <strong>Topics</strong>.</p>
+</li>
+<li value="44">
+<p>Choose the <strong>resize-image-topic-XXXX</strong> topic.</p>
+</li>
+<li value="45">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span> .</p>
+</li>
+<li value="46">
+<p>Navigate to the <strong>Access policy - optional</strong> section and expand it, if necessary</p>
+</li>
+<li value="47">
+<p>Delete the existing content of the JSON editor panel.</p>
+</li>
+<li value="48">
+<p>Copy the following code block and paste it into the JSON Editor section.</p>
+</li>
+</ol>
+<span id="amazonaws-labs-rc-ce76804a-9b09-42c5-b9c8-b4c21e643e2d"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rci:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:rcj:" type="submit" data-analytics-performance-mark="75-1767781110407-1204"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"Version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2008-10-17"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"__default_policy_ID"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"Statement"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"Sid"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"__default_statement_ID"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"AWS"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"*"</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"SNS:GetTopicAttributes"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"SNS:SetTopicAttributes"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"SNS:AddPermission"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"SNS:RemovePermission"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"SNS:DeleteTopic"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"SNS:Subscribe"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"SNS:ListSubscriptionsByTopic"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-string">"SNS:Publish"</span>
+      <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"SNS_TOPIC_ARN"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Condition"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"StringEquals"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">"AWS:SourceAccount"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"SNS_TOPIC_OWNER"</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"Service"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"s3.amazonaws.com"</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"SNS:Publish"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"SNS_TOPIC_ARN"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"Condition"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"StringEquals"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">"AWS:SourceAccount"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"SNS_TOPIC_OWNER"</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre></div></div></div></span><ol start="49" class="top-level">
+<li value="49">
+<p>Replace the <strong>two</strong> occurrences of <strong>SNS_TOPIC_OWNER</strong> with the <strong>Topic owner</strong> (12-digit AWS Account ID) value that you copied earlier in Task 1. Make sure to leave the double quotes.</p>
+</li>
+<li value="50">
+<p>Replace the <strong>two</strong> occurrences of <strong>SNS_TOPIC_ARN</strong> with the SNS topic <strong>ARN</strong> value copied earlier in Task 1. Make sure to leave the double quotes.</p>
+</li>
+<li value="51">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save changes</span> .</p>
+</li>
+</ol>
+<h3 id="task-32-create-a-single-s3-event-notification-on-uploads-to-the-ingest-s3-bucket">Task 3.2: Create a single S3 event notification on uploads to the ingest S3 bucket</h3>
+<ol start="52" class="top-level">
+<li value="52">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-6105045a-1549-4641-9cf2-3e6e62e083a8"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rcl:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rcm:" type="submit" data-analytics-performance-mark="76-1767781110411-3228"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</p>
+</li>
+<li value="53">
+<p>On the <strong>Buckets</strong> page, choose the bucket hyperlink with a name like <em>xxxxx-labbucket-xxxxx</em>.</p>
+</li>
+<li value="54">
+<p>Choose the <strong>Properties</strong> tab.</p>
+</li>
+<li value="55">
+<p>Scroll to the <strong>Event notifications</strong> section.</p>
+</li>
+<li value="56">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create event notification</span> .</p>
+</li>
+<li value="57">
+<p>In the General configuration section, do the following:</p>
+</li>
+</ol>
+<ul>
+<li><strong>Event name:</strong> Enter <span id="amazonaws-labs-rc-ea36e7e6-f12a-4ab2-bb5e-4baa4b373cb1"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rco:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rcp:" type="submit" data-analytics-performance-mark="77-1767781110413-4421"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">resize-image-event</span></div></span>.</li>
+<li><strong>Prefix - optional:</strong> Enter <span id="amazonaws-labs-rc-876b7e5d-755d-4073-bcb7-4c1180c03f30"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rcr:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rcs:" type="submit" data-analytics-performance-mark="78-1767781110415-9857"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">ingest/</span></div></span>.</li>
+</ul>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> In this lab, you set up a prefix filter so that you receive notifications only when files are added to a specific folder (ingest).</p>
+<ul>
+<li><strong>Suffix - optional:</strong> Enter <span id="amazonaws-labs-rc-a894c1d5-2842-4e44-b4a4-02ce906b3120"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rcu:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rcv:" type="submit" data-analytics-performance-mark="79-1767781110417-6588"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">.jpg</span></div></span>.</li>
+</ul>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> In this lab, you set up a suffix filter so that you receive notifications only when .jpg files are uploaded.</p>
+<ol start="58" class="top-level">
+<li value="58">
+<p>In the <strong>Event types</strong> section, select <i class="fas fa-check-square" style="color:#0073bb"></i> <strong>All object create events</strong>.</p>
+</li>
+<li value="59">
+<p>In the <strong>Destination</strong> section, configure the following:</p>
+</li>
+</ol>
+<ul>
+<li><strong>Destination:</strong> Select <strong>SNS topic</strong>.</li>
+<li><strong>Specify SNS topic:</strong> Select <strong>Choose from your SNS topics</strong>.</li>
+<li><strong>SNS topic:</strong> Choose the <strong>resize-image-topic-XXXX</strong> SNS topic from the dropdown menu.</li>
+</ul>
+<p>Or, if you prefer to specify an <strong>ARN</strong>, choose <strong>Enter ARN</strong> and enter the ARN of the SNS topic copied earlier.</p>
+<ol start="60" class="top-level">
+<li value="60">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save changes</span>.</li>
+</ol>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have successfully created an Amazon S3 event notification.</p>
+<hr>
+<h2 id="task-4-create-and-configure-two-aws-lambda-functions">Task 4: Create and configure two AWS Lambda functions</h2>
+<p>In this task, you create two AWS Lambda functions and deploy the respective functionality code to each Lambda function by uploading code and configure each Lambda function to add an SQS trigger.</p>
+<h3 id="task-41-create-a-lambda-function-to-generate-a-thumbnail-image">Task 4.1: Create a Lambda function to generate a thumbnail image</h3>
+<p>In this task, you create an AWS Lambda function with an SQS trigger that reads an image from Amazon S3, resizes the image, and then stores the new image in an Amazon S3 bucket folder.</p>
+<ol start="61" class="top-level">
+<li value="61">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-e87468b9-c624-448c-a706-d4e62804317e"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rd1:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rd2:" type="submit" data-analytics-performance-mark="80-1767781110420-2038"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Lambda</span></div></span>.</p>
+</li>
+<li value="62">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create function</span>.</p>
+</li>
+<li value="63">
+<p>In the <strong>Create function</strong> window, select <strong>Author from scratch</strong>.</p>
+</li>
+<li value="64">
+<p>In the Basic information section, configure the following:</p>
+</li>
+</ol>
+<ul>
+<li><strong>Function name:</strong> Enter <span id="amazonaws-labs-rc-123daae2-f3f3-488f-8ec6-0170aa11162c"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rd4:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rd5:" type="submit" data-analytics-performance-mark="81-1767781110422-9916"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CreateThumbnail</span></div></span>.</li>
+<li><strong>Runtime:</strong> Choose <strong>Python 3.9</strong>.</li>
+<li>Expand the <i class="fas fa-caret-right"></i> <strong>Change default execution role</strong> section.</li>
+<li><strong>Execution role:</strong> Select <strong>Use an existing role</strong>.</li>
+<li><strong>Existing role:</strong> Choose the role with the name like <em>XXXXX-LabExecutionRole-XXXXX</em>.</li>
+</ul>
+<p>This role provides your Lambda function with the permissions it needs to access Amazon S3 and Amazon SQS.</p>
+<p><i class="fas fa-exclamation-triangle" style="color:red"></i> <strong>Caution:</strong> Make sure to choose <strong>Python 3.9</strong> under <strong>Other supported</strong> runtime. If you choose Python 3.10 or the <strong>Latest supported</strong>, the code in this lab fails as it is configured specifically for Python 3.9.</p>
+<ol start="65" class="top-level">
+<li value="65">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create function</span>.</li>
+</ol>
+<p>At the top of the page there is a message like, <em>Successfully created the function CreateThumbnail. You can now change its code and configuration. To invoke your function with a test event, choose “Test”.</em></p>
+<h3 id="task-42-configure-the-createthumbnail-lambda-function-to-add-an-sqs-trigger-and-upload-the-python-deployment-package">Task 4.2: Configure the CreateThumbnail Lambda function to add an SQS trigger and upload the Python deployment package</h3>
+<p>AWS Lambda functions can be initiated automatically by activities such as data being received by Amazon Kinesis or data being updated in an Amazon DynamoDB database. For this lab, you initiate the Lambda function whenever a new object is pushed to your Amazon SQS queue.</p>
+<ol start="66" class="top-level">
+<li value="66">Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap"><i class="fas fa-plus"></i> Add trigger</span>, and then configure the following:</li>
+</ol>
+<ul>
+<li>For <strong>Select a source</strong>, choose <strong>SQS</strong>.</li>
+<li>For <strong>SQS Queue</strong>, choose <strong>thumbnail-queue</strong>.</li>
+<li>For <strong>Batch size - optional</strong>, enter <span id="amazonaws-labs-rc-02272f58-2389-4ea9-8d5b-9ccd2d0e6362"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rd7:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rd8:" type="submit" data-analytics-performance-mark="82-1767781110424-187"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">1</span></div></span>.</li>
+</ul>
+<ol start="67" class="top-level">
+<li value="67">Scroll to the bottom of the page, and then choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Add</span> .</li>
+</ol>
+<p>At the top of the page there is a message like, <em>The trigger thumbnail-queue was successfully added to function CreateThumbnail. The trigger is in a disabled state.</em></p>
+<p>The SQS trigger is added to your Function overview page. Now configure the Lambda function.</p>
+<ol start="68" class="top-level">
+<li value="68">
+<p>Choose the <strong>Code</strong> tab.</p>
+</li>
+<li value="69">
+<p>Configure the following settings (and ignore any settings that are not listed):</p>
+</li>
+<li value="70">
+<p>Copy the <strong>CreateThumbnailZIPLocation</strong> value that is listed to the left of these instructions</p>
+</li>
+<li value="71">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload from <i class="fas fa-caret-down"></i></span> , and choose <strong>Amazon S3 location</strong>.</p>
+</li>
+<li value="72">
+<p>Paste the <strong>CreateThumbnailZIPLocation</strong> value you copied from the instructions in the <strong>Amazon S3 link URL</strong> field.</p>
+</li>
+<li value="73">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span> .</p>
+</li>
+</ol>
+<p>The <em>CreateThumbnail.zip</em> file contains the following code:</p>
+<p><i class="fas fa-exclamation-triangle" style="color:red"></i> <strong>Caution:</strong> Do not copy this code—it is just an example to show what is in the zip file.</p>
+<span id="amazonaws-labs-rc-3863b453-2b2f-4370-af66-7141fc6f60f8"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rda:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:rdb:" type="submit" data-analytics-performance-mark="83-1767781110447-4128"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-keyword">import</span> boto3
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> uuid
+<span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> unquote_plus
+<span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image
+<span class="hljs-keyword">import</span> PIL.Image
+<span class="hljs-keyword">import</span> json
+
+s3_client = boto3.client(<span class="hljs-string">"s3"</span>)
+s3 = boto3.resource(<span class="hljs-string">"s3"</span>)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">resize_image</span>(<span class="hljs-params">image_path, resized_path</span>):
+    <span class="hljs-keyword">with</span> Image.<span class="hljs-built_in">open</span>(image_path) <span class="hljs-keyword">as</span> image:
+        image.thumbnail((<span class="hljs-number">128</span>, <span class="hljs-number">128</span>))
+        image.save(resized_path)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">event, context</span>):
+    <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> event[<span class="hljs-string">"Records"</span>]:
+        payload = record[<span class="hljs-string">"body"</span>]
+        sqs_message = json.loads(payload)
+        bucket_name = json.loads(sqs_message[<span class="hljs-string">"Message"</span>])[<span class="hljs-string">"Records"</span>][<span class="hljs-number">0</span>][<span class="hljs-string">"s3"</span>][<span class="hljs-string">"bucket"</span>][
+            <span class="hljs-string">"name"</span>
+        ]
+        <span class="hljs-built_in">print</span>(bucket_name)
+        key = json.loads(sqs_message[<span class="hljs-string">"Message"</span>])[<span class="hljs-string">"Records"</span>][<span class="hljs-number">0</span>][<span class="hljs-string">"s3"</span>][<span class="hljs-string">"object"</span>][<span class="hljs-string">"key"</span>]
+        <span class="hljs-built_in">print</span>(key)
+
+        download_path = <span class="hljs-string">"/tmp/{}{}"</span>.<span class="hljs-built_in">format</span>(uuid.uuid4(), key.split(<span class="hljs-string">"/"</span>)[-<span class="hljs-number">1</span>])
+        upload_path = <span class="hljs-string">"/tmp/resized-{}"</span>.<span class="hljs-built_in">format</span>(key.split(<span class="hljs-string">"/"</span>)[-<span class="hljs-number">1</span>])
+
+        s3_client.download_file(bucket_name, key, download_path)
+        resize_image(download_path, upload_path)
+        s3.meta.client.upload_file(
+            upload_path, bucket_name, <span class="hljs-string">"thumbnail/Thumbnail-"</span> + key.split(<span class="hljs-string">"/"</span>)[-<span class="hljs-number">1</span>]
+        )</code></pre></div></div></div></span><ol start="74" class="top-level">
+<li value="74">Examine the preceding code. It is performing the following steps:</li>
+</ol>
+<ul>
+<li>Receives an event, which contains the name of the incoming object (Bucket, Key)</li>
+<li>Downloads the image to local storage</li>
+<li>Resizes the image using the <em>Pillow</em> library</li>
+<li>Creates and uploads the resized image to a new folder</li>
+</ul>
+<ol start="75" class="top-level">
+<li value="75">In the <strong>Runtime settings</strong> section, choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</li>
+</ol>
+<ul>
+<li>For <strong>Handler</strong>, enter <span id="amazonaws-labs-rc-5c910335-11d9-44c2-a458-9ce9013b7399"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rdd:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rde:" type="submit" data-analytics-performance-mark="84-1767781110449-7241"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CreateThumbnail.handler</span></div></span>.</li>
+</ul>
+<ol start="76" class="top-level">
+<li value="76">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span>.</li>
+</ol>
+<p>At the top of the page there is a message like, <em>Successfully updated the function CreateThumbnail.</em></p>
+<p><i class="fas fa-exclamation-triangle" style="color:red"></i> <strong>Caution:</strong> Make sure you set the <strong>Handler</strong> field to the preceding value, otherwise the Lambda function will not be found.</p>
+<ol start="77" class="top-level">
+<li value="77">
+<p>Choose the <strong>Configuration</strong> tab.</p>
+</li>
+<li value="78">
+<p>From the left navigation menu, choose <strong>General configuration</strong>.</p>
+</li>
+<li value="79">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span> .</p>
+</li>
+</ol>
+<ul>
+<li>For <strong>Description</strong> - optional, enter <span id="amazonaws-labs-rc-e1d4802b-c46f-409b-8f2e-fe9456f20cab"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rdg:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rdh:" type="submit" data-analytics-performance-mark="85-1767781110451-6507"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Create a thumbnail-sized image</span></div></span>.</li>
+</ul>
+<p>Leave the other settings at the default settings. Here is a brief explanation of these settings:</p>
+<ul>
+<li><em>Memory</em> defines the resources that are allocated to your function. Increasing memory also increases CPU allocated to the function.</li>
+<li><em>Timeout</em> sets the maximum duration for function processing.</li>
+</ul>
+<ol start="80" class="top-level">
+<li value="80">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span>.</li>
+</ol>
+<p>A message is displayed at the top of the page with text like, <em>Successfully updated the function CreateThumbnail.</em></p>
+<p>The <em>CreateThumbnail</em> Lambda function has now been configured.</p>
+<h3 id="task-43-create-a-lambda-function-to-generate-a-mobile-image">Task 4.3: Create a Lambda function to generate a mobile image</h3>
+<p>In this task, you create an AWS Lambda function with an SQS trigger that reads an image from Amazon S3, resizes the image, and then stores the new image in an Amazon S3 bucket folder.</p>
+<ol start="81" class="top-level">
+<li value="81">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-9debbf7f-d582-493d-8704-d32f8e0135a1"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rdj:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rdk:" type="submit" data-analytics-performance-mark="86-1767781110452-1777"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Lambda</span></div></span>.</p>
+</li>
+<li value="82">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create function</span>.</p>
+</li>
+<li value="83">
+<p>In the <strong>Create function</strong> window, select <strong>Author from scratch</strong>.</p>
+</li>
+<li value="84">
+<p>In the Basic information section, configure the following:</p>
+</li>
+</ol>
+<ul>
+<li><strong>Function name:</strong> Enter <span id="amazonaws-labs-rc-0c031e40-33ce-4dc6-ae2e-7591808e91b6"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rdm:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rdn:" type="submit" data-analytics-performance-mark="87-1767781110454-7234"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CreateMobileImage</span></div></span>.</li>
+<li><strong>Runtime:</strong> Choose <strong>Python 3.9</strong>.</li>
+<li>Expand the <i class="fas fa-caret-right"></i> <strong>Change default execution role</strong> section.</li>
+<li><strong>Execution role:</strong> Select <strong>Use an existing role</strong>.</li>
+<li><strong>Existing role:</strong> Choose the role with the name like <em>XXXXX-LabExecutionRole-XXXXX</em>.</li>
+</ul>
+<p>This role provides your Lambda function with the permissions it needs to access Amazon S3 and Amazon SQS.</p>
+<p><i class="fas fa-exclamation-triangle" style="color:red"></i> <strong>Caution:</strong> Make sure to choose <strong>Python 3.9</strong> under <strong>Other supported</strong> runtime. If you choose Python 3.10 or the <strong>Latest supported</strong>, the code in this lab fails as it is configured specifically for Python 3.9.</p>
+<ol start="85" class="top-level">
+<li value="85">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create function</span>.</li>
+</ol>
+<p>At the top of the page there is a message like, <em>Successfully created the function CreateMobileImage. You can now change its code and configuration. To invoke your function with a test event, choose “Test”.</em></p>
+<h3 id="task-44-configure-the-createmobileimage-lambda-function-to-add-an-sqs-trigger-and-upload-the-python-deployment-package">Task 4.4: Configure the CreateMobileImage Lambda function to add an SQS trigger and upload the Python deployment package</h3>
+<p>AWS Lambda functions can be initiated automatically by activities such as data being received by Amazon Kinesis or data being updated in an Amazon DynamoDB database. For this lab, you initiate the Lambda function whenever a new object is pushed to your Amazon SQS queue.</p>
+<ol start="86" class="top-level">
+<li value="86">Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap"><i class="fas fa-plus"></i> Add trigger</span>, and then configure the following:</li>
+</ol>
+<ul>
+<li>For <strong>Select a source</strong>, choose <strong>SQS</strong>.</li>
+<li>For <strong>SQS Queue</strong>, choose <strong>mobile-queue</strong>.</li>
+<li>For <strong>Batch size - optional</strong>, enter <span id="amazonaws-labs-rc-1421ad92-f10d-40a9-8513-e0214b335ff1"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rdp:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rdq:" type="submit" data-analytics-performance-mark="88-1767781110456-4084"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">1</span></div></span>.</li>
+</ul>
+<ol start="87" class="top-level">
+<li value="87">Scroll to the bottom of the page, and then choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Add</span> .</li>
+</ol>
+<p>At the top of the page there is a message like, <em>The trigger mobile-queue was successfully added to function CreateMobileImage. The trigger is in a disabled state.</em></p>
+<p>The SQS trigger is added to your Function overview page. Now configure the Lambda function.</p>
+<ol start="88" class="top-level">
+<li value="88">
+<p>Choose the <strong>Code</strong> tab.</p>
+</li>
+<li value="89">
+<p>Configure the following settings (and ignore any settings that are not listed):</p>
+</li>
+<li value="90">
+<p>Copy the <strong>CreateMobileImageZIPLocation</strong> value that is listed to the left of these instructions</p>
+</li>
+<li value="91">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload from <i class="fas fa-caret-down"></i></span> , and choose <strong>Amazon S3 location</strong>.</p>
+</li>
+<li value="92">
+<p>Paste the <strong>CreateMobileImageZIPLocation</strong> value you copied from the instructions in the <strong>Amazon S3 link URL</strong> field.</p>
+</li>
+<li value="93">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span> .</p>
+</li>
+</ol>
+<p>The <em>CreateMobileImage.zip</em> file contains the following code:</p>
+<p><i class="fas fa-exclamation-triangle" style="color:red"></i> <strong>Caution:</strong> Do not copy this code—it is just an example to show what is in the zip file.</p>
+<span id="amazonaws-labs-rc-4a83a90a-3e1f-4bed-81a4-d22416cce886"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rds:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:rdt:" type="submit" data-analytics-performance-mark="89-1767781110463-3075"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-keyword">import</span> boto3
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> uuid
+<span class="hljs-keyword">from</span> urllib.parse <span class="hljs-keyword">import</span> unquote_plus
+<span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image
+<span class="hljs-keyword">import</span> PIL.Image
+<span class="hljs-keyword">import</span> json
+
+s3_client = boto3.client(<span class="hljs-string">"s3"</span>)
+s3 = boto3.resource(<span class="hljs-string">"s3"</span>)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">resize_image</span>(<span class="hljs-params">image_path, resized_path</span>):
+    <span class="hljs-keyword">with</span> Image.<span class="hljs-built_in">open</span>(image_path) <span class="hljs-keyword">as</span> image:
+        image.thumbnail((<span class="hljs-number">640</span>, <span class="hljs-number">320</span>))
+        image.save(resized_path)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">handler</span>(<span class="hljs-params">event, context</span>):
+    <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> event[<span class="hljs-string">"Records"</span>]:
+        payload = record[<span class="hljs-string">"body"</span>]
+        sqs_message = json.loads(payload)
+        bucket_name = json.loads(sqs_message[<span class="hljs-string">"Message"</span>])[<span class="hljs-string">"Records"</span>][<span class="hljs-number">0</span>][<span class="hljs-string">"s3"</span>][<span class="hljs-string">"bucket"</span>][
+            <span class="hljs-string">"name"</span>
+        ]
+        <span class="hljs-built_in">print</span>(bucket_name)
+        key = json.loads(sqs_message[<span class="hljs-string">"Message"</span>])[<span class="hljs-string">"Records"</span>][<span class="hljs-number">0</span>][<span class="hljs-string">"s3"</span>][<span class="hljs-string">"object"</span>][<span class="hljs-string">"key"</span>]
+        <span class="hljs-built_in">print</span>(key)
+
+        download_path = <span class="hljs-string">"/tmp/{}{}"</span>.<span class="hljs-built_in">format</span>(uuid.uuid4(), key.split(<span class="hljs-string">"/"</span>)[-<span class="hljs-number">1</span>])
+        upload_path = <span class="hljs-string">"/tmp/resized-{}"</span>.<span class="hljs-built_in">format</span>(key.split(<span class="hljs-string">"/"</span>)[-<span class="hljs-number">1</span>])
+
+        s3_client.download_file(bucket_name, key, download_path)
+        resize_image(download_path, upload_path)
+        s3.meta.client.upload_file(
+            upload_path, bucket_name, <span class="hljs-string">"mobile/MobileImage-"</span> + key.split(<span class="hljs-string">"/"</span>)[-<span class="hljs-number">1</span>]
+        )</code></pre></div></div></div></span><ol start="94" class="top-level">
+<li value="94">In the <strong>Runtime settings</strong> section, choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</li>
+</ol>
+<ul>
+<li>For <strong>Handler</strong>, enter <span id="amazonaws-labs-rc-9dad3b57-cb3a-4397-8f4c-fa506ed289a2"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rdv:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:re0:" type="submit" data-analytics-performance-mark="90-1767781110466-660"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CreateMobileImage.handler</span></div></span>.</li>
+</ul>
+<ol start="95" class="top-level">
+<li value="95">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span>.</li>
+</ol>
+<p>At the top of the page there is a message like, <em>Successfully updated the function CreateMobileImage.</em></p>
+<p><i class="fas fa-exclamation-triangle" style="color:red"></i> <strong>Caution:</strong> Make sure you set the <strong>Handler</strong> field to the preceding value, otherwise the Lambda function will not be found.</p>
+<ol start="96" class="top-level">
+<li value="96">
+<p>Choose the <strong>Configuration</strong> tab.</p>
+</li>
+<li value="97">
+<p>From the left navigation menu, choose <strong>General configuration</strong>.</p>
+</li>
+<li value="98">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span> .</p>
+</li>
+</ol>
+<ul>
+<li>For <strong>Description</strong> - optional, enter <span id="amazonaws-labs-rc-f0a85060-c127-4c09-b2bf-7d6b34a8779d"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":re2:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:re3:" type="submit" data-analytics-performance-mark="91-1767781110467-1802"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Create a mobile friendly image</span></div></span>.</li>
+</ul>
+<p>Leave the other settings at the default settings. Here is a brief explanation of these settings:</p>
+<ul>
+<li><em>Memory</em> defines the resources that are allocated to your function. Increasing memory also increases CPU allocated to the function.</li>
+<li><em>Timeout</em> sets the maximum duration for function processing.</li>
+</ul>
+<ol start="99" class="top-level">
+<li value="99">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span>.</li>
+</ol>
+<p>A message is displayed at the top of the page with text like, <em>Successfully updated the function CreateMobileImage.</em></p>
+<p>The <em>CreateMobileImage</em> Lambda function has now been configured.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have successfully created 2 AWS Lambda functions for the serverless architecture and set the appropriate SQS queue as trigger for their respective functions.</p>
+<hr>
+<h2 id="task-5-upload-an-object-to-an-amazon-s3-bucket">Task 5: Upload an object to an Amazon S3 bucket</h2>
+<p>In this task, you upload an object to the previously created S3 bucket using the S3 console.</p>
+<h3 id="task-51-upload-an-image-to-the-s3-bucket-folder-for-processing">Task 5.1: Upload an image to the S3 bucket folder for processing</h3>
+<p>The following diagram shows the workflow:</p>
+<p><img src="./Architecting on AWS - Lab 5 - Build a Serverless Architecture _ Self-Paced Labs_files/WorkFlow.jpg" alt="Workflow."></p>
+<p>Upload a picture to test what you have built.</p>
+<ol start="100" class="top-level">
+<li value="100">Choose to download <em>one</em> image from the following options:</li>
+</ol>
+<ul>
+<li>
+<p>Open the context menu for the <a href="https://us-west-2-tcprod.s3.us-west-2.amazonaws.com/courses/ILT-TF-200-ARCHIT/v7.10.2.prod-574156df/lab-5-Serverless/instructions/en_us/images/AWS.jpg" target="_blank" rel="noopener noreferrer">AWS.jpg</a> link to download the picture to your computer.</p>
+</li>
+<li>
+<p>Open the context menu for the <a href="https://us-west-2-tcprod.s3.us-west-2.amazonaws.com/courses/ILT-TF-200-ARCHIT/v7.10.2.prod-574156df/lab-5-Serverless/instructions/en_us/images/MonaLisa.jpg" target="_blank" rel="noopener noreferrer">MonaLisa.jpg</a> link to download the picture to your computer.</p>
+</li>
+<li>
+<p>Open the context menu for the <a href="https://us-west-2-tcprod.s3.us-west-2.amazonaws.com/courses/ILT-TF-200-ARCHIT/v7.10.2.prod-574156df/lab-5-Serverless/instructions/en_us/images/HappyFace.jpg" target="_blank" rel="noopener noreferrer">HappyFace.jpg</a> link to download the picture to your computer.</p>
+</li>
+<li>
+<p>Name your file similar to <em>InputFile.jpg</em>.</p>
+</li>
+</ul>
+<p><i class="fas fa-exclamation-triangle" style="color:red"></i> <strong>Caution:</strong> Firefox users – Make sure the saved file name is <em>InputFile.jpg</em> (not <em>.jpeg)</em>.</p>
+<ol start="101" class="top-level">
+<li value="101">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-40eb76af-a7c7-4b9c-9927-d02ed79ad265"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":re5:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:re6:" type="submit" data-analytics-performance-mark="92-1767781110470-1266"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</p>
+</li>
+<li value="102">
+<p>In the <strong>S3 Management Console</strong>, choose the <strong>xxxxx-labbucket-xxxxx</strong> bucket hyperlink.</p>
+</li>
+<li value="103">
+<p>Choose the <strong>ingest/</strong> link.</p>
+</li>
+<li value="104">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload</span>.</p>
+</li>
+<li value="105">
+<p>In the <strong>Upload</strong> window, choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Add files</span>.</p>
+</li>
+<li value="106">
+<p>Browse to and choose the <strong>XXXXX.jpg</strong> picture you downloaded.</p>
+</li>
+<li value="107">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload</span>.</p>
+</li>
+</ol>
+<p>At the top of the page, there is a message like, <em>Upload succeeded.</em></p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have successfully uploaded JPG images to S3 bucket.</p>
+<hr>
+<h2 id="task-6-validate-the-processed-file">Task 6: Validate the processed file</h2>
+<p>In this task, you validate the processed file from the logs generated by the function code through Amazon CloudWatch Logs.</p>
+<h3 id="task-61-review-amazon-cloudwatch-logs-for-lambda-activity">Task 6.1: Review Amazon CloudWatch Logs for Lambda activity</h3>
+<p>You can monitor AWS Lambda functions to identify problems and view log files to assist in debugging.</p>
+<ol start="108" class="top-level">
+<li value="108">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-0d52dcf9-0feb-409d-beb9-f34066d34fd2"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":re8:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:re9:" type="submit" data-analytics-performance-mark="93-1767781110473-1197"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Lambda</span></div></span>.</p>
+</li>
+<li value="109">
+<p>Choose the hyperlink for one of your <strong>Create-</strong> functions.</p>
+</li>
+<li value="110">
+<p>Choose the <strong>Monitor</strong> tab.</p>
+</li>
+</ol>
+<p>The console displays graphs showing the following:</p>
+<ul>
+<li><em>Invocations:</em> The number of times that the function was invoked.</li>
+<li><em>Duration:</em> The average, minimum, and maximum execution times.</li>
+<li><em>Error count and success rate (%):</em> The number of errors and the percentage of executions that completed without error.</li>
+<li><em>Throttles:</em> When too many functions are invoked simultaneously, they are throttled. The default is 1000 concurrent executions.</li>
+<li><em>Async delivery failures:</em> The number of errors that occurred when Lambda attempted to write to a destination or dead-letter queue.</li>
+<li><em>Iterator Age:</em> Measures the age of the last record processed from streaming triggers (Amazon Kinesis and Amazon DynamoDB Streams).</li>
+<li><em>Concurrent executions:</em> The number of function instances that are processing events.</li>
+</ul>
+<p>Log messages from Lambda functions are retained in <em>Amazon CloudWatch Logs</em>.</p>
+<ol start="111" class="top-level">
+<li value="111">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">View CloudWatch logs</span> .</p>
+</li>
+<li value="112">
+<p>Choose the hyperlink for the newest Log stream that appears.</p>
+</li>
+<li value="113">
+<p>Expand <i class="fas fa-caret-right"></i> each message to view the log message details.</p>
+</li>
+</ol>
+<p>The REPORT line provides the following details:</p>
+<ul>
+<li><strong>RequestId:</strong> The unique request ID for the invocation</li>
+<li><strong>Duration:</strong> The amount of time that your function’s handler method spent processing the event</li>
+<li><strong>Billed Duration:</strong> The amount of time billed for the invocation</li>
+<li><strong>Memory Size:</strong> The amount of memory allocated to the function</li>
+<li><strong>Max Memory Used:</strong> The amount of memory used by the function</li>
+<li><strong>Init Duration:</strong> For the first request served, the amount of time it took the runtime to load the function and run code outside of the handler method</li>
+</ul>
+<p>In addition, the logs display any logging messages or print statements from the functions. This assists in debugging Lambda functions.</p>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> Reviewing the logs you may notice that the Lambda function has been executed multiple times. This is because the Lambda function is receiving the test message posted to the SNS topic in task 2. Another one of logs was generated when the event notifications for your S3 bucket was created. The third log was generated when an object was uploaded the S3 bucket, and triggered the functions.</p>
+<h3 id="task-62-validate-the-s3-bucket-for-processed-files">Task 6.2: Validate the S3 bucket for processed files</h3>
+<ol start="114" class="top-level">
+<li value="114">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-c3d0d177-0763-4104-80a8-3ed053dcf4c0"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":reb:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rec:" type="submit" data-analytics-performance-mark="94-1767781110476-8476"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</p>
+</li>
+<li value="115">
+<p>Choose the hyperlink for <strong>xxxxx-labbucket-xxxxx</strong> to enter the bucket.</p>
+</li>
+<li value="116">
+<p>Navigate through these folders to find the resized images (for example, <em>Thumbnail-AWS.jpg, MobileImage-MonaLisa.jpg</em>).</p>
+</li>
+</ol>
+<p>If you find the resized image here, you have successfully resized the image from its original to different formats.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have successfully validated the processed image file from the logs generated by the function code through browsing Amazon S3 and Amazon CloudWatch Logs.</p>
+<h2 id="optional-tasks">Optional Tasks</h2>
+<p>Challenge tasks are optional and are provided in case you have extra time remaining in your lab. You can complete the optional tasks or skip to the <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#conclusion">end</a> of the lab.</p>
+<ul>
+<li><em>(Optional) Task 1:</em> Create a lifecycle configuration to delete files in the ingest bucket after 30 days.</li>
+</ul>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> If you have trouble completing the optional task, refer to the <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#challenge-solution-1">Optional Task 1 Solution</a> Appendix section at the end of the lab.</p>
+<ul>
+<li><em>(Optional) Task 2:</em> Add an SNS email notification to the existing SNS topic.</li>
+</ul>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> If you have trouble completing the optional task, refer to the <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-5-Serverless%3A7.10.2-ef990ef3/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::eXavojHADT4Yp6FiTQgXYa#challenge-solution-2">Optional Task 2 Solution</a> Appendix section at the end of the lab.</p>
+<p><a id="conclusion"></a></p>
+<h2 id="conclusion">Conclusion</h2>
+<p><i class="far fa-thumbs-up" style="color:#008296"></i> Congratulations! You now have successfully:</p>
+<ul>
+<li>Created an Amazon SNS topic</li>
+<li>Created Amazon SQS queues</li>
+<li>Created event notifications in Amazon S3</li>
+<li>Created AWS Lambda functions using preexisting code</li>
+<li>Invoked an AWS Lambda function from SQS queues</li>
+<li>Monitored AWS Lambda S3 functions through Amazon CloudWatch Logs</li>
+</ul>
+<h2 id="end-lab">End lab</h2>
+<p>Follow these steps to close the console and end your lab.</p>
+<ol start="117" class="top-level">
+<li value="117">
+<p>Return to the <strong>AWS Management Console</strong>.</p>
+</li>
+<li value="118">
+<p>At the upper-right corner of the page, choose <strong>AWSLabsUser</strong>, and then choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;white-space:nowrap"><strong>Sign out</strong></span>.</p>
+</li>
+<li value="119">
+<p>Choose <span style="background-color:#ffffff;font-weight:bold;font-size:90%;color:#0872D3;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;border-color:#0872D3;border-style:solid;border-width:2px;white-space:nowrap"><strong>End Lab</strong></span> and then confirm that you want to end your lab.</p>
+</li>
+</ol>
+<p>For more information about AWS Training and Certification, see <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener noreferrer"><em>https://aws.amazon.com/training/</em></a>.</p>
+<p><em>Your feedback is welcome and appreciated.</em><br>
+If you would like to share any feedback, suggestions, or corrections, please provide the details in our <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank" rel="noopener noreferrer"><em>AWS Training and Certification Contact Form</em></a>.</p>
+<h2 id="appendix">Appendix</h2>
+<p><a id="challenge-solution-1"></a></p>
+<h3 id="optional-task-1-solution-create-a-lifecycle-configuration-to-delete-files-in-the-ingest-bucket-after-30-days">Optional Task 1 Solution: Create a lifecycle configuration to delete files in the ingest bucket after 30 days</h3>
+<ol start="120" class="top-level">
+<li value="120">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-42b83f88-9e9c-4aa0-82f1-46c23bf03a2f"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":ree:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:ref:" type="submit" data-analytics-performance-mark="95-1767781110480-9435"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</p>
+</li>
+<li value="121">
+<p>On the <strong>Buckets</strong> page, choose the <strong>xxxxx-labbucket-xxxxx</strong> bucket.</p>
+</li>
+<li value="122">
+<p>Choose the <strong>Management</strong> tab.</p>
+</li>
+<li value="123">
+<p>In the <strong>Lifecycle rules</strong> section, choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create lifecycle rule</span></p>
+</li>
+<li value="124">
+<p>In the <strong>Lifecycle rule configuration</strong> section, configure the following:</p>
+</li>
+</ol>
+<ul>
+<li><strong>Lifecycle rule name:</strong> Enter <span id="amazonaws-labs-rc-bf10dcb0-a1df-4859-b91e-5bf8b14c03f3"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":reh:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rei:" type="submit" data-analytics-performance-mark="96-1767781110483-635"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">cleanup</span></div></span>.</li>
+<li><strong>Choose a rule scope:</strong> Choose <strong>Limit the scope of this rule using one or more filters</strong>.</li>
+</ul>
+<ol start="125" class="top-level">
+<li value="125">In the <strong>Filter type</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li><strong>Prefix:</strong> Enter <span id="amazonaws-labs-rc-a9bb6c22-c4e1-43c8-8773-8083df333835"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":rek:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rel:" type="submit" data-analytics-performance-mark="97-1767781110487-3723"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">ingest/</span></div></span>.</li>
+</ul>
+<ol start="126" class="top-level">
+<li value="126">In the <strong>Lifecycle rule actions</strong> section, configure the following:</li>
+</ol>
+<ul>
+<li>Select <i class="fas fa-check-square" style="color:#0073bb"></i> <strong>Expire current versions of objects</strong> and <i class="fas fa-check-square" style="color:#0073bb"></i> <strong>Permanently delete noncurrent versions of objects</strong>.</li>
+<li>Enter the following values in the new boxes that open.
+<ul>
+<li><strong>Days after object creation:</strong> Enter <span id="amazonaws-labs-rc-939389c0-f14f-493b-b481-21a7b29f7a6f"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":ren:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:reo:" type="submit" data-analytics-performance-mark="98-1767781110490-9775"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">30</span></div></span>.</li>
+<li><strong>Days after objects become noncurrent:</strong> Enter <span id="amazonaws-labs-rc-c9cabb59-7ede-4c2a-91e9-a8c121734fc6"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":req:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:rer:" type="submit" data-analytics-performance-mark="99-1767781110493-9067"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">1</span></div></span>.</li>
+</ul>
+</li>
+</ul>
+<ol start="127" class="top-level">
+<li value="127">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create rule</span></li>
+</ol>
+<p><a id="challenge-solution-2"></a></p>
+<h3 id="optional-task-2-solution-add-an-sns-email-notification-to-the-existing-sns-topic">Optional Task 2 Solution: Add an SNS email notification to the existing SNS topic</h3>
+<ol start="128" class="top-level">
+<li value="128">
+<p>At the top of the AWS Management Console, in the search box, search for and choose <span id="amazonaws-labs-rc-c8870211-8a20-4340-a2e8-8ba712a27e7f"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":ret:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:reu:" type="submit" data-analytics-performance-mark="100-1767781110495-6091"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">Simple Notification Service</span></div></span>.</p>
+</li>
+<li value="129">
+<p>In the left navigation pane, choose <strong>Subscriptions</strong></p>
+</li>
+<li value="130">
+<p>On the <strong>Subscriptions</strong> page, choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create subscription</span>.</p>
+</li>
+<li value="131">
+<p>On the <strong>Create subscription</strong> page, in the Details section, configure the following:</p>
+</li>
+</ol>
+<ul>
+<li><strong>Topic ARN</strong>: Choose the ARN of the topic created.</li>
+<li><strong>Protocol</strong>: Choose <strong>Email</strong>.</li>
+<li><strong>Endpoint</strong>: Enter an email address.</li>
+</ul>
+<ol start="132" class="top-level">
+<li value="132">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create subscription</span>.</li>
+</ol>
+<p>The console creates the subscription and opens the subscription’s Details page.</p>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> You must confirm the subscription before the email address can start to receive messages.</p>
+<ol start="133" class="top-level">
+<li value="133">To confirm a subscription, check your email inbox and choose <strong>Confirm subscription</strong> in the email from Amazon SNS.</li>
+<li value="134">Amazon SNS opens your web browser and displays a subscription confirmation with your subscription ID.</li>
+</ol>
+</div></div></div></div></div></div></div></div><div class="awsui_child_18582_whr0e_149"><span class="ContainerOverride--flashy"><div class="FeedbackSurveyBox__container awsui_root_14iqq_1wfhd_189 awsui_variant-default_14iqq_1wfhd_230 awsui_refresh_14iqq_1wfhd_238"><div id=":rs:" class="awsui_content-wrapper_14iqq_1wfhd_309"><div class="awsui_content_14iqq_1wfhd_309"><div class="awsui_content-inner_14iqq_1wfhd_500 awsui_content-inner_1mwlm_oyjaq_5 awsui_with-paddings_14iqq_1wfhd_396"><h2 class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_h2-variant_18wu0_3h5y5_176 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Nice work! Help us make Builder Labs better in just 2 minutes.</h2><a data-testid="feedback-surveyCta" aria-label="Launch Survey (Opens in a new browser tab)" title="Launch Survey (Opens in a new browser tab)" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206 awsui_link_vjswe_1mhv4_654" data-analytics-funnel-value="button:rt:" href="https://amazonmr.au1.qualtrics.com/jfe/form/SV_6kR9NWq6Y3B87KC?lms_source_system=EventHorizon&amp;VibeId=ec2bebc8-cc33-4c70-a82c-43e4ab913113&amp;EventId=classrooms&amp;EventType=standalone&amp;LabName=Architecting+on+AWS+-+Lab+5+-+Build+a+Serverless+Architecture&amp;LabId=eXavojHADT4Yp6FiTQgXYa&amp;BlueprintName=ILT-TF-200-ARCHIT-7%252Flab-5-Serverless&amp;BlueprintVersion=7.10.2-ef990ef3&amp;Q_Language=EN" target="_blank" rel="noopener noreferrer" data-analytics-performance-mark="4-1767781106791-7502"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Launch Survey</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-external_h11ix_11cyn_355"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M13 9.012v-6H7M13.02 3 7 9.01M3 5.012v8h8.01" class="stroke-linejoin-round"></path></svg></span></a><img class="FeedbackSurveyBox__image" src="data:image/svg+xml,%3csvg%20xmlns=&#39;http://www.w3.org/2000/svg&#39;%20width=&#39;200&#39;%20height=&#39;200&#39;%20fill=&#39;none&#39;%3e%3cpath%20stroke=&#39;%23232F3E&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M111.2%20153.2H91.6v22.3l-24.7-22.3H24.5V88.9h86.7v64.3Z&#39;/%3e%3cpath%20stroke=&#39;%23232F3E&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M119.601%20102.7h13.9v22.5l24.8-22.5h17.2V24.5h-100.7v56&#39;/%3e%3cpath%20stroke=&#39;url(%23a)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M94.398%2044.1h61.5&#39;/%3e%3cpath%20stroke=&#39;url(%23b)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M94.398%2063.7h61.5&#39;/%3e%3cpath%20stroke=&#39;url(%23c)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M35.7%20119.6h16.8&#39;/%3e%3cpath%20stroke=&#39;url(%23d)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M58.102%20119.6h16.7&#39;/%3e%3cpath%20stroke=&#39;url(%23e)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M80.398%20119.6h16.8&#39;/%3e%3cdefs%3e%3clinearGradient%20id=&#39;a&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;b&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;c&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;d&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;e&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e" alt="" style="width: 100px; height: auto;"></div></div></div></div></span></div><div class="awsui_child_18582_whr0e_149"></div><div class="awsui_child_18582_whr0e_149"></div></div></div></div></main></div><footer class="Footer" role="contentinfo" data-testid="footer-FooterStandalone"><div class="Footer__left awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-left-l_18wu0_3h5y5_833 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="ButtonOverride--transparent"><a data-testid="footer-privacy" aria-label="Privacy (Opens in a new browser tab)" title="Privacy (Opens in a new browser tab)" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206 awsui_link_vjswe_1mhv4_654" data-analytics-funnel-value="button:rv:" href="https://aws.amazon.com/privacy/" target="_blank" rel="noopener noreferrer" data-analytics-performance-mark="5-1767781106798-4732"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Privacy</span></a></span><span class="ButtonOverride--transparent"><a data-testid="footer-siteTerms" aria-label="Site terms (Opens in a new browser tab)" title="Site terms (Opens in a new browser tab)" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206 awsui_link_vjswe_1mhv4_654" data-analytics-funnel-value="button:r11:" href="https://aws.amazon.com/terms/" target="_blank" rel="noopener noreferrer" data-analytics-performance-mark="6-1767781106799-6167"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Site terms</span></a></span><span class="ButtonOverride--transparent"><button id="awsui-cookie-prefs-button" data-testid="footer-cookies" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" data-analytics-funnel-value="button:r13:" type="submit" data-analytics-performance-mark="7-1767781106800-7866"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Cookie preferences</span></button></span></div><div class="Footer__right awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-l_18wu0_3h5y5_823 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="ButtonDropdownOverride--transparent"><div data-testid="feedback-open" data-tourid="feedbackBtn" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":r8uv:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:r8ut:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:r8v0:" type="button" aria-haspopup="true" data-analytics-performance-mark="1552-1767799220154-949"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Feedback</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:r8ut:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span><span class="ButtonOverride--transparent"><button id="awsui-help-button" data-testid="helpPanel-open" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" data-analytics-funnel-value="button:r1b:" type="submit" data-analytics-performance-mark="9-1767781106803-9764"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Help</span></button></span></div></footer><div class="react-joyride"></div><div id="connectChatRoot" class="ConnectChat" style="display: none;"></div></div>
+  
+
+</body></html>
