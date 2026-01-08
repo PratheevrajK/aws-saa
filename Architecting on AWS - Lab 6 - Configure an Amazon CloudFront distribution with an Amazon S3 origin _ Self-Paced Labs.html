@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<!-- saved from url=(0243)https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz -->
+<html lang="en" style="scroll-padding-top: 160px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="app-sha" content="170c3476e4e909392c0de8bdda8038e565ddf17c">
+    <meta name="app-version" content="1.0.1">
+    <script type="module" crossorigin="" src="./Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin _ Self-Paced Labs_files/index-C3PRsVU-.js.download"></script>
+    <link rel="modulepreload" crossorigin="" href="https://classrooms.labs.aws.training/assets/vendor-Bl7-qj-i.js">
+    <link rel="stylesheet" crossorigin="" href="./Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin _ Self-Paced Labs_files/vendor-Z7uiIVY7.css">
+    <link rel="stylesheet" crossorigin="" href="./Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin _ Self-Paced Labs_files/index-COhcHt_4.css">
+  <style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c{display:inline-block;vertical-align:middle;line-height:1em;padding-left:.3em}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg{stroke-width:2px;pointer-events:none;fill:none;padding-bottom:1px;height:10px;width:10px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg .awsccc-stroke-linecap-square{stroke-linecap:square}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg .awsccc-stroke-linejoin-round{stroke-linejoin:round}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-i-open-c svg path{stroke:currentColor}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn{flex:0 1 100%;padding:4px 20px;box-sizing:border-box;border:0;background-color:#fff;border:1px solid #545b64;color:#545b64;font-weight:700;border-radius:2px;cursor:pointer;user-select:none;display:inline-block;text-align:center;font-size:14px;position:relative}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn:hover{background-color:#fafafa}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn:focus{outline:none;text-decoration:none}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn:focus::before{content:" ";display:block;position:absolute;left:-2px;top:-2px;width:calc(100% + 4px);height:calc(100% + 4px);border-radius:2px;box-shadow:0 0 0 2px #00a1c9}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn span{line-height:22px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-primary{background-color:#c95100;border-color:#c95100}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-primary span{color:#fff}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-primary:hover{background-color:#c84400;border-color:#c84400}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-link{background-color:rgba(0,0,0,0);border-color:rgba(0,0,0,0);color:#545b64}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-btn.awsccc-u-btn-link:hover{color:#000;background-color:#fafafa}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-primary{background-color:#f90;border-color:#f90}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-primary span{color:#16191f}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-primary:hover{background-color:#ec7211;border-color:#ec7211}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-secondary{color:#d5dbdb;background-color:#2a2e30;border-color:#879596}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-secondary:hover{background-color:#21252c}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-link{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-btn-link:hover{color:#eaeded;background-color:#21252c}</style><style>#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c{position:fixed;bottom:0;left:0;width:100%;z-index:10000}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-content{position:relative;background:linear-gradient(180deg, rgba(21, 28, 39, 0.98) 0%, rgba(38, 51, 77, 0.98) 100%);box-shadow:0px -2px 5px 0px rgba(0,0,0,.5);padding:30px 30px 15px;border-top:solid 1px #306da3;display:flex;flex-direction:column}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text-section{display:flex;flex-direction:column;flex-shrink:1;padding:0px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-title{font-weight:700;padding:0 0 5px;margin:0;color:#fff}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons{display:flex;justify-content:center;flex-wrap:wrap}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{margin-bottom:15px;padding-left:20px;padding-right:20px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text{flex:1 1 100%;margin:0 0 15px;color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text span{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.awsc-bot-above-f-imp{z-index:1005}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled #awsccc-cb-content{background:none;background-color:#2a2e33}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-secondary{background-color:#2a2e33}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-secondary span{color:#d5dbdb}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-secondary:hover{background-color:#21252c}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c.dark-mode-enabled .awsccc-u-btn-primary span{color:#16191f}@media screen and (min-width: 810px){#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-content{padding-bottom:30px;padding-left:20px;padding-right:20px;display:flex;justify-content:space-between}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{flex:1 0 25%;margin:10px 5px 0;min-width:240px}}@media screen and (min-width: 1020px){#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-content{flex-direction:row;padding-left:40px;padding-right:40px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-actions{display:flex;justify-content:center;align-items:center}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-text{flex:1;padding-right:40px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{flex:0 1 auto;margin:10px 5px 0}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons{flex-wrap:nowrap;display:flex;flex-direction:column;gap:10px;width:max-content}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cb-c #awsccc-cb-buttons .awsccc-u-btn{margin-top:0}}@media screen and (min-width: 1020px){#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl #awsccc-cb-text{padding-left:40px;padding-right:0}}div[data-id=awsccc-cb]{display:none}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl{display:flex;flex-direction:column}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl-c{padding:10px;border-block-end:1px solid #eaeded}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl-c:first-of-type{padding-top:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cl-c:last-of-type{padding-bottom:0;border-block-end:none}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-cl-c{border-color:#414750}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-container{display:flex;align-items:center;justify-content:center;bottom:0;left:0;right:0;top:0;position:fixed;outline:0;overflow:hidden;z-index:10002}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-backdrop{background-color:rgba(242,243,243,.9019607843);position:fixed;z-index:10001;right:0;top:0;bottom:0;left:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal{box-sizing:border-box;outline:none;margin:10px;background-color:#fff;border-radius:0;box-sizing:border-box;z-index:10002;position:relative;box-shadow:0 1px 1px 0 rgba(0,28,36,.3),1px 1px 1px 0 rgba(0,28,36,.15),-1px 1px 1px 0 rgba(0,28,36,.15)}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal[dir=rtl] *{direction:rtl;text-align:right}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal.awsccc-u-modal-large{max-width:820px;width:calc(100vw - 20px)}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-header{background-color:#fafafa;border-bottom:1px solid #eaeded;color:#16191f;padding:19px 20px;word-break:break-word;flex:auto}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-header h2{font-size:18px;font-weight:700;margin:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-content{overflow-y:auto;max-height:calc(100vh - 200px);padding:19px 20px}@media screen and (max-width: 480px){#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-content{max-height:calc(100vh - 275px)}}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer{border-top:1px solid #eaeded;text-decoration:none;padding:10px 20px;text-align:right;display:flex;justify-content:flex-end;flex-wrap:wrap}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer button{white-space:nowrap}@media screen and (max-width: 699px){#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer button{white-space:initial}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer>div{width:100%}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-modal-footer .awsccc-u-sb{display:flex;flex-direction:column}}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-backdrop{background-color:rgba(22,25,31,.8)}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal{background-color:#2a2e33}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-header{background-color:#21252c;border-bottom-color:#414750;color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-content{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled .awsccc-u-modal-footer{border-top-color:#414750}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb{display:flex;flex-direction:row}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-v{flex-direction:column}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-xxs{gap:4px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-xs{gap:8px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-s{gap:12px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-sb.awsccc-u-sb-m{gap:16px}</style><style>#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-info-container span,#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-info-container a{font-size:15px}</style><style>#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container span,#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container a{font-size:12px;line-height:15px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container span:focus,#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container a:focus{outline-style:solid;outline-color:#00a1c9;outline-width:2px}#awsccc-sb-ux-c #awsccc-sb-a #awsccc-cs-l-container p>span{color:#687078}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container span{color:#eaeded}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container span a{display:inline-block}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container span a span{color:#44b9d6}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled #awsccc-cs-l-container path{color:#44b9d6}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-s-cb-hidden{text-indent:-9999px;position:absolute}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-label{position:relative;display:inline-block;line-height:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-text{line-height:16px;vertical-align:top}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox,#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-input{height:14px;width:14px;z-index:1;pointer-events:none;fill:none}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-s-cb-outer{margin-right:8px;height:14px;width:14px;display:inline-block}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-input{padding:0;margin:0;position:absolute;z-index:0;opacity:0}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox-rect{background-color:#fff;fill:#fff;stroke:#687078;stroke-width:1}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox-poly-line{opacity:1;stroke:#fff;stroke-width:2;fill:none}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-checkbox-active .awscc-u-cb-checkbox-rect{fill:#0073bb;stroke:#0073bb}#awsccc-sb-ux-c #awsccc-sb-a .awscc-u-cb-checkbox-container{position:relative;line-height:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-u-cb-focused:before{content:" ";display:block;position:absolute;left:-2px;top:-2px;width:calc(100% + 4px);height:calc(100% + 4px);border-radius:2px;box-shadow:0 0 0 2px #00a1c9}#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl .awsccc-cs-s-cb-outer{margin-left:8px;margin-right:0}</style><style>#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container{position:relative}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-title{font-size:18px;line-height:20px;flex:0 0 100%;margin:0 0 5px;z-index:10;display:inline-block;line-height:normal;font-weight:400}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-text{flex:0 0 80%;padding-top:5px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-action{display:flex;justify-content:flex-end;flex:1;position:relative;margin-top:8px;margin-bottom:8px}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-paragraph{margin-top:0;font-size:14px;line-height:20px;padding:0;margin-bottom:15px}@media screen and (min-width: 700px){#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container{display:flex;flex-wrap:wrap}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-title{padding-bottom:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-text{border-top:0}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-cs-sec-container .awsccc-cs-s-action{justify-content:center;position:relative;top:auto;right:auto;padding-top:20px}}</style><style>#awsccc-sb-ux-c #awsccc-sb-a{font-family:"Amazon Ember","HelveticaNeue","Helvetica Neue","Amazon Ember",Roboto,"Roboto-Regular","Amazon Ember",Helvetica,Arial,sans-serif;font-size:14px;line-height:21px;color:#16191f;text-align:left}#awsccc-sb-ux-c #awsccc-sb-a *{background:none;border:0}#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl *{direction:rtl;text-align:right}@media screen and (min-width: 1020px){#awsccc-sb-ux-c #awsccc-sb-a.awsccc-Rtl #awsccc-cb-c #awsccc-cb-title{padding-right:40px}}#awsccc-sb-ux-c #awsccc-sb-a a,#awsccc-sb-ux-c #awsccc-sb-a a>span,#awsccc-sb-ux-c #awsccc-sb-a a svg path{color:#0073bb;text-decoration:none;font-weight:700}#awsccc-sb-ux-c #awsccc-sb-a a:hover,#awsccc-sb-ux-c #awsccc-sb-a a>span:hover,#awsccc-sb-ux-c #awsccc-sb-a a svg path:hover{color:#0073bb;text-decoration:underline}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled{color-scheme:dark}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a>span,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a svg path{color:#44b9d6;font-weight:700}#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a:hover,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a>span:hover,#awsccc-sb-ux-c #awsccc-sb-a .dark-mode-enabled a svg path:hover{color:#44b9d6}#awsccc-sb-ux-c #awsccc-sb-a .awsccc-tab-helper{outline:0;text-decoration:none}body.awsccc-modal-open{overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box}</style><title>Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin | Self-Paced Labs</title><meta name="description" content="Self-Paced Labs gives you the opportunity to learn how to use AWS in a safe sandbox environment." data-react-helmet="true"><meta property="og:description" content="Self-Paced Labs gives you the opportunity to learn how to use AWS in a safe sandbox environment." data-react-helmet="true"><meta property="og:type" content="website" data-react-helmet="true"><meta name="twitter:card" content="summary" data-react-helmet="true"><meta name="twitter:creator" content="AWS Training and Certification" data-react-helmet="true"><meta name="twitter:description" content="Self-Paced Labs gives you the opportunity to learn how to use AWS in a safe sandbox environment." data-react-helmet="true"><meta property="og:title" content="Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin" data-react-helmet="true"><meta name="twitter:title" content="Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin" data-react-helmet="true"><style data-styled="active" data-styled-version="5.3.11"></style></head>
+  <body class="awsui awsui-motion awsui-visual-refresh awsui-polaris-light-mode"><div id="awsccc-sb-ux-c"><div id="awsccc-sb-a" class=""><div data-id="awsccc-cb" style="display: none;"><div id="awsccc-cb-c" data-id="awsccc-cb-tabstart" class="awsccc-tab-helper" tabindex="-1" role="dialog" aria-labelledby="awsccc-cb-title"><div id="awsccc-cb-content"><div id="awsccc-cb-text-section"><h2 id="awsccc-cb-title">Select your cookie preferences</h2><p id="awsccc-cb-text"><span>We use essential cookies and similar tools that are necessary to provide our site and services. We use performance cookies to collect anonymous statistics, so we can understand how customers use our site and make improvements. Essential cookies cannot be deactivated, but you can choose “Customize” or “Decline” to decline performance cookies. <br><br> If you agree, AWS and approved third parties will also use cookies to provide useful site features, remember your preferences, and display relevant content, including relevant advertising. To accept or decline all non-essential cookies, choose “Accept” or “Decline.” To make more detailed choices, choose “Customize.”</span></p></div><div id="awsccc-cb-actions"><div id="awsccc-cb-buttons"><button tabindex="0" type="submit" data-id="awsccc-cb-btn-accept" aria-label="Accept all cookies" class="awsccc-u-btn awsccc-u-btn-primary"><span>Accept</span></button><button tabindex="0" type="submit" data-id="awsccc-cb-btn-decline" aria-label="Decline - Continue without accepting" class="awsccc-u-btn awsccc-u-btn-secondary"><span>Decline</span></button><button tabindex="0" type="submit" data-id="awsccc-cb-btn-customize" aria-label="Customize cookie preferences" class="awsccc-u-btn awsccc-u-btn-secondary"><span>Customize</span></button></div></div></div></div></div><div id="awsccc-cs" data-id="awsccc-cs" tabindex="0" class="" style="display: none;"><div class="awsccc-u-modal-container "><div class="awsccc-u-modal awsccc-u-modal-large" role="dialog" aria-modal="true" aria-labelledby="awsccc-u-modal-header-awsccc-cs" dir="ltr" data-awsccc-modal-toggle="true" data-id="awsccc-cs-tabtrap" tabindex="-1"><div class="awsccc-u-modal-header"><h2 id="awsccc-u-modal-header-awsccc-cs"><span id="awsccc-cs-title">Customize cookie preferences</span></h2></div><div class="awsccc-u-modal-content"><div class="awsccc-u-cl "><div class="awsccc-u-cl-c"><div id="awsccc-cs-info-container"><span>We use cookies and similar tools (collectively, "cookies") for the following purposes.</span></div></div><div class="awsccc-u-cl-c"><div data-category="essential" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Essential</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Essential cookies are necessary to provide our site and services and cannot be deactivated. They are usually set in response to your actions on the site, such as setting your privacy preferences, signing in, or filling in forms. </p></div><div class="awsccc-cs-s-action"></div></div></div><div class="awsccc-u-cl-c"><div data-category="performance" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Performance</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Performance cookies provide anonymous statistics about how customers navigate our site so we can improve site experience and performance. Approved third parties may perform analytics on our behalf, but they cannot use the data for their own purposes.</p></div><div class="awsccc-cs-s-action"><div><div class="awsccc-cs-s-cb-outer"><div class="awscc-u-cb-checkbox-container" data-id="awsccc-u-cb-performance-container"><label data-id="awsccc-u-cb-performance-label" class="awsccc-u-cb-label awsccc-u-cb-checkbox-active"><input id="awsccc-u-cb-performance" class="awsccc-u-cb-input" type="checkbox" aria-label="Allow performance category Allowed" checked="true" aria-description="Allow performance category"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false" class="awscc-u-cb-checkbox"><rect class="awscc-u-cb-checkbox-rect" x="0.5" y="0.5" rx="1.5" ry="1.5" width="13" height="13"></rect><polyline class="awscc-u-cb-checkbox-poly-line " points="2.5,7 6,10 11,3"></polyline></svg></label></div></div><span class="awsccc-u-cb-text">Allowed</span></div></div></div></div><div class="awsccc-u-cl-c"><div data-category="functional" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Functional</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Functional cookies help us provide useful site features, remember your preferences, and display relevant content. Approved third parties may set these cookies to provide certain site features. If you do not allow these cookies, then some or all of these services may not function properly.</p></div><div class="awsccc-cs-s-action"><div><div class="awsccc-cs-s-cb-outer"><div class="awscc-u-cb-checkbox-container" data-id="awsccc-u-cb-functional-container"><label data-id="awsccc-u-cb-functional-label" class="awsccc-u-cb-label awsccc-u-cb-checkbox-active"><input id="awsccc-u-cb-functional" class="awsccc-u-cb-input" type="checkbox" aria-label="Allow functional category Allowed" checked="true" aria-description="Allow functional category"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false" class="awscc-u-cb-checkbox"><rect class="awscc-u-cb-checkbox-rect" x="0.5" y="0.5" rx="1.5" ry="1.5" width="13" height="13"></rect><polyline class="awscc-u-cb-checkbox-poly-line " points="2.5,7 6,10 11,3"></polyline></svg></label></div></div><span class="awsccc-u-cb-text">Allowed</span></div></div></div></div><div class="awsccc-u-cl-c"><div data-category="advertising" class="awsccc-cs-sec-container"><h3 class="awsccc-cs-s-title">Advertising</h3><div class="awsccc-cs-s-text"><p class="awsccc-cs-s-paragraph">Advertising cookies may be set through our site by us or our advertising partners and help us deliver relevant marketing content. If you do not allow these cookies, you will experience less relevant advertising.</p></div><div class="awsccc-cs-s-action"><div><div class="awsccc-cs-s-cb-outer"><div class="awscc-u-cb-checkbox-container" data-id="awsccc-u-cb-advertising-container"><label data-id="awsccc-u-cb-advertising-label" class="awsccc-u-cb-label awsccc-u-cb-checkbox-active"><input id="awsccc-u-cb-advertising" class="awsccc-u-cb-input" type="checkbox" aria-label="Allow advertising category Allowed" checked="true" aria-description="Allow advertising category"><svg viewBox="0 0 14 14" aria-hidden="true" focusable="false" class="awscc-u-cb-checkbox"><rect class="awscc-u-cb-checkbox-rect" x="0.5" y="0.5" rx="1.5" ry="1.5" width="13" height="13"></rect><polyline class="awscc-u-cb-checkbox-poly-line " points="2.5,7 6,10 11,3"></polyline></svg></label></div></div><span class="awsccc-u-cb-text">Allowed</span></div></div></div></div><div class="awsccc-u-cl-c"><div id="awsccc-cs-l-container"><p><span>Blocking some types of cookies may impact your experience of our sites. You may review and change your choices at any time by selecting Cookie preferences in the footer of this site. We and selected third-parties use cookies or similar technologies as specified in the&nbsp;<a data-id="awsccc-cs-f-notice" href="https://aws.amazon.com/legal/cookies/" target="_blank" rel="noopener noreferrer"><span>AWS Cookie Notice<span aria-label="Opens in a new tab" role="img" class="awsccc-u-i-open-c"><svg class="awsccc-u-i-open" viewBox="0 0 16 16" focusable="false" aria-hidden="true"><path class="awsccc-stroke-linecap-square" d="M10 2h4v4"></path><path d="M6 10l8-8"></path><path class="awsccc-stroke-linejoin-round" d="M14 9.048V14H2V2h5"></path></svg></span></span></a>.</span></p></div></div></div></div><div class="awsccc-u-modal-footer"><div class="awsccc-u-sb awsccc-u-sb-xs awsccc-u-sb-h "><button tabindex="0" type="submit" data-id="awsccc-cs-btn-cancel" aria-label="Cancel customizing cookie preferences" class="awsccc-u-btn awsccc-u-btn-secondary"><span>Cancel</span></button><button tabindex="0" type="submit" data-id="awsccc-cs-btn-save" aria-label="Save preferences for customized cookies" class="awsccc-u-btn awsccc-u-btn-primary"><span>Save preferences</span></button></div></div></div><div class="awsccc-u-modal-backdrop"></div></div></div><div id="awsccc-em-modal" data-id="awsccc-em-modal" tabindex="0" class="" style="display: none;"><div class="awsccc-u-modal-container "><div class="awsccc-u-modal awsccc-u-modal-large" role="dialog" aria-modal="true" aria-labelledby="awsccc-u-modal-header-awsccc-em-modal" dir="ltr" data-awsccc-modal-toggle="true" data-id="awsccc-cs-tabtrap" tabindex="-1"><div class="awsccc-u-modal-header"><h2 id="awsccc-u-modal-header-awsccc-em-modal"><span id="awsccc-em-title">Unable to save cookie preferences</span></h2></div><div class="awsccc-u-modal-content"><div id="awsccc-em-modalBody"><p id="awsccc-emm-paragraph"><span>We will only store essential cookies at this time, because we were unable to save your cookie preferences.<br><br>If you want to change your cookie preferences, try again later using the link in the AWS console footer, or contact support if the problem persists.</span></p></div></div><div class="awsccc-u-modal-footer"><div id="awsccc-em-f-c" class="awsccc-u-sb awsccc-u-sb-xs awsccc-u-sb-h "><button tabindex="0" type="submit" data-id="awsccc-em-btn-dismiss" aria-label="Dismiss error message modal" class="awsccc-u-btn awsccc-u-btn-primary"><span>Dismiss</span></button></div></div></div><div class="awsccc-u-modal-backdrop"></div></div></div></div></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"><div class="HeaderWrapper" style="height: 160px;"><div><header class="Header" data-testid="header-HeaderStandalone"><nav><a class="SkipNavigation" href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#js-main-content"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Skip to main content</span></a><div class="Header__branding"><img alt="Classrooms" src="./Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin _ Self-Paced Labs_files/logo.png"></div><div class="Header__actions"><span class="ButtonDropdownOverride--transparent ButtonDropdownOverride--activeDisabled"><div data-testid="header-localeMenu" data-tourid="localeMenu" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":rel3:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:rel1:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:rel4:" type="button" aria-haspopup="true" data-analytics-performance-mark="2533-1767892527487-4606"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5"><i aria-hidden="true" class="fas fa-globe"></i> <span class="awsui-util-hide">Select your preferred language. Current selection:</span>English</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:rel1:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span><span class="ButtonDropdownOverride--transparent ButtonDropdownOverride--activeDisabled"><div data-jsid="header-userMenu" data-testid="header-userMenu" data-tourid="userMenu" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":rel9:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:rel7:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:rela:" type="button" aria-haspopup="true" data-analytics-performance-mark="2534-1767892527488-5212"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5"><span role="img" aria-label="User profile"><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M8 7c1.66 0 3-1.34 3-3S9.66 1 8 1 5 2.34 5 4s1.34 3 3 3Z"></path><path d="M2 16v-3c0-1.66 1.34-3 3-3h6c1.66 0 3 1.34 3 3v3" class="stroke-linejoin-round"></path></svg></span></span> Pratheevraj K</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:rel7:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span></div></nav></header><div data-tourid="labHeader" class="awsui_root_2qdw9_1ox20_185 LabHeader awsui_root-variant-h2_2qdw9_1ox20_224 awsui_refresh_2qdw9_1ox20_221"><div class="awsui_main_2qdw9_1ox20_243 awsui_refresh_2qdw9_1ox20_221"><div class="awsui_title_2qdw9_1ox20_299 awsui_title-variant-h2_2qdw9_1ox20_311 awsui_refresh_2qdw9_1ox20_221"><h2 class="awsui_heading_2qdw9_1ox20_377 awsui_heading-variant-h2_2qdw9_1ox20_407"><span class="awsui_heading-text_2qdw9_1ox20_418 awsui_heading-text_105ke_268sp_5 awsui_heading-text-variant-h2_2qdw9_1ox20_429" id="heading:re:"><span lang="en">Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin</span></span></h2></div><div class="awsui_actions_2qdw9_1ox20_267 awsui_actions-variant-h2_2qdw9_1ox20_279 awsui_refresh_2qdw9_1ox20_221 awsui_actions-centered_2qdw9_1ox20_272"><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-s_18wu0_3h5y5_773 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><button data-testid="lab-endBtn" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206 awsui_disabled_vjswe_1mhv4_227" data-analytics-funnel-value="button:r6v:" type="submit" data-analytics-performance-mark="40-1767873904169-2313" disabled=""><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_root_1612d_1m3qq_183 awsui_size-normal_1612d_1m3qq_198 awsui_variant-normal_1612d_1m3qq_222"><span class="awsui_circle_1612d_1m3qq_240 awsui_circle-left_1612d_1m3qq_268"></span><span class="awsui_circle_1612d_1m3qq_240 awsui_circle-right_1612d_1m3qq_273"></span></span><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">End Lab</span></button></div><button data-testid="lab-openConsoleBtn" class="awsui_button_vjswe_1mhv4_157 awsui_variant-primary_vjswe_1mhv4_235 awsui_disabled_vjswe_1mhv4_227" data-analytics-funnel-value="button:r23c:" type="submit" data-analytics-performance-mark="390-1767874325444-9291" disabled=""><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Open Console</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-external_h11ix_11cyn_355"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M13 9.012v-6H7M13.02 3 7 9.01M3 5.012v8h8.01" class="stroke-linejoin-round"></path></svg></span></button></div></div></div></div></div><div><main class="awsui_layout_hyvsj_ou6ur_391 awsui_content-first-child-main_hyvsj_ou6ur_546 awsui_split-panel-position-side_hyvsj_ou6ur_641 awsui_disable-body-scroll_hyvsj_ou6ur_208 awsui_disable-body-scroll-root_1fj9k_q6akd_17 awsui_has-content-gap-left_hyvsj_ou6ur_515 awsui_has-content-gap-right_hyvsj_ou6ur_518 awsui_is-overlap-disabled_hyvsj_ou6ur_498 awsui_root_1fj9k_q6akd_5" style="--awsui-header-height-rhu47t: 160px; --awsui-footer-height-rhu47t: 54px; --awsui-layout-width-rhu47t: 1272px; --awsui-main-offset-left-rhu47t: 340px; --awsui-min-content-width-rhu47t: 280px; --awsui-notifications-height-rhu47t: 0px;"><div class="awsui_navigation-container_hyvsj_ou6ur_692 awsui_disable-body-scroll_hyvsj_ou6ur_208" style="--awsui-navigation-width-rhu47t: 300px;"><nav aria-hidden="true" aria-label="Navigation drawer" class="awsui_show-navigation_hyvsj_ou6ur_730 awsui_is-navigation-open_hyvsj_ou6ur_638"><div class="awsui_trigger-wrapper_hyvsj_ou6ur_1265 awsui_remove-high-contrast-header_hyvsj_ou6ur_671"><button aria-haspopup="true" aria-label="Open navigation drawer" aria-disabled="false" class="awsui_trigger_hyvsj_ou6ur_1173 awsui_trigger-button-styles_hyvsj_ou6ur_1173 awsui_navigation-toggle_1fj9k_q6akd_7" type="button"><span class=""><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 3H1M15 8H1M15 13H1" class="stroke-linejoin-round"></path></svg></span></span></button></div></nav><nav aria-label="Navigation drawer" class="awsui_navigation_hyvsj_ou6ur_692 awsui_navigation_1fj9k_q6akd_6 awsui_is-navigation-open_hyvsj_ou6ur_638" aria-hidden="false"><div class="awsui_content-container_hyvsj_ou6ur_820 awsui_animated-content_hyvsj_ou6ur_817"><div class="awsui_hide-navigation_hyvsj_ou6ur_829"><button class="awsui_navigation-close_1fj9k_q6akd_8 awsui_button_vjswe_1mhv4_157 awsui_variant-icon_vjswe_1mhv4_293 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Close navigation drawer" title="Close navigation drawer" data-analytics-funnel-value="button:rh:" type="button" data-analytics-performance-mark="2-1767873902728-9503"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-angle-left_h11ix_11cyn_344"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M11 2 5 8l6 6" class="stroke-linejoin-round"></path></svg></span></button></div><div class="awsui_help-panel_1d237_10sww_181"><div class="awsui_header_1d237_10sww_353"><h2>Lab Information</h2><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><div data-testid="expirationTime-message" class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-xxs_18wu0_3h5y5_723 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span role="img" aria-label="In Progress"><span data-testid="ExpiryTime-available-icon" class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><circle cx="8" cy="8" r="7"></circle><path d="M9 7H7v2h2V7ZM6 7H4v2h2V7ZM12 7h-2v2h2V7Z" class="filled no-stroke"></path></svg></span></span></span>Expires Jan 09 at 5:34 AM</div></div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-xxs_18wu0_3h5y5_723 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span role="img" aria-label="Duration:"><span data-testid="DurationItem-icon" class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><circle cx="8" cy="8" r="7"></circle><path d="M8 4v5H4" class="stroke-linejoin-round"></path></svg></span></span></span>1 hour 30 minutes</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-text-body-secondary_18wu0_3h5y5_316 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><button class="awsui_trigger_xjuzf_1sawi_590 awsui_trigger-type-text_xjuzf_1sawi_590" type="button" aria-haspopup="dialog" id=":r3n:"><span class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-xxs_18wu0_3h5y5_723 awsui_color-inherit_18wu0_3h5y5_334 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span role="img" aria-label="Info"><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><circle cx="8" cy="8" r="7"></circle><path d="M8 12V7M8 6V4"></path></svg></span></span></span>Available languages</button></span></div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="ButtonDropdownOverride--sidebar"><div data-testid="feedback-open-sidebar" data-tourid="false" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":relf:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:reld:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:relg:" type="button" aria-haspopup="true" data-analytics-performance-mark="2535-1767892527490-5144"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5"><span role="img" aria-label="Feedback" class="feedbackMenu-icon"><span class="awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M14 12c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1H2c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h4v3l4-3h4Z" class="stroke-linejoin-round"></path></svg></span></span>Feedback</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:reld:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span></div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-top-s_18wu0_3h5y5_768 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><button data-testid="newFeatures-button" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-link_vjswe_1mhv4_380" data-analytics-funnel-value="button:rp:" type="submit" data-analytics-performance-mark="4-1767873902732-5490"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" aria-hidden="true" class="NewFeatures__icon NewFeatures__icon--light"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"></path></svg>What's New</span></button></div></div><div class="awsui_content_1d237_10sww_390"><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-l_18wu0_3h5y5_828 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><h3 data-testid="lab-resources" class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_h3-variant_18wu0_3h5y5_176 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Resources</h3><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">DestinationBucketName</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r1tl:"><button aria-label="Copy DestinationBucketName" title="Copy DestinationBucketName" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:r1tm:" type="submit" data-analytics-performance-mark="344-1767874323776-5211"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="bffcf7e5-a458-41d7-840d-4ff261dc5fb9" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="DestinationBucketName" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="destination-bucket-398476859"></div></div></div></div><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">LabBucketName</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r1to:"><button aria-label="Copy LabBucketName" title="Copy LabBucketName" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:r1tp:" type="submit" data-analytics-performance-mark="345-1767874323778-5826"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="2f5feee5-3285-437d-866b-811b8dfcb7b3" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="LabBucketName" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="lab-bucket-398476859"></div></div></div></div><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">LabCloudFrontDistributionDNS</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r1tr:"><button aria-label="Copy LabCloudFrontDistributionDNS" title="Copy LabCloudFrontDistributionDNS" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:r1ts:" type="submit" data-analytics-performance-mark="346-1767874323778-1648"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="3e1264ad-1794-4217-9f49-d39fc6fcc7cb" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="LabCloudFrontDistributionDNS" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="d1argkhyfww6v9.cloudfront.net"></div></div></div></div><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">LabLoadBalancerDNS</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r1tu:"><button aria-label="Copy LabLoadBalancerDNS" title="Copy LabLoadBalancerDNS" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:r1tv:" type="submit" data-analytics-performance-mark="347-1767874323779-7136"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="011490b0-3e59-493e-8d02-23c71cc873a9" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="LabLoadBalancerDNS" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="LabELB-1271730187.us-west-2.elb.amazonaws.com"></div></div></div></div><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">PrimaryRegion</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r1u1:"><button aria-label="Copy PrimaryRegion" title="Copy PrimaryRegion" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:r1u2:" type="submit" data-analytics-performance-mark="348-1767874323779-3130"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="26e3ccd5-3c2f-428a-99e9-5db261a6afcf" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="PrimaryRegion" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="us-west-2"></div></div></div></div><div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-xxxs_18wu0_3h5y5_703 awsui_color-text-label_18wu0_3h5y5_313 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">SecondaryRegion</div><div class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r1u4:"><button aria-label="Copy SecondaryRegion" title="Copy SecondaryRegion" class="awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" data-analytics-funnel-value="button:r1u5:" type="submit" data-analytics-performance-mark="349-1767874323779-8880"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div style="width: 80%; display: inline-block;"><div id="a22d3969-94cc-444b-9d71-4f11bbd11f96" class="awsui_root_2rhyz_mfjkh_145 awsui_input-container_2rhyz_mfjkh_313"><input aria-label="SecondaryRegion" class="awsui_input_2rhyz_mfjkh_149 awsui_input-readonly_2rhyz_mfjkh_203" autocomplete="on" readonly="" type="text" value="us-east-1"></div></div></div></div></div><hr><div data-testid="lab-toc"><h3 class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_h3-variant_18wu0_3h5y5_176 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Lab Content</h3><span class="SideNavigationOverride--labToc" lang="en"><div class="awsui_root_l0dv0_1227o_145 LabNavigation__content"><div class="awsui_list-container_l0dv0_1227o_224"><ul class="awsui_list_l0dv0_1227o_224 awsui_list-variant-root_l0dv0_1227o_245 awsui_list-variant-root--first_l0dv0_1227o_252"><li data-itemid="item-1" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#lab-overview" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Lab overview</span></a></li><li data-itemid="item-2" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#start-lab" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Start lab</span></a></li><li data-itemid="item-3" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#task-1-explore-the-existing-cloudfront-distribution" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 1: Explore the existing CloudFront distribution</span></a></li><li data-itemid="item-4" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#task-2-create-an-s3-bucket" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 2: Create an S3 bucket</span></a></li><li data-itemid="item-5" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#task-3-configure-the-s3-labbucket-for-public-access" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 3: Configure the S3 LabBucket for public access</span></a></li><li data-itemid="item-6" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#task-4-upload-an-object-into-the-bucket-and-testing-public-access" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 4: Upload an object into the bucket and testing public access</span></a></li><li data-itemid="item-7" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#task-5-secure-the-bucket-with-amazon-cloudfront-and-origin-access-control" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 5: Secure the bucket with Amazon CloudFront and Origin Access Control</span></a></li><li data-itemid="item-8" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#task-6-test-direct-access-to-a-file-in-the-bucket-using-the-amazon-s3-url" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 6: Test direct access to a file in the bucket using the Amazon S3 URL</span></a></li><li data-itemid="item-9" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#task-7-test-access-to-the-object-in-the-bucket-using-the-cloudfront-distribution" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Task 7: Test access to the object in the bucket using the CloudFront distribution</span></a></li><li data-itemid="item-10" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#optional-task-8-replicate-an-s3-bucket-across-aws-regions" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Optional Task 8: Replicate an S3 bucket across AWS Regions</span></a></li><li data-itemid="item-11" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#conclusion" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Conclusion</span></a></li><li data-itemid="item-12" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#end-lab" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">End lab</span></a></li><li data-itemid="item-13" class="awsui_list-item_l0dv0_1227o_260"><a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#additional-resources" class="awsui_link_l0dv0_1227o_317"><span class="awsui_link-text_eymn4_rug8v_6">Additional resources</span></a></li></ul></div></div></span></div></div></div></div></nav></div><div role="region" aria-label="Notifications" class="awsui_notifications_hyvsj_ou6ur_839 awsui_sticky-notifications_hyvsj_ou6ur_848 awsui_notifications_1fj9k_q6akd_10"><div><div role="status"></div><div role="alert"></div><div aria-live="polite"><div class="awsui_flashbar_1q84n_1qhb5_719"><ul class="awsui_flash-list_1q84n_1qhb5_371"></ul></div></div></div></div><div class="awsui_container_hyvsj_ou6ur_612 awsui_split-panel-position-side_hyvsj_ou6ur_641 awsui_is-navigation-open_hyvsj_ou6ur_638 awsui_content_1fj9k_q6akd_9" style="--awsui-split-panel-height-rhu47t: 0px; --awsui-sticky-vertical-top-offset: calc(0px + 0px); --awsui-sticky-vertical-bottom-offset: 0px;"><div id="js-main-content" tabindex="-1" class="LabPage__wrapper" style="outline: none;"><div class="awsui_root_18582_whr0e_145 awsui_vertical_18582_whr0e_192 awsui_vertical-l_18582_whr0e_210"><div class="awsui_child_18582_whr0e_149"></div><div class="awsui_child_18582_whr0e_149"></div><div class="awsui_child_18582_whr0e_149"><div class="awsui_root_14iqq_1wfhd_189 awsui_variant-default_14iqq_1wfhd_230 awsui_refresh_14iqq_1wfhd_238"><div id=":r97:" class="awsui_content-wrapper_14iqq_1wfhd_309"><div class="awsui_content_14iqq_1wfhd_309"><div class="awsui_content-inner_14iqq_1wfhd_500 awsui_content-inner_1mwlm_oyjaq_5"><div class="js-markdown-content-wrapper LabMarkdown" lang="en"><div class="BookmarkManagerWrapper"><div class="BookmarkManagerWrapper__sidebar" data-testid="bookmark-sidebar-container"><div class="BookmarkIndicator line-89" data-testid="bookmark-saved-indicator" style="top: 12801px;"><div class="BookmarkIndicator__progress-line" data-testid="bookmark-progress-line" style="height: 12797px;"></div><button type="button" class="BookmarkCheckbox" data-testid="bookmark-checkbox-remove-89" aria-label="Remove current step" aria-pressed="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="BookmarkCheckbox__icon BookmarkCheckbox__icon--checked" aria-hidden="true"><path d="M192 64c-35.3 0-64 28.7-64 64v416c0 11.5 6.2 22.2 16.2 27.8s22.3 5.5 32.2-.4L320 485.3l143.5 86.1c9.9 5.9 22.2 6.1 32.2.4S512 555.5 512 544V128c0-35.3-28.7-64-64-64z"></path></svg></button></div></div><div class="BookmarkManagerWrapper__content" data-testid="bookmark-content-container"><div class="MarkdownContent" style="overflow-x: auto;"><div class="sc-aXZVg lhIXva"><h1 id="lab-6-configure-an-amazon-cloudfront-distribution-with-an-amazon-s3-origin">Lab 6: Configure an Amazon CloudFront Distribution with an Amazon S3 Origin</h1>
+<p>© 2025 Amazon Web Services, Inc. or its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. All trademarks are the property of their owners.</p>
+<p>Note: Do not include any personal, identifying, or confidential information into the lab environment. Information entered may be visible to others.</p>
+<p>Corrections, feedback, or other questions? Contact us at <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank" rel="noopener noreferrer"><em>AWS Training and Certification</em></a>.</p>
+<h2 id="lab-overview">Lab overview</h2>
+<p>Amazon Web Services (AWS) solutions architects must frequently design and build secure, high-performing, resilient, efficient architectures for applications and workloads to deliver content. Amazon CloudFront is a web service that provides a cost-effective way to distribute content with low latency and high data transfer speeds. You can use CloudFront to accelerate static website content delivery, serve video on demand or live streaming video, and even run serverless code at the edge location. In this lab, you configure a CloudFront distribution in front of an Amazon Simple Storage Service (Amazon S3) bucket and secure it using origin access control (OAC) provided by CloudFront.</p>
+<h3 id="objectives">Objectives</h3>
+<p>After completing this lab, you should be able to do the following:</p>
+<ul>
+<li>Create an S3 bucket with default security settings.</li>
+<li>Configure an S3 bucket for public access.</li>
+<li>Add an S3 bucket as a new origin to an existing CloudFront distribution.</li>
+<li>Secure an S3 bucket to permit access only through the CloudFront distribution.</li>
+<li>Configure OAC to lock down security to an S3 bucket.</li>
+<li>Configure Amazon S3 resource policies for public or OAC access.</li>
+</ul>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>This lab requires the following:</p>
+<ul>
+<li>Access to a notebook computer with Wi-Fi and Microsoft Windows, macOS, or Linux (Ubuntu, SuSE, or Red Hat)</li>
+<li>An internet browser, such as Chrome, Firefox, or Microsoft Edge</li>
+</ul>
+<h3 id="technical-knowledge-prerequisites">Technical knowledge prerequisites</h3>
+<p>To successfully complete this lab, you should be familiar with the AWS Management Console and have a basic understanding of edge services in the AWS Cloud.</p>
+<h3 id="icon-key">Icon key</h3>
+<p>Various icons are used throughout this lab to call attention to different types of instructions and notes. The following list explains the purpose for each icon:</p>
+<ul>
+<li><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> A hint, tip, or important guidance.</li>
+<li><i class="fas fa-info-circle" style="color:#008296"></i> <strong>Learn more:</strong> Where to find more information.</li>
+<li><i class="fas fa-exclamation-circle" style="color:#ff6633"></i> <strong>Caution:</strong> Information of special interest or importance (not important enough to cause problems with the equipment or data if you miss it, but it can result in the need to repeat certain steps).</li>
+<li><i class="fas fa-exclamation-triangle" style="color:#d13212"></i> <strong>WARNING:</strong> An action that is irreversible and can potentially impact the failure of a command or process (including warnings about configurations that cannot be changed after they are made).</li>
+<li><i class="far fa-eye" style="color:#262262"></i> <strong>Hint:</strong> A hint to a question or challenge.</li>
+<li><i class="fas fa-file-code" style="color:#c9208a"></i> <strong>File contents:</strong> A code block that displays the contents of a script or file you need to run that has been pre-created for you.</li>
+<li><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> A time when copying a command, script, or other text to a text editor (to edit specific variables within it) might be easier than editing directly in the command line or terminal.</li>
+</ul>
+<p><a id="startLab"></a></p>
+<h2 id="start-lab">Start lab</h2>
+<ol class="top-level">
+<li value="1">
+<p>To launch the lab, at the top of the page, choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;white-space:nowrap">Start Lab</span>.</p>
+<p><i aria-hidden="true" class="fas fa-exclamation-circle" style="color:#7C5AED"></i> <strong>Caution:</strong> You must wait for the provisioned AWS services to be ready before you can continue.</p>
+</li>
+<li value="2">
+<p>To open the lab, choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;white-space:nowrap">Open Console <span id="amazonaws-labs-rc-03bec811-d390-4073-8ebe-10c24983395e"><span class="bork-icon awsui_icon_h11ix_11cyn_189 awsui_icon-flex-height_h11ix_11cyn_197 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-external_h11ix_11cyn_355" style="height: 20px;"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M13 9.012v-6H7M13.02 3 7 9.01M3 5.012v8h8.01" class="stroke-linejoin-round"></path></svg></span></span></span>.</p>
+<p>You are automatically signed in to the AWS Management Console in a new web browser tab.</p>
+<p><i aria-hidden="true" class="fas fa-exclamation-triangle" style="color:#d13212"></i> <strong>Warning:</strong> Do not change the <strong>Region</strong> unless instructed.</p>
+</li>
+</ol>
+<h3 id="common-sign-in-errors">Common sign-in errors</h3>
+<h4 id="error-you-must-first-sign-out">Error: You must first sign out</h4>
+<p><img src="./Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin _ Self-Paced Labs_files/logouterror.png" alt="Log out error"></p>
+<p>If you see the message, <strong>You must first log out before logging into a different AWS account:</strong></p>
+<ul>
+<li>Choose the <strong>click here</strong> link.</li>
+<li>Close your <strong>Amazon Web Services Sign In</strong> web browser tab and return to your initial lab page.</li>
+<li>Choose <span style="background-color:#232f3e;font-weight:bold;font-size:90%;color:white;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Open Console</span> again.</li>
+</ul>
+<h4 id="error-choosing-start-lab-has-no-effect">Error: Choosing Start Lab has no effect</h4>
+<p>In some cases, certain pop-up or script blocker web browser extensions might prevent the <strong>Start Lab</strong> button from working as intended. If you experience an issue starting the lab:</p>
+<ul>
+<li>Add the lab domain name to your pop-up or script blocker’s allow list or turn it off.</li>
+<li>Refresh the page and try again.</li>
+</ul>
+<hr>
+<h3 id="lab-environment">Lab Environment</h3>
+<p>The lab environment provides you with some resources to get started. There is an Auto Scaling group of EC2 instances being used as publicly accessible web servers. The web server infrastructure is deployed in an Amazon Virtual Private Cloud (Amazon VPC) and configured for multiple Availability Zones. It also uses load balancers. The lab also provides a CloudFront distribution with this load balancer as an origin.</p>
+<p>The following diagram shows the general expected architecture you should have at the end of this lab. During&nbsp;this&nbsp;lab,&nbsp;you&nbsp;create&nbsp;a&nbsp;new S3&nbsp;bucket&nbsp;for&nbsp;the&nbsp;existing&nbsp;lab&nbsp;environment.&nbsp;You then configure this bucket as&nbsp;a new, secure&nbsp;origin&nbsp;to&nbsp;the&nbsp;existing&nbsp;CloudFront&nbsp;distribution.</p>
+<p><img src="./Architecting on AWS - Lab 6 - Configure an Amazon CloudFront distribution with an Amazon S3 origin _ Self-Paced Labs_files/Lab-6-overview.png" alt="Architecture diagram showing the resources at the end of the lab."></p>
+<p><em>Image description: The preceding diagram depicts an environment with an Amazon VPC for secure and isolated connections between services. To decrease latency it has Amazon CloudFront to facilitate a CDN (Content-Delivery-Network) as a service for faster upload and download speeds, this connects to an InternetGateway to provide support for internet-facing applications, which is behind an Application Load Balancer which helps in distributing traffic among different instances behind an Auto-Scaling Group inside PrivateSubnets with a single NAT Gateway in each Public Subnet. It also uses Amazon S3 to provide cost effective object storage.</em></p>
+<h3 id="services-used-in-this-lab">Services used in this lab</h3>
+<h4 id="amazon-cloudfront">Amazon CloudFront</h4>
+<p>CloudFront is a content delivery web service. It integrates with other AWS products so that developers and businesses can distribute content to end users with low latency, high data transfer speeds, and no minimum usage commitments.</p>
+<p>You can use CloudFront to deliver your entire website, including dynamic, static, streaming, and interactive content, using a global network of edge locations. CloudFront automatically routes requests for your content to the nearest edge location to deliver content with the best possible performance. CloudFront is optimized to work with other AWS services, like Amazon S3, Amazon Elastic Compute Cloud (Amazon EC2), Elastic Load Balancing (ELB), and Amazon Route 53. CloudFront also works seamlessly with any origin server that doesn’t use AWS, which stores the original, definitive versions of your files.</p>
+<h4 id="amazon-simple-storage-service-amazon-s3">Amazon Simple Storage Service (Amazon S3)</h4>
+<p>Amazon S3 provides developers and information technology teams with secure, durable, highly scalable object storage. Amazon S3 has a simple web services interface to store and retrieve any amount of data from anywhere on the web.</p>
+<p>You can use Amazon S3 alone or together with other AWS services such as Amazon EC2, Amazon Elastic Block Store (Amazon EBS), and Amazon Simple Storage Service Glacier (Amazon S3 Glacier), along with third-party storage repositories and gateways. Amazon S3 provides cost-effective object storage for a wide variety of use cases, including cloud applications, content distribution, backup and archiving, disaster recovery, and big data analytics.</p>
+<h3 id="aws-services-not-used-in-this-lab">AWS services not used in this lab</h3>
+<p>AWS services not used in this lab are turned off in the lab environment. In addition, the capabilities of the services used in this lab are limited to only what the lab requires. Expect errors when accessing other services or performing actions beyond those provided in this lab guide.</p>
+<hr>
+<h2 id="task-1-explore-the-existing-cloudfront-distribution">Task 1: Explore the existing CloudFront distribution</h2>
+<p>In this task, you examine the existing CloudFront distribution that was built for web server content. Before making changes to an environment, it is a good practice to understand the existing configuration. If you want to use CloudFront distributions for your personal AWS environments, you need to build and configure the distribution itself first. In later tasks, you add an S3 bucket as a new origin to this CloudFront distribution.</p>
+<h3 id="task-11-open-the-cloudfront-console">Task 1.1: Open the CloudFront console</h3>
+<ol start="3" class="top-level">
+<li value="3">
+<p>If you have not already opened the console, follow the instructions in the <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#startLab">Start Lab</a> section to log in to the console.</p>
+</li>
+<li value="4">
+<p>At the top of the console, in the search bar, search for and choose <span id="amazonaws-labs-rc-9c045900-113a-4d88-80e0-873e1b1999fb"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r1vt:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r1vu:" type="submit" data-analytics-performance-mark="359-1767874323980-4735"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CloudFront</span></div></span>.</p>
+</li>
+</ol>
+<h3 id="task-12-open-the-existing-cloudfront-distribution">Task 1.2: Open the existing CloudFront distribution</h3>
+<ol start="5" class="top-level">
+<li value="5">Choose the ID link for the only available distribution.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> If you do not find the list of distributions, ensure that you are at the correct page. Choose <strong>Distributions</strong> from the CloudFront navigation menu located on the left side of the console.</p>
+<p>A page showing the details of the distribution is displayed.</p>
+<h3 id="task-13-explore-the-properties-of-the-existing-distribution">Task 1.3: Explore the properties of the existing distribution</h3>
+<p>In this task, you explore each tab of the distribution to review the existing configuration. In this lab, you are not configuring this CloudFront distribution in great detail. However, it is useful to know where all of the configurations you might need for managing a CloudFront distribution are located.<a id="GeneralTab"></a></p>
+<ol start="6" class="top-level">
+<li value="6">Examine the contents of the <strong>General</strong> tab.</li>
+</ol>
+<p>This tab contains the details about the current configuration of this particular CloudFront distribution. It contains the most generally needed information about a distribution. It is also where you configure the common high-level items for the distribution, such as activating the distribution, logging, and certificate settings.</p>
+<p><a id="distributionARN"></a></p>
+<ol start="7" class="top-level">
+<li value="7">
+<p><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> From the <strong>Details</strong> section, in the <strong>General</strong> tab, copy the <strong>ARN</strong> value and save it in a text editor. You need this value for a later task.</p>
+</li>
+<li value="8">
+<p><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> From the <strong>Details</strong> section, in the <strong>General</strong> tab, copy the <strong>Distribution domain name</strong> value.</p>
+</li>
+</ol>
+<p>The Distribution domain name is also found to the left of these lab instructions under the listing <em>LabCloudFrontDistributionDNS</em>.</p>
+<ol start="9" class="top-level">
+<li value="9">Paste the <strong>Distribution domain value</strong> you copied into a new browser tab.</li>
+</ol>
+<p>A simple web page is loaded displaying the information of the web server from which CloudFront retrieved the content. By requesting content from the Distribution domain value for the CloudFront distribution, you are verifying that the existing cache is working.</p>
+<p>You can close this tab.</p>
+<ol start="10" class="top-level">
+<li value="10">Return to the <strong>CloudFront</strong> console.</li>
+<li value="11">Choose the <strong>Security</strong> tab.</li>
+</ol>
+<p>This tab contains the distribution’s configuration if you need to keep your application secure from the most common web threats using AWS WAF or need to prevent users in specific countries from accessing your content using geographic restrictions. These features are not configured for use in this lab.</p>
+<ol start="12" class="top-level">
+<li value="12">Choose the <strong>Origins</strong> tab.</li>
+</ol>
+<p>This tab contains the details about the current origins that exist for this particular CloudFront distribution. It is also the area of the console you can use to configure new or existing CloudFront origins. A <em>CloudFront Origin</em> defines the location of the definitive, original version of the content that is delivered through the CloudFront distribution.</p>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> The only origin currently on the distribution is an ELB load balancer. This load balancer is accepting and directing web traffic for the auto scaling web servers in its target group.</p>
+<ol start="13" class="top-level">
+<li value="13" class=""><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> Copy the load balancer’s Domain Name System (DNS) value for this origin from the column labeled <strong>Origin domain</strong>.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note</strong>: You can adjust the widths of most columns in the console by dragging the dividers in the header.</p>
+<ol start="14" class="top-level">
+<li value="14">Paste the DNS value for the load balancer into a new browser tab.</li>
+</ol>
+<p>The DNS value for this distribution is also found to the left of these lab instructions under the listing <em>LabLoadBalancerDNS</em>.</p>
+<p>The simple web page hosted on the EC2 instances is displayed again. This web page displays the same content that was delivered by the CloudFront distribution earlier. However, by requesting from the load balancer directly you are not using the existing CloudFront caching system. In any single request, the EC2 Instance ID displayed on the page might differ because traffic is not always routed to the same EC2 instance behind the load balancer.</p>
+<p>This step demonstrates that the origins defined for a distribution are the locations used to retrieve novel content when a request is made to the CloudFront distribution’s frontend.</p>
+<p>You can close this tab.</p>
+<ol start="15" class="top-level">
+<li value="15">
+<p>Return to the <strong>CloudFront</strong> console.</p>
+</li>
+<li value="16">
+<p>Choose the <strong>Behaviors</strong> tab.</p>
+</li>
+</ol>
+<p><em>Behaviors</em> define the actions that the CloudFront distribution takes when there is a request for content, such as which origin to serve which content, Time To Live of content in the cache, cookies, and how to handle various headers.</p>
+<p>This tab contains a list of current behaviors defined for the distribution. You configure new or existing behaviors here. Behaviors for the distribution are evaluated in the explicit order in which you define them on this tab.</p>
+<p>Do the following to review or edit the configuration of any single behavior:</p>
+<ul>
+<li>Select the radio button <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> in the row next to the behavior you want to modify.</li>
+<li>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</li>
+<li>Choose <strong>Cancel</strong> to close the page and return to the console.</li>
+</ul>
+<p>There is only one behavior currently configured in this lab environment. The behavior accepts HTTP and HTTPS for both GET and HEAD requests to the load balancer origin.</p>
+<ol start="17" class="top-level">
+<li value="17">Choose the <strong>Error Pages</strong> tab.</li>
+</ol>
+<p>This tab details which error page is to be returned to the user when the content requested results in an HTTP 4xx or 5xx status code. You can configure custom error pages for specific error codes here.</p>
+<ol start="18" class="top-level">
+<li value="18">Choose the <strong>Invalidations</strong> tab.</li>
+</ol>
+<p>This tab contains the distribution’s configuration for object invalidation. <em>Invalidated</em> objects are removed from CloudFront edge caches. A faster and less expensive method is to use versioned objects or directory names. There are no invalidations configured for CloudFront distributions by default.</p>
+<ol start="19" class="top-level">
+<li value="19">Choose the <strong>Tags</strong> tab.</li>
+</ol>
+<p>This tab contains the configuration for any tags applied to the distribution. You can view and edit existing tags and create new tags here. Tags help you identify and organize your distributions.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have explored the existing CloudFront distribution.</p>
+<hr>
+<h2 id="task-2-create-an-s3-bucket">Task 2: Create an S3 bucket</h2>
+<p>In this task, you create and configure a new S3 bucket. This bucket is used as a new origin for the CloudFront distribution.</p>
+<ol start="20" class="top-level">
+<li value="20">
+<p>At the top of the console, in the search bar, search for and choose <span id="amazonaws-labs-rc-8d10d9c8-3838-4101-a6cd-75acb483960e"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r200:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r201:" type="submit" data-analytics-performance-mark="360-1767874323981-8009"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</p>
+</li>
+<li value="21">
+<p>In the <strong>Buckets</strong> section, choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create bucket</span>.</p>
+</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> If you do not find the Create bucket button, ensure you are at the correct page. Choose <strong>Buckets</strong> from the navigation menu located on the left side of the console.</p>
+<p>The <strong>Create bucket</strong> page is displayed.</p>
+<ol start="22" class="top-level">
+<li value="22">Copy the <strong>LabBucketName</strong> from left of the lab instructions and paste into the <strong>Bucket name</strong> field.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> To simplify the written instructions in this lab, this newly created bucket is referred to as the <em>LabBucket</em> for the remainder of the instructions.</p>
+<p>The AWS Region should match the <em>PrimaryRegion</em> value found to the left of these lab instructions.</p>
+<ol start="23" class="top-level">
+<li value="23">
+<p>Leave all other settings on this page as the default configurations.</p>
+</li>
+<li value="24">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create bucket</span>.</p>
+</li>
+</ol>
+<p>The Amazon S3 console is displayed. The newly created bucket is displayed among the list of all the buckets for the account.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have created a new S3 bucket with the default configuration.</p>
+<hr>
+<h2 id="task-3-configure-the-s3-labbucket-for-public-access">Task 3: Configure the S3 LabBucket for public access</h2>
+<p>In this task, you review the default access setting for S3 buckets. Next, you modify the permissions settings to allow public access to the bucket.</p>
+<h3 id="task-31-configure-the-labbucket-to-allow-public-policies-to-be-created">Task 3.1: Configure the LabBucket to allow public policies to be created</h3>
+<ol start="25" class="top-level">
+<li value="25">Select the link for the newly created <em>LabBucket</em> found in the <strong>Buckets</strong> section.</li>
+</ol>
+<p>A page with all of the bucket details is displayed.</p>
+<ol start="26" class="top-level">
+<li value="26">
+<p>Choose the <strong>Permissions</strong> tab.</p>
+</li>
+<li value="27">
+<p>Locate the <strong>Block public access (bucket settings)</strong> section.</p>
+</li>
+<li value="28">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</p>
+</li>
+</ol>
+<p>The <strong>Edit Block public access (bucket settings)</strong> page is displayed.</p>
+<ol start="29" class="top-level">
+<li value="29">
+<p>Unselect <i class="far fa-square" style="color:#0073bb"></i> <strong>Block <em>all</em> public access</strong>.</p>
+</li>
+<li value="30">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save Changes</span>.</p>
+</li>
+</ol>
+<p>A message window titled Edit Block public access (bucket settings) is displayed.</p>
+<ol start="31" class="top-level">
+<li value="31">
+<p>In the message field, enter <span id="amazonaws-labs-rc-2990ad0f-83ee-464c-be76-336c0f0dd8d4"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r203:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r204:" type="submit" data-analytics-performance-mark="361-1767874323982-1717"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">confirm</span></div></span>.</p>
+</li>
+<li value="32">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Confirm</span>.</p>
+</li>
+</ol>
+<p>You have removed the block on all public access policies for the LabBucket. You are now able to create access policies for the bucket that allow for public access. The bucket is currently not public, but anyone with the appropriate permissions can grant public access to objects stored within the bucket.</p>
+<h3 id="task-32-configure-a-public-read-policy-for-the-labbucket">Task 3.2: Configure a public read policy for the LabBucket</h3>
+<p>You now create a public object read policy for this bucket.</p>
+<ol start="33" class="top-level">
+<li value="33">
+<p>On the <strong>Permissions</strong> tab, locate the <strong>Bucket policy</strong> section.</p>
+</li>
+<li value="34">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</p>
+</li>
+</ol>
+<p>The <strong>Edit bucket policy</strong> page is displayed.</p>
+<p><a id="bucketARN"></a></p>
+<ol start="35" class="top-level">
+<li value="35"><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> Copy and paste the <strong>Bucket ARN</strong> value into a text editor to save the information for later. It is a string value like <em>arn:aws:s3:::LabBucket</em> located above the <em>Policy</em> box.</li>
+</ol>
+<p>The ARN value uniquely identifies this S3 bucket. You need this specific ARN value when creating bucket based policies.</p>
+<ol start="36" class="top-level">
+<li value="36"><i class="fas fa-file-code" style="color:#c9208a"></i> <strong>File contents:</strong> Copy and paste the following JSON into a text editor.</li>
+</ol>
+<span id="amazonaws-labs-rc-10e8b406-9ba7-421b-b470-77dae7b1be59"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r206:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:r207:" type="submit" data-analytics-performance-mark="362-1767874323985-28"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"Version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2012-10-17"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Policy1621958846486"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Statement"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"Sid"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"OriginalPublicReadPolicy"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"*"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-string">"s3:GetObject"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-string">"s3:GetObjectVersion"</span>
+            <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"RESOURCE_ARN"</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre></div></div></div></span><ol start="37" class="top-level">
+<li value="37">Replace the <strong>RESOURCE_ARN</strong> value in the JSON with the <strong>Bucket ARN</strong> value you copied in a <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#bucketARN">previous step</a> and append a <span id="amazonaws-labs-rc-efecabb0-40ed-4cc1-afc1-e608e4400054"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r209:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r20a:" type="submit" data-analytics-performance-mark="363-1767874323986-2890"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">/*</span></div></span> to the end of the pasted <strong>Bucket ARN</strong> value.</li>
+</ol>
+<p><i class="fas fa-info-circle" style="color:#008296" aria-hidden="true"></i>  By appending the <span id="amazonaws-labs-rc-90698bd5-b896-4742-bd08-545b51139a4b"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r20c:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r20d:" type="submit" data-analytics-performance-mark="364-1767874323987-9784"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">/*</span></div></span> wildcard to the end of the ARN, the policy definition applies to all objects located in the bucket.</p>
+<p>Here is the example of the updated policy JSON:</p>
+<span id="amazonaws-labs-rc-8f1dae52-543c-494b-826b-3db3c24e535f"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r20f:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:r20g:" type="submit" data-analytics-performance-mark="365-1767874323989-1597"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"Version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2012-10-17"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Policy1621958846486"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Statement"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"Sid"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"OriginalPublicReadPolicy"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"*"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-string">"s3:GetObject"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-string">"s3:GetObjectVersion"</span>
+            <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"arn:aws:s3:::lab-bucket-1234/*"</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre></div></div></div></span><ol start="38" class="top-level">
+<li value="38">
+<p>Return to the <strong>Amazon S3 console</strong>.</p>
+</li>
+<li value="39">
+<p>Paste the completed JSON into the <em>Policy</em> box.</p>
+</li>
+<li value="40">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save changes</span>.</p>
+</li>
+</ol>
+<p><i class="fas fa-exclamation-circle" style="color:#ff6633" aria-hidden="true"></i> <strong>Caution:</strong>  If you receive an error message at the bottom of the screen, it’s probably caused by a syntax error with JSON. The policy will not save until the JSON is valid. You can expand the error message in the Amazon S3 console for more information about correcting the policy.</p>
+<p><i class="fas fa-info-circle" style="color:#008296" aria-hidden="true"></i> By using the <span id="amazonaws-labs-rc-ea3c8c2d-640f-4f8f-b30a-f9ece97ae9a5"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r20i:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r20j:" type="submit" data-analytics-performance-mark="366-1767874323990-5460"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">*</span></div></span> wildcard as the Principal value, <em>all</em> identities requesting the actions defined in the policy document are allowed to do so. By appending the <span id="amazonaws-labs-rc-d8ae5794-5576-4fa2-ab90-7499877665d2"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r20l:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r20m:" type="submit" data-analytics-performance-mark="367-1767874323991-4624"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">/*</span></div></span> wildcard to the allowed Resources, this policy applies to all objects located in the bucket.</p>
+<p><strong>Note:</strong> The policies currently applied to the bucket make the objects in this bucket publicly readable.</p>
+<p>In later lab steps, you configure the bucket to be accessible only from the CloudFront distribution.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have configured an S3 bucket for public read access.</p>
+<hr>
+<h2 id="task-4-upload-an-object-into-the-bucket-and-testing-public-access">Task 4: Upload an object into the bucket and testing public access</h2>
+<p>In this task, you upload a single object to the LabBucket. You use this object to test access in the remaining lab tasks.</p>
+<h3 id="task-41-create-a-new-folder-in-the-bucket">Task 4.1: Create a new folder in the bucket</h3>
+<ol start="41" class="top-level">
+<li value="41">
+<p>Choose the <strong>Objects</strong> tab.</p>
+</li>
+<li value="42">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create folder</span>.</p>
+</li>
+<li value="43">
+<p>Enter <span id="amazonaws-labs-rc-4345d982-ffb8-45ca-9195-00c06618265d"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r20o:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r20p:" type="submit" data-analytics-performance-mark="368-1767874323992-4160"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CachedObjects</span></div></span> into the <strong>Folder name</strong> field.</p>
+</li>
+<li value="44">
+<p>Leave all other settings on the page at the default values.</p>
+</li>
+<li value="45">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create folder</span>.</p>
+</li>
+</ol>
+<h3 id="task-42-upload-an-object-to-the-bucket">Task 4.2: Upload an object to the bucket</h3>
+<ol start="46" class="top-level">
+<li value="46">
+<p>Download the object for these lab instructions by choosing <a href="https://us-west-2-tcprod.s3.us-west-2.amazonaws.com/courses/ILT-TF-200-ARCHIT/v7.10.2.prod-574156df/lab-6-CloudFront/scripts/logo.png" target="_blank" rel="noopener noreferrer">logo.png</a> and saving it to your local device.</p>
+</li>
+<li value="47">
+<p>Return to the <strong>Amazon S3</strong> Console.</p>
+</li>
+<li value="48">
+<p>Choose the link for the <span style="color:blue">CachedObjects/</span> folder that you created previously.</p>
+</li>
+<li value="49">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload</span>.</p>
+</li>
+</ol>
+<p>The <strong>Upload</strong> page is displayed.</p>
+<ol start="50" class="top-level">
+<li value="50">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Add files</span>.</p>
+</li>
+<li value="51">
+<p>Choose the <strong>logo.png</strong> object from your local storage location.</p>
+</li>
+<li value="52">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload</span>.</p>
+</li>
+</ol>
+<p>The <strong>Upload: status</strong> page is displayed.</p>
+<p>A <span style="color:white;background-color:green;padding:4px"><i class="far fa-check-circle"></i> <strong>Upload succeeded</strong></span> message is displayed on top of the screen.</p>
+<h3 id="task-43-test-public-access-to-an-object">Task 4.3: Test public access to an object</h3>
+<ol start="53" class="top-level">
+<li value="53">Choose the <span style="color:blue">logo.png</span> link from the <strong>Files and folders</strong> section.</li>
+</ol>
+<p>A page with details about the Amazon S3 object is displayed.</p>
+<ol start="54" class="top-level">
+<li value="54">Select the link located in the <strong>Object URL</strong> field.</li>
+</ol>
+<p>The picture is displayed in a browser tab.</p>
+<ol start="55" class="top-level">
+<li value="55">
+<p>Inspect the URL for the object and notice it is an Amazon S3 URL.</p>
+</li>
+<li value="56">
+<p>Close this page with the object.</p>
+</li>
+</ol>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have created a folder in an S3 bucket, uploaded an object, and tested that the object can be retrieved from the S3 URL.</p>
+<hr>
+<h2 id="task-5-secure-the-bucket-with-amazon-cloudfront-and-origin-access-control">Task 5: Secure the bucket with Amazon CloudFront and Origin Access Control</h2>
+<p>In a previous task, you have confirmed public access to the LabBucket works, but are not utilizing the CloudFront distribution for object access. In this task, you add the lab bucket as an new origin to the CloudFront distribution and make the objects in the LabBucket accessible only from the CloudFront distribution.</p>
+<h3 id="task-51-update-the-bucket-policy-for-the-labbucket">Task 5.1: Update the bucket policy for the LabBucket</h3>
+<p>Update the bucket policy to allow read-only access from the CloudFront distribution.</p>
+<ol start="57" class="top-level">
+<li value="57">At the top of the console, in the search bar, search for and choose <span id="amazonaws-labs-rc-2591bbbe-d5ff-4707-af71-de9a52d3bdda"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r20r:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r20s:" type="submit" data-analytics-performance-mark="369-1767874323993-6985"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</li>
+<li value="58">Select the link for the <em>LabBucket</em> found in the <strong>Buckets</strong> section.</li>
+</ol>
+<p>A page with all of the bucket details is displayed.</p>
+<ol start="59" class="top-level">
+<li value="59">Choose the <strong>Permissions</strong> tab.</li>
+<li value="60">Locate the <strong>Bucket policy</strong> section.</li>
+<li value="61">Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</li>
+</ol>
+<p>The <strong>Edit bucket policy</strong> page is displayed.</p>
+<ol start="62" class="top-level">
+<li value="62" class=""><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> Copy and paste the <strong>Bucket ARN</strong> value into a text editor to save the information for later. It is a string value like <em>arn:aws:s3:::LabBucket</em> located above the <em>Policy</em> box.</li>
+</ol>
+<p>The ARN value uniquely identifies this S3 bucket. You need this specific ARN value when creating bucket based policies.</p>
+<ol start="63" class="top-level">
+<li value="63"><i class="fas fa-file-code" style="color:#c9208a"></i> <strong>File contents:</strong> Copy and paste the following JSON into a text editor.</li>
+</ol>
+<span id="amazonaws-labs-rc-bf5a7de7-edb5-4341-a6fb-1b01a34e6394"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r20u:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:r20v:" type="submit" data-analytics-performance-mark="370-1767874323995-7601"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"Version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2012-10-17"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Statement"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"Sid"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"AllowCloudFrontServicePrincipalReadOnly"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"Service"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"cloudfront.amazonaws.com"</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+            <span class="hljs-string">"s3:GetObject"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-string">"s3:GetObjectVersion"</span>
+        <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"RESOURCE_ARN"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Condition"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"StringEquals"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+                <span class="hljs-attr">"AWS:SourceArn"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"CLOUDFRONT_DISTRIBUTION_ARN"</span>
+            <span class="hljs-punctuation">}</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre></div></div></div></span><ol start="64" class="top-level">
+<li value="64">
+<p>Replace the <strong>RESOURCE_ARN</strong> value in the JSON with the <strong>Bucket ARN</strong> value you copied in a <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#bucketARN">previous step</a> and append a <span id="amazonaws-labs-rc-3cde36fc-69d1-4bf3-ad62-30b6d560720f"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r211:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r212:" type="submit" data-analytics-performance-mark="371-1767874323996-867"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">/*</span></div></span> to the end of the pasted <strong>Bucket ARN</strong> value.</p>
+</li>
+<li value="65">
+<p>Replace the <strong>CLOUDFRONT_DISTRIBUTION_ARN</strong> value in the JSON with the ARN value you copied in a <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#distributionARN">previous step</a>.</p>
+</li>
+</ol>
+<p>Here is the example of the updated policy JSON:</p>
+<span id="amazonaws-labs-rc-50d57cc4-f722-4069-afc5-d360e0c93162"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r214:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:r215:" type="submit" data-analytics-performance-mark="372-1767874323999-6514"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"Version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2012-10-17"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Statement"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"Sid"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"AllowCloudFrontServicePrincipalReadOnly"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"Service"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"cloudfront.amazonaws.com"</span>
+        <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+            <span class="hljs-string">"s3:GetObject"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-string">"s3:GetObjectVersion"</span>
+        <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"arn:aws:s3:::lab-bucket-xxxxxxxx/*"</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"Condition"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"StringEquals"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+                <span class="hljs-attr">"AWS:SourceArn"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"arn:aws:cloudfront::123456789:distribution/EVTAORMSUBNP5"</span>
+            <span class="hljs-punctuation">}</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre></div></div></div></span><ol start="66" class="top-level">
+<li value="66">
+<p>Return to the <strong>Amazon S3 console</strong>.</p>
+</li>
+<li value="67">
+<p>Paste the completed JSON into the <em>Policy</em> box.</p>
+</li>
+<li value="68">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save changes</span>.</p>
+</li>
+</ol>
+<h3 id="task-52-enable-the-public-access-blockers">Task 5.2: Enable the public access blockers</h3>
+<ol start="69" class="top-level">
+<li value="69">
+<p>On the <strong>Permissions</strong> tab, locate the <strong>Block public access (bucket settings)</strong> section.</p>
+</li>
+<li value="70">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</p>
+</li>
+</ol>
+<p>The <strong>Edit Block public access (bucket settings)</strong> page is displayed.</p>
+<ol start="71" class="top-level">
+<li value="71">
+<p>Select <i class="fas fa-check-square" style="color:#0073bb"></i> <strong>Block <em>all</em> public access</strong>.</p>
+</li>
+<li value="72">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save changes</span>.</p>
+</li>
+</ol>
+<p>A message window titled Edit Block public access (bucket settings) is displayed.</p>
+<ol start="73" class="top-level">
+<li value="73">
+<p>In the field of the message window, enter <span id="amazonaws-labs-rc-c4a42e22-a76f-48a7-9c93-9cd76f1e2c59"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r217:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r218:" type="submit" data-analytics-performance-mark="373-1767874324000-8043"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">confirm</span></div></span>.</p>
+</li>
+<li value="74">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Confirm</span>.</p>
+</li>
+</ol>
+<p>A <span style="color:white;background-color:green;padding:4px"><i class="far fa-check-circle"></i> Successfully edited Block Public Access settings for this bucket.</span> message is displayed on top of the screen.</p>
+<p>A page with all the bucket details is displayed.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have edited the S3 bucket policy so that the only principal allowed to read objects CloudFront distribution.</p>
+<h3 id="task-53-create-a-new-origin-with-origin-access-control-oac">Task 5.3: Create a new origin with Origin Access Control (OAC)</h3>
+<p>In this task, you add the LabBucket as a new origin to the existing CloudFront distribution.</p>
+<ol start="75" class="top-level">
+<li value="75">
+<p>At the top of the console, in the search bar, search for and choose <span id="amazonaws-labs-rc-8f734d06-ebe6-40d3-b712-0368c7368f6a"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21a:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r21b:" type="submit" data-analytics-performance-mark="374-1767874324001-7176"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CloudFront</span></div></span>.</p>
+</li>
+<li value="76">
+<p>From the <strong>CloudFront Distributions</strong> page, choose the ID link for the only available distribution.</p>
+</li>
+</ol>
+<p>A page showing the details of the distribution is displayed.</p>
+<ol start="77" class="top-level">
+<li value="77">
+<p>Choose the <strong>Origins</strong> tab.</p>
+</li>
+<li value="78">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create origin</span>.</p>
+</li>
+</ol>
+<p>The <strong>Create Origin</strong> page is displayed.</p>
+<ol start="79" class="top-level">
+<li value="79">From the <strong>Origin domain</strong> field, choose the name of your LabBucket from the <strong>Amazon S3</strong> section.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> Recall that the S3 bucket in this lab is never configured as a website. You have only changed the bucket policy regarding who is allowed to perform GetObject API requests against the S3 bucket into an <em>Allow Public</em> read policy.</p>
+<ol start="80" class="top-level">
+<li value="80">Leave the entry for <strong>Origin path</strong>  - optional empty.</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> The Origin Path field is optional and configures which directory in the origin CloudFront should forward requests to. In this lab, rather than configuring the origin path, you leave it blank and instead configure a behavior to return only objects matching a specific pattern in the requests.</p>
+<ol start="81" class="top-level">
+<li value="81">
+<p>For <strong>Name</strong>, enter <span id="amazonaws-labs-rc-569c38aa-b30c-41ca-98c3-1e54b058b1e9"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21d:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r21e:" type="submit" data-analytics-performance-mark="375-1767874324002-1693"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">My Amazon S3 Origin</span></div></span></p>
+</li>
+<li value="82">
+<p>For <strong>Origin access</strong>, select <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> <strong>Origin access control settings (recommended)</strong>.</p>
+</li>
+<li value="83">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create new OAC</span>.</p>
+</li>
+</ol>
+<p>The console displays the <strong>Create new OAC</strong> message window.</p>
+<ol start="84" class="top-level">
+<li value="84">Leave the default settings and choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create</span>.</li>
+<li value="85">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create origin</span>.</li>
+</ol>
+<p>A<span style="color:white;background-color:green;padding:4px"><i class="far fa-check-circle"></i> Successfully created origin My Amazon S3 Origin</span> message is displayed on top of the screen.</p>
+<p>You can safely ignore any message like, <strong>The S3 bucket policy needs to be updated</strong> as you completed updating the bucket policy already.</p>
+<h3 id="task-54-create-a-new-behavior-for-the-amazon-s3-origin">Task 5.4: Create a new behavior for the Amazon S3 origin</h3>
+<p>In this task, you create a new behavior for the Amazon S3 origin so that the distribution has instructions for how to handle incoming requests for the origin.</p>
+<ol start="86" class="top-level">
+<li value="86">
+<p>Choose the <strong>Behaviors</strong> tab.</p>
+</li>
+<li value="87">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create behavior</span>.</p>
+</li>
+</ol>
+<p>The <strong>Create behavior</strong> page is displayed.</p>
+<ol start="88" class="top-level">
+<li value="88">In the <strong>Path pattern</strong> field, enter <span id="amazonaws-labs-rc-978d5c67-5eb7-456d-91a5-de71b148813b"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21g:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r21h:" type="submit" data-analytics-performance-mark="376-1767874324002-489"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">CachedObjects/*.png</span></div></span></li>
+</ol>
+<p>This field configures which matching patterns of object requests the origin can return. Specifically, in this behavior only .png objects stored in the <em>CachedObjects</em> folder of the Amazon S3 origin can be returned. Unless there is a behavior configured for them, all other requests to the Amazon S3 origin would result in an error being returned to the requester. Typically, users would not be requesting objects directly from the CloudFront distribution URL in this manner; instead, your frontend application would generate the correct object URL to return to the user.</p>
+<ol start="89" class="top-level">
+<li value="89" class="eh-bookmarked-line-item">
+<p>From the <strong>Origin and origin groups</strong> dropdown menu, choose <strong>My Amazon S3 Origin</strong>.</p>
+</li>
+<li value="90">
+<p>From the <strong>Cache key and origin requests</strong> section, ensure <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> <strong>Cache policy and origin request policy (recommended)</strong> is selected.</p>
+</li>
+<li value="91">
+<p>From the <strong>Cache policy</strong> dropdown menu, ensure <strong>CachingOptimized</strong> is selected.</p>
+</li>
+<li value="92">
+<p>Leave all other settings on the page at the default values.</p>
+</li>
+<li value="93">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create behavior</span>.</p>
+</li>
+</ol>
+<p>A <span style="color:white;background-color:green;padding:4px"><i class="far fa-check-circle"></i> Successfully created new cache behavior CachedObjects/*.png.</span> message is displayed on top of the screen.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have created: a new origin for the Amazon S3 bucket, an Origin Access Control, and distribution behavior on a CloudFront distribution for the objects stored in the Amazon S3 bucket for the lab.</p>
+<hr>
+<h2 id="task-6-test-direct-access-to-a-file-in-the-bucket-using-the-amazon-s3-url">Task 6: Test direct access to a file in the bucket using the Amazon S3 URL</h2>
+<p>In this task, you test if the object can still be directly accessed using the Amazon S3 URL.</p>
+<ol start="94" class="top-level">
+<li value="94">At the top of the console, in the search bar, search for and choose <span id="amazonaws-labs-rc-e82133d8-49e9-48a0-962f-a12f363d9ec4"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21j:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r21k:" type="submit" data-analytics-performance-mark="377-1767874324003-4919"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</li>
+<li value="95">Select the link for the <em>LabBucket</em> found in the <strong>Buckets</strong> section.</li>
+</ol>
+<p>A page with all of the bucket details is displayed.</p>
+<ol start="96" class="top-level">
+<li value="96">
+<p>Choose the <strong>Objects</strong> tab.</p>
+</li>
+<li value="97">
+<p>Choose the link for the <span style="color:blue">CachedObjects/</span> folder.</p>
+</li>
+<li value="98">
+<p>Choose the link for the <span style="color:blue">logo.png</span> object.</p>
+</li>
+<li value="99">
+<p>Select the link located in the <strong>Object URL</strong> field.</p>
+</li>
+</ol>
+<p>An error message is displayed with Access denied messages. This is expected because the new bucket policy does not allow access to the object directly from Amazon S3 URLs. By denying access to S3 objects directly through Amazon S3, users can no longer bypass the controls provided by CloudFront cache, which can include logging, behaviors, signed URLs, or signed cookies.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have confirmed the object is no longer directly accessible from the Amazon S3 URL.</p>
+<hr>
+<h2 id="task-7-test-access-to-the-object-in-the-bucket-using-the-cloudfront-distribution">Task 7: Test access to the object in the bucket using the CloudFront distribution</h2>
+<p>In this task, you confirm that you can access objects in the Amazon S3 origin for the CloudFront distribution.</p>
+<ol start="100" class="top-level">
+<li value="100">
+<p><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> Copy the CloudFront distribution’s domain DNS value from the left side of these lab instructions under the listing <em>LabCloudFrontDistributionDNS</em>.</p>
+</li>
+<li value="101">
+<p>Paste the DNS value into a new browser tab.</p>
+</li>
+</ol>
+<p>A simple web page is loaded displaying the information of the web server where CloudFront retrieved the content from.</p>
+<ol start="102" class="top-level">
+<li value="102">Append <span id="amazonaws-labs-rc-5b6ade5c-5bff-437a-a26a-9cff7308c687"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21m:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r21n:" type="submit" data-analytics-performance-mark="378-1767874324004-8515"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">/CachedObjects/logo.png</span></div></span> to the end of the CloudFront distribution’s domain DNS and press <strong>Enter</strong>.</li>
+</ol>
+<p>The browser makes a request to the CloudFront distribution and the object is returned from the Amazon S3 origin.</p>
+<p><i class="far fa-eye" style="color:#262262" aria-hidden="true"></i> <strong>Hint:</strong> If the CloudFront URL redirects you to the Amazon S3 URL, or if the object isn’t immediately available, the CloudFront distribution might still be updating from your recent changes. Return to the CloudFront console. Select <strong>Distributions</strong> from the navigation menu. Confirm that the Status column is <span style="color:green"><i class="far fa-check-circle"></i> Enabled</span> and the Last modified column has a timestamp. You need to wait for this before testing the new origin and behavior. After you have confirmed the status of the distribution, wait a few minutes and try this task again.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have confirmed that the object is returned from a CloudFront request.</p>
+<hr>
+<h2 id="optional-task-8-replicate-an-s3-bucket-across-aws-regions">Optional Task 8: Replicate an S3 bucket across AWS Regions</h2>
+<p>This optional task is provided to you if you have extra lab time or want to learn something a little more advanced. This task is not necessary to complete. You can end the lab now if you choose by following the steps <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#endLab">to end the lab</a>; otherwise, keep reading.</p>
+<p><em>Cross-Region replication</em> is a feature of Amazon S3 that allows for automatic copying of your data from one bucket to another bucket located in a different AWS Region. It is a useful feature for disaster recovery. After the cross-Region replication feature is enabled for a bucket, every <em>new</em> object that you currently have read permissions for, which is created in the source bucket, is replicated into the destination bucket you define. This means that objects replicated to the destination bucket have the same names. Objects encrypted using an Amazon S3 managed encryption key are encrypted in the same manner as their source bucket.</p>
+<p>To perform <em>Cross-Region replication</em>, you must enable object versioning for both the source and destination buckets. To maintain good data orderliness with versioning enabled, you can deploy lifecycle policies to automatically archive objects to Amazon S3 Glacier or to delete the objects.</p>
+<h3 id="optional-task-81-enable-versioning-on-your-source-bucket">Optional Task 8.1: Enable versioning on your source bucket</h3>
+<ol start="103" class="top-level">
+<li value="103">
+<p>Return to the browser tab open to the AWS Management Console.</p>
+</li>
+<li value="104">
+<p>At the top of the console, in the search bar, search for and choose <span id="amazonaws-labs-rc-a2ec9327-a406-46de-ac30-f23ebf1c6c35"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21p:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r21q:" type="submit" data-analytics-performance-mark="379-1767874324005-9328"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">S3</span></div></span>.</p>
+</li>
+<li value="105">
+<p>Select the link for the LabBucket found in the <strong>Buckets</strong> section.</p>
+</li>
+</ol>
+<p>A page with all the bucket details is displayed.</p>
+<ol start="106" class="top-level">
+<li value="106">
+<p>Select the <strong>Properties</strong> tab.</p>
+</li>
+<li value="107">
+<p>Locate the <strong>Bucket Versioning</strong> section.</p>
+</li>
+<li value="108">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</p>
+</li>
+</ol>
+<p>The <strong>Edit Bucket Versioning</strong> page is displayed.</p>
+<ol start="109" class="top-level">
+<li value="109">
+<p>Select <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> <strong>Enable</strong> for <strong>Bucket Versioning</strong>.</p>
+</li>
+<li value="110">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save changes</span>.</p>
+</li>
+</ol>
+<h3 id="optional-task-82-create-a-destination-bucket-for-cross-region-replication">Optional Task 8.2: Create a destination bucket for cross-Region replication</h3>
+<ol start="111" class="top-level">
+<li value="111">
+<p>From the Amazon S3 navigation menu, choose <strong>Buckets</strong>.</p>
+</li>
+<li value="112">
+<p>At the top of the screen, choose the drop-down next to the region you are in and choose the <strong>SecondaryRegion</strong> value displayed to the left of these instructions.</p>
+</li>
+</ol>
+<p>This navigates you to the <strong>SecondaryRegion</strong> to create the bucket.</p>
+<ol start="113" class="top-level">
+<li value="113">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create bucket</span>.</li>
+</ol>
+<p>The <strong>Create bucket</strong> page is displayed.</p>
+<ol start="114" class="top-level">
+<li value="114">
+<p>Copy the <strong>DestinationBucketName</strong> from left of the lab instructions and paste into the <strong>Bucket name</strong> field.</p>
+</li>
+<li value="115">
+<p>In the <strong>Block Public Access settings for this bucket</strong> section, unselect <i class="fas fa-check-square" style="color:#0073bb"></i> <strong>Block all public access</strong>.</p>
+</li>
+<li value="116">
+<p>In the warning message, select <i class="fas fa-check-square" style="color:#0060df"></i> <strong>I acknowledge that the current settings might result in this bucket and the objects within becoming public</strong>.</p>
+</li>
+</ol>
+<p><i aria-hidden="true" class="fas fa-exclamation-circle" style="color:#ff6633"></i> <strong>Caution:</strong> You do not need to have public access enabled for your personal buckets to use the cross-Region replication feature. It is enabled in this lab so that you can quickly test if objects are replicated and retrievable using the Amazon S3 URL.</p>
+<ol start="117" class="top-level">
+<li value="117">
+<p>For <strong>Bucket Versioning</strong>, select <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> <strong>Enable</strong>.</p>
+</li>
+<li value="118">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create bucket</span>.</p>
+</li>
+</ol>
+<p>The <strong>Amazon S3 console</strong> is displayed.</p>
+<p>The newly created bucket is displayed among the list of all the buckets for the account.</p>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i>  <strong>Note:</strong> To simplify the narrative in this lab, this newly created bucket is referred to as the <em>DestinationBucket</em> in the remainder of instructions.</p>
+<h3 id="optional-task-83-configure-a-public-read-policy-for-the-new-destination-bucket">Optional Task 8.3: Configure a public read policy for the new destination bucket</h3>
+<p>You now create a public object read policy for this bucket. You use the public read policy in this lab to demonstrate during the lab time that objects are replicated and retrievable using the Amazon S3 URL. It is not recommended for most use cases to use bucket policies which allow for public access.</p>
+<ol start="119" class="top-level">
+<li value="119">
+<p>From the Amazon S3 navigation menu, choose <strong>Buckets</strong>.</p>
+</li>
+<li value="120">
+<p>Choose the link for the <strong>DestinationBucket</strong> from the list of buckets.</p>
+</li>
+<li value="121">
+<p>Choose the <strong>Permissions</strong> tab.</p>
+</li>
+<li value="122">
+<p>Locate the <strong>Bucket policy</strong> section.</p>
+</li>
+<li value="123">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Edit</span>.</p>
+</li>
+</ol>
+<p>The <strong>Edit bucket policy</strong> page is displayed.</p>
+<p><a id="bucketARN2"></a></p>
+<ol start="124" class="top-level">
+<li value="124"><i class="far fa-copy" style="color:#ff6633"></i> <strong>Copy edit:</strong> Copy and paste the <strong>Bucket ARN</strong> value into a text editor to save the information for later. It is a string value like <em>arn:aws:s3::::destination-bucket</em> located above the <em>Policy</em> box.</li>
+</ol>
+<p>The ARN value uniquely identifies this S3 bucket. You need this specific ARN value when creating bucket-based policies.</p>
+<ol start="125" class="top-level">
+<li value="125"><i class="fas fa-file-code" style="color:#c9208a"></i> <strong>File contents:</strong> Copy and paste the following JSON into a text editor:</li>
+</ol>
+<span id="amazonaws-labs-rc-63de7ad9-0184-42ef-9ff4-693604ef9770"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21s:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:r21t:" type="submit" data-analytics-performance-mark="380-1767874324006-8568"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"Version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2012-10-17"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Policy1621958846486"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Statement"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"Sid"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"OriginalPublicReadPolicy"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"*"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-string">"s3:GetObject"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-string">"s3:GetObjectVersion"</span>
+            <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"RESOURCE_ARN"</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre></div></div></div></span><ol start="126" class="top-level">
+<li value="126">Replace the <strong>RESOURCE_ARN</strong> value in the JSON with the <strong>Bucket ARN</strong> value you copied in a <a href="https://classrooms.labs.aws.training/sa/lab/arn%3Aaws%3Alearningcontent%3Aus-east-1%3A006961644361%3Ablueprintversion%2FILT-TF-200-ARCHIT-7%2Flab-6-CloudFront%3A7.10.2-37fd0ca2/en-US/ec2bebc8-cc33-4c70-a82c-43e4ab913113::syKBS8zKrZZNNZe73wC8Vz#bucketARN2">previous step</a> and append a <span id="amazonaws-labs-rc-91d469c3-bfb9-43f5-ab46-439424d3e4c4"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r21v:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r220:" type="submit" data-analytics-performance-mark="381-1767874324008-3754"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">/*</span></div></span> to the end of the pasted <strong>Bucket ARN</strong> value.</li>
+</ol>
+<p>Here is the example of the updated policy JSON:</p>
+<span id="amazonaws-labs-rc-85fe263f-626d-4cf7-96b1-0ba34f0cd9b6"><div class="sc-fqkvVR dKQXCG"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r222:"><button class="CodeBlock__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy" title="Copy" data-analytics-funnel-value="button:r223:" type="submit" data-analytics-performance-mark="382-1767874324009-1246"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><div class="CodeBlock__content"><div><pre tabindex="0" class="hljs"><code><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"Version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2012-10-17"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Policy1621958846486"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"Statement"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-punctuation">{</span>
+            <span class="hljs-attr">"Sid"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"OriginalPublicReadPolicy"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Effect"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Allow"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Principal"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"*"</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Action"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+                <span class="hljs-string">"s3:GetObject"</span><span class="hljs-punctuation">,</span>
+                <span class="hljs-string">"s3:GetObjectVersion"</span>
+            <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-attr">"Resource"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"arn:aws:s3:::DestinationBucket/*"</span>
+        <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span></code></pre></div></div></div></span><ol start="127" class="top-level">
+<li value="127">
+<p>Return to the <strong>Amazon S3 console</strong>.</p>
+</li>
+<li value="128">
+<p>Paste the completed JSON into the <em>Policy</em> box.</p>
+</li>
+<li value="129">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save changes</span>.</p>
+</li>
+</ol>
+<p>The <strong>bucket details</strong> page is displayed.</p>
+<p><strong>Note:</strong> The policies currently applied to the bucket make the objects in this bucket publicly readable.</p>
+<h3 id="optional-task-84-create-a-replication-rule">Optional Task 8.4: Create a replication rule</h3>
+<ol start="130" class="top-level">
+<li value="130">
+<p>From the Amazon S3 navigation menu, choose <strong>Buckets</strong>.</p>
+</li>
+<li value="131">
+<p>In the <strong>Buckets</strong> section, choose the link for the <strong>LabBucket</strong>.</p>
+</li>
+<li value="132">
+<p>Choose the <strong>Management</strong> tab.</p>
+</li>
+<li value="133">
+<p>Locate the <strong>Replication rules</strong> section.</p>
+</li>
+<li value="134">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Create replication rule</span>.</p>
+</li>
+</ol>
+<p>The <strong>Create replication rule</strong> page is displayed.</p>
+<ol start="135" class="top-level">
+<li value="135">
+<p>In the <strong>Replication rule name</strong> field, enter <span id="amazonaws-labs-rc-4124c778-9bc6-4aa2-8b72-fc6587ce0773"><div class="sc-gEvEer cbmJBk"><span class="awsui_root_xjuzf_1sawi_555"><span class="awsui_trigger_xjuzf_1sawi_590" id=":r225:"><button class="InlineCode__copyBtn awsui_button_vjswe_1mhv4_157 awsui_variant-inline-icon_vjswe_1mhv4_322 awsui_button-no-text_vjswe_1mhv4_601" aria-label="Copy inline code" title="Copy inline code" data-analytics-funnel-value="button:r226:" type="submit" data-analytics-performance-mark="383-1767874324011-1750"><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-left_vjswe_1mhv4_630 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M15 5H5v10h10V5Z" class="stroke-linejoin-round"></path><path d="M13 1H1v11" class="stroke-linejoin-round"></path></svg></span></button></span></span><span class="sc-eqUAAy gCEmUV">MyCrossRegionReplication</span></div></span></p>
+</li>
+<li value="136">
+<p>Verify that <strong>LabBucket</strong> is set for <strong>Source bucket name</strong>. If it is not, then you chose the incorrect bucket before choosing the replication rules.</p>
+</li>
+<li value="137">
+<p>In the <strong>Choose a rule scope</strong> section, select <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> <strong>Apply to all objects in the bucket</strong>.</p>
+</li>
+<li value="138">
+<p>Locate the <strong>Destination</strong> section.</p>
+</li>
+<li value="139">
+<p>Choose  <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Browse S3</span>.</p>
+</li>
+<li value="140">
+<p>Select the <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> <strong>DestinationBucket</strong>.</p>
+</li>
+<li value="141">
+<p>Select <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Choose path</span>.</p>
+</li>
+<li value="142">
+<p>Locate the <strong>IAM Role</strong> section.</p>
+</li>
+<li value="143">
+<p>Select <i class="fas fa-dot-circle" style="color:Dodgerblue"></i> <strong>Choose from existing IAM roles</strong>.</p>
+</li>
+<li value="144">
+<p>For <strong>IAM role</strong>, use the dropdown menu and choose <strong>S3CRRRole</strong>.</p>
+</li>
+<li value="145">
+<p>Leave all other options as their default selection.</p>
+</li>
+<li value="146">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Save</span>.</p>
+</li>
+<li value="147">
+<p>If the Replicate existing objects window is displayed, select <i class="fas fa-dot-circle" style="color:Dodgerblue"></i>  <strong>No, do not replicate existing objects</strong> then choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Submit</span>.</p>
+</li>
+</ol>
+<p>The <strong>Replication rules</strong> page for the LabBucket is displayed.</p>
+<p>A <span style="color:white;background-color:green;padding:4px"><i class="far fa-check-circle"></i> <strong>Replication configuration successfully updated</strong> If changes to the configuration aren’t displayed, choose the refresh button. Changes apply only to new objects. To replicate existing objects with this configuration, choose <strong>Create replication job</strong>.</span> message is displayed on top of the screen.</p>
+<p>All newly created objects in the LabBucket are replicated into the DestinationBucket.</p>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> It is possible to replicate existing objects between buckets, but that is beyond the scope of this lab. You can find more information about this topic in the document linked in the Appendix section.</p>
+<h3 id="optional-task-85-verify-object-replication">Optional Task 8.5: Verify object replication</h3>
+<ol start="148" class="top-level">
+<li value="148">
+<p>From the Amazon S3 navigation menu, choose <strong>Buckets</strong>. You might need to expand the menu by choosing the <i class="fas fa-bars"></i> menu icon.</p>
+</li>
+<li value="149">
+<p>In the <strong>Buckets</strong> section, choose the link for the <strong>LabBucket</strong>.</p>
+</li>
+<li value="150">
+<p>Download the object for these lab instructions by right-clicking <a href="https://us-west-2-tcprod.s3.us-west-2.amazonaws.com/courses/ILT-TF-200-ARCHIT/v7.10.2.prod-574156df/lab-6-CloudFront/scripts/logo2.png" target="_blank" rel="noopener noreferrer">logo2.png</a> and saving it to your local device.</p>
+</li>
+<li value="151">
+<p>Return to the <strong>Amazon S3</strong> console.</p>
+</li>
+<li value="152">
+<p>Choose the link for the <span style="color:blue">CachedObjects/</span> folder.</p>
+</li>
+</ol>
+<p><i class="fas fa-sticky-note" style="color:#ff6633"></i> <strong>Note:</strong> If you do not find the CachedObjects folder, choose <strong>Buckets</strong> from the navigation menu located on the left side of the console. Then choose the link for the <strong>LabBucket</strong> from the list. Finally, choose the <strong>Objects</strong> tab to ensure that you are at the correct page.</p>
+<ol start="153" class="top-level">
+<li value="153">Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload</span>.</li>
+</ol>
+<p>The <strong>Upload</strong> page is displayed.</p>
+<ol start="154" class="top-level">
+<li value="154">
+<p>Choose <span style="background-color:white;font-weight:bold;font-size:90%;color:#545b64;position:relative;top:-1px;border-color:#545b64;border-radius:2px;border-width:1px;border-style:solid;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Add files</span>.</p>
+</li>
+<li value="155">
+<p>Choose the <strong>logo2.png</strong> object from your local storage location.</p>
+</li>
+<li value="156">
+<p>Choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;white-space:nowrap">Upload</span>.</p>
+</li>
+</ol>
+<p>The <strong>Upload: status</strong> page is displayed.</p>
+<p>A <span style="color:white;background-color:green;padding:4px"><i class="far fa-check-circle"></i> <strong>Upload succeeded</strong></span> message is displayed on top of the screen.</p>
+<ol start="157" class="top-level">
+<li value="157">Choose the link for the <span style="color:blue">logo2.png</span> from the <strong>Files and folders</strong> section.</li>
+</ol>
+<p>A page with details about the Amazon S3 object is displayed.</p>
+<ol start="158" class="top-level">
+<li value="158">
+<p>In the <strong>Object management overview</strong> section, examine <em>Replication status</em> and refresh the page periodically until it changes from <em>PENDING</em> to <em>COMPLETED</em>.</p>
+</li>
+<li value="159">
+<p>From the Amazon S3 navigation menu, select <strong>Buckets</strong>.</p>
+</li>
+<li value="160">
+<p>In the <strong>Buckets</strong> section, choose the link for the <strong>DestinationBucket</strong>.</p>
+</li>
+</ol>
+<p>A page with all the bucket details is displayed.</p>
+<ol start="161" class="top-level">
+<li value="161">
+<p>Choose the link for the <span style="color:blue">CachedObjects/</span> folder.</p>
+</li>
+<li value="162">
+<p>Choose the link for the <span style="color:blue">logo2.png</span>.</p>
+</li>
+</ol>
+<p>A page with details about the Amazon S3 object is displayed.</p>
+<ol start="163" class="top-level">
+<li value="163">
+<p>In the <strong>Object management overview</strong> section, examine <em>Replication Status</em>. It displays <strong>REPLICA</strong>.</p>
+</li>
+<li value="164">
+<p>Choose the link located in the <strong>Object URL</strong> field.</p>
+</li>
+</ol>
+<p>The picture is displayed in a browser tab.</p>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You have completed setting up cross-Region replication for all new objects uploaded into the LabBucket.</p>
+<p>Consider these follow-up questions to this optional task:</p>
+<ul>
+<li>How can you restrict access to objects in the DestinationBucket?</li>
+<li>What steps are needed to add the DestinationBucket to the CloudFront distribution?</li>
+</ul>
+<hr>
+<h2 id="conclusion">Conclusion</h2>
+<p><i class="far fa-thumbs-up" style="color:#008296" aria-hidden="true"></i> <strong>Congratulations!</strong> You now have successfully done the following:</p>
+<ul>
+<li>Created an S3 bucket with default security settings.</li>
+<li>Configured an S3 bucket for public access.</li>
+<li>Added an S3 bucket as a new origin to an existing CloudFront distribution.</li>
+<li>Secured an S3 bucket to allow access only through the CloudFront distribution.</li>
+<li>Configured OAC to lock down security to an S3 bucket.</li>
+<li>Configured Amazon S3 resource policies for public or OAC access.</li>
+</ul>
+<p><a id="endLab"></a></p>
+<h2 id="end-lab">End lab</h2>
+<p>Follow these steps to close the console and end your lab.</p>
+<ol start="165" class="top-level">
+<li value="165">
+<p>Return to the <strong>AWS Management Console</strong>.</p>
+</li>
+<li value="166">
+<p>At the upper-right corner of the page, choose <strong>AWSLabsUser</strong>, and then choose <span style="background-color:#ff9900;font-weight:bold;font-size:90%;color:black;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;white-space:nowrap"><strong>Sign out</strong></span>.</p>
+</li>
+<li value="167">
+<p>Choose <span style="background-color:#ffffff;font-weight:bold;font-size:90%;color:#0872D3;position:relative;top:-1px;padding-top:3px;padding-bottom:3px;padding-left:10px;padding-right:10px;border-radius:20px;border-color:#0872D3;border-style:solid;border-width:2px;white-space:nowrap"><strong>End Lab</strong></span> and then confirm that you want to end your lab.</p>
+</li>
+</ol>
+<h2 id="additional-resources">Additional resources</h2>
+<ul>
+<li>
+<p>For more information about S3 bucket naming rules, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html" target="_blank" rel="noopener noreferrer">Bucket naming rules</a>.</p>
+</li>
+<li>
+<p>For more information about serving private content through CloudFront, see <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PrivateContent.html" target="_blank" rel="noopener noreferrer">Serving private content with signed URLs and signed cookies</a>.</p>
+</li>
+<li>
+<p>For more information about replicating existing objects between buckets, see <a href="https://aws.amazon.com/blogs/storage/replicating-existing-objects-between-s3-buckets/" target="_blank" rel="noopener noreferrer">Replicating existing objects between S3 buckets</a> in the AWS Storage Blog.</p>
+</li>
+</ul>
+<p>For more information about AWS Training and Certification, see <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener noreferrer"><em>https://aws.amazon.com/training/</em></a>.</p>
+<p><em>Your feedback is welcome and appreciated.</em><br>
+If you would like to share any feedback, suggestions, or corrections, please provide the details in our <a href="https://support.aws.amazon.com/#/contacts/aws-training" target="_blank" rel="noopener noreferrer"><em>AWS Training and Certification Contact Form</em></a>.</p>
+</div></div></div></div></div></div></div></div></div></div><div class="awsui_child_18582_whr0e_149"><span class="ContainerOverride--flashy"><div class="FeedbackSurveyBox__container awsui_root_14iqq_1wfhd_189 awsui_variant-default_14iqq_1wfhd_230 awsui_refresh_14iqq_1wfhd_238"><div id=":ru:" class="awsui_content-wrapper_14iqq_1wfhd_309"><div class="awsui_content_14iqq_1wfhd_309"><div class="awsui_content-inner_14iqq_1wfhd_500 awsui_content-inner_1mwlm_oyjaq_5 awsui_with-paddings_14iqq_1wfhd_396"><h2 class="awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_h2-variant_18wu0_3h5y5_176 awsui_m-bottom-s_18wu0_3h5y5_778 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228">Nice work! Help us make Builder Labs better in just 2 minutes.</h2><a data-testid="feedback-surveyCta" aria-label="Launch Survey (Opens in a new browser tab)" title="Launch Survey (Opens in a new browser tab)" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206 awsui_link_vjswe_1mhv4_654" data-analytics-funnel-value="button:rv:" href="https://amazonmr.au1.qualtrics.com/jfe/form/SV_6kR9NWq6Y3B87KC?lms_source_system=EventHorizon&amp;VibeId=ec2bebc8-cc33-4c70-a82c-43e4ab913113&amp;EventId=classrooms&amp;EventType=standalone&amp;LabName=Architecting+on+AWS+-+Lab+6+-+Configure+an+Amazon+CloudFront+distribution+with+an+Amazon+S3+origin&amp;LabId=syKBS8zKrZZNNZe73wC8Vz&amp;BlueprintName=ILT-TF-200-ARCHIT-7%252Flab-6-CloudFront&amp;BlueprintVersion=7.10.2-37fd0ca2&amp;Q_Language=EN" target="_blank" rel="noopener noreferrer" data-analytics-performance-mark="5-1767873902736-1641"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Launch Survey</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320 awsui_name-external_h11ix_11cyn_355"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="M13 9.012v-6H7M13.02 3 7 9.01M3 5.012v8h8.01" class="stroke-linejoin-round"></path></svg></span></a><img class="FeedbackSurveyBox__image" src="data:image/svg+xml,%3csvg%20xmlns=&#39;http://www.w3.org/2000/svg&#39;%20width=&#39;200&#39;%20height=&#39;200&#39;%20fill=&#39;none&#39;%3e%3cpath%20stroke=&#39;%23232F3E&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M111.2%20153.2H91.6v22.3l-24.7-22.3H24.5V88.9h86.7v64.3Z&#39;/%3e%3cpath%20stroke=&#39;%23232F3E&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M119.601%20102.7h13.9v22.5l24.8-22.5h17.2V24.5h-100.7v56&#39;/%3e%3cpath%20stroke=&#39;url(%23a)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M94.398%2044.1h61.5&#39;/%3e%3cpath%20stroke=&#39;url(%23b)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M94.398%2063.7h61.5&#39;/%3e%3cpath%20stroke=&#39;url(%23c)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M35.7%20119.6h16.8&#39;/%3e%3cpath%20stroke=&#39;url(%23d)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M58.102%20119.6h16.7&#39;/%3e%3cpath%20stroke=&#39;url(%23e)&#39;%20stroke-linejoin=&#39;round&#39;%20stroke-miterlimit=&#39;10&#39;%20stroke-width=&#39;4&#39;%20d=&#39;M80.398%20119.6h16.8&#39;/%3e%3cdefs%3e%3clinearGradient%20id=&#39;a&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;b&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;c&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;d&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3clinearGradient%20id=&#39;e&#39;%20x1=&#39;nan&#39;%20x2=&#39;nan&#39;%20y1=&#39;nan&#39;%20y2=&#39;nan&#39;%20gradientUnits=&#39;userSpaceOnUse&#39;%3e%3cstop%20stop-color=&#39;%23003181&#39;/%3e%3cstop%20offset=&#39;.169&#39;%20stop-color=&#39;%230B499F&#39;/%3e%3cstop%20offset=&#39;.347&#39;%20stop-color=&#39;%23145CB7&#39;/%3e%3cstop%20offset=&#39;.537&#39;%20stop-color=&#39;%231B69C8&#39;/%3e%3cstop%20offset=&#39;.744&#39;%20stop-color=&#39;%231F71D2&#39;/%3e%3cstop%20offset=&#39;1&#39;%20stop-color=&#39;%232074D5&#39;/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e" alt="" style="width: 100px; height: auto;"></div></div></div></div></span></div><div class="awsui_child_18582_whr0e_149"></div><div class="awsui_child_18582_whr0e_149"></div></div></div></div></main></div><footer class="Footer" role="contentinfo" data-testid="footer-FooterStandalone"><div class="Footer__left awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-left-l_18wu0_3h5y5_833 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="ButtonOverride--transparent"><a data-testid="footer-privacy" aria-label="Privacy (Opens in a new browser tab)" title="Privacy (Opens in a new browser tab)" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206 awsui_link_vjswe_1mhv4_654" data-analytics-funnel-value="button:r11:" href="https://aws.amazon.com/privacy/" target="_blank" rel="noopener noreferrer" data-analytics-performance-mark="6-1767873902742-8570"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Privacy</span></a></span><span class="ButtonOverride--transparent"><a data-testid="footer-siteTerms" aria-label="Site terms (Opens in a new browser tab)" title="Site terms (Opens in a new browser tab)" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206 awsui_link_vjswe_1mhv4_654" data-analytics-funnel-value="button:r13:" href="https://aws.amazon.com/terms/" target="_blank" rel="noopener noreferrer" data-analytics-performance-mark="7-1767873902742-3518"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Site terms</span></a></span><span class="ButtonOverride--transparent"><button id="awsui-cookie-prefs-button" data-testid="footer-cookies" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" data-analytics-funnel-value="button:r15:" type="submit" data-analytics-performance-mark="8-1767873902743-9655"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Cookie preferences</span></button></span></div><div class="Footer__right awsui_root_18wu0_3h5y5_934 awsui_box_18wu0_3h5y5_172 awsui_m-right-l_18wu0_3h5y5_823 awsui_color-default_18wu0_3h5y5_172 awsui_font-size-default_18wu0_3h5y5_188 awsui_font-weight-default_18wu0_3h5y5_228"><span class="ButtonDropdownOverride--transparent"><div data-testid="feedback-open" data-tourid="feedbackBtn" class="awsui_button-dropdown_sne0l_1t2lq_145 awsui_variant-normal_sne0l_1t2lq_240"><div class="awsui_root_qwoo0_53h6v_199"><div id=":rell:" class=""><div class="awsui_dropdown-trigger_sne0l_1t2lq_251"><button id="awsui-button-dropdown__trigger:relj:" class="awsui_trigger-button_sne0l_1t2lq_206 awsui_test-utils-button-trigger_sne0l_1t2lq_263 awsui_trigger-label_q2oen_w271r_5 awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" aria-expanded="false" data-analytics-funnel-value="button:relm:" type="button" aria-haspopup="true" data-analytics-performance-mark="2536-1767892527496-1345"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Feedback</span><span class="awsui_icon_vjswe_1mhv4_630 awsui_icon-right_vjswe_1mhv4_635 awsui_rotate_sne0l_1t2lq_172 awsui_icon_h11ix_11cyn_189 awsui_size-normal-mapped-height_h11ix_11cyn_248 awsui_size-normal_h11ix_11cyn_244 awsui_variant-normal_h11ix_11cyn_320"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true"><path d="m8 11 4-6H4l4 6Z" class="filled stroke-linejoin-round"></path></svg></span></button></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div><div class="awsui_dropdown_qwoo0_53h6v_153 awsui-visual-refresh awsui_with-limited-width_qwoo0_53h6v_299 awsui_refresh_qwoo0_53h6v_174" data-open="false" data-animating="false" aria-hidden="true"><div class="awsui_dropdown-content-wrapper_qwoo0_53h6v_153 awsui_refresh_qwoo0_53h6v_174"><div class="awsui_dropdown-content_qwoo0_53h6v_153"><ul class="awsui_options-list_19gcf_1qfef_145 awsui_decrease-block-margin_19gcf_1qfef_199" role="menu" tabindex="-1" aria-labelledby="awsui-button-dropdown__trigger:relj:" style="position: static;"></ul></div></div></div><div class="awsui_root_oip5a_160mh_5" tabindex="-1"></div></div></div></div></span><span class="ButtonOverride--transparent"><button id="awsui-help-button" data-testid="helpPanel-open" class="awsui_button_vjswe_1mhv4_157 awsui_variant-normal_vjswe_1mhv4_206" data-analytics-funnel-value="button:r1d:" type="submit" data-analytics-performance-mark="10-1767873902745-3765"><span class="awsui_content_vjswe_1mhv4_153 awsui_label_1f1d4_ocied_5">Help</span></button></span></div></footer><div class="react-joyride"></div><div id="connectChatRoot" class="ConnectChat" style="display: none;"></div></div>
+  
+
+</body></html>
